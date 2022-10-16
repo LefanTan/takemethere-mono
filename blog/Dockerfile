@@ -1,3 +1,4 @@
+# Production Build
 FROM node:alpine as node
 
 FROM node as builder
@@ -13,6 +14,6 @@ RUN npm ci
 
 # start app
 RUN npm run build
-EXPOSE 3000
+EXPOSE 8080
 # CMD ["node", "./dist/server/entry.mjs"]
 CMD npm run preview

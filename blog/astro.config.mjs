@@ -12,6 +12,6 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
-  server: { host: "0.0.0.0" },
+  server: (command) => ({ port: command === "dev" ? 3000 : 8080 }),
   integrations: [tailwind()],
 });
