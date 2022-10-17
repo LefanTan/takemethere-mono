@@ -13,7 +13,7 @@ export default defineConfig({
     mode: "standalone",
   }),
   server: (command) => ({
-    port: command === "dev" ? 3000 : parseInt(process.env.PORT),
+    port: command === "dev" ? 3000 : parseInt(process.env.PORT ?? 3000),
     host: "0.0.0.0",
   }),
   integrations: [tailwind()],
