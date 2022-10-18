@@ -2,6 +2,12 @@
 
 Built using Astro, feel free to read the [documentation](https://docs.astro.build) on Astro before continuing!
 
+## Deployment
+
+Deployed using Google Cloud Run.
+
+To initiate deployment to staging environment, create a PR and merge to `main`.
+
 ## 🚀 Project Structure
 
 Inside of your Astro project, you'll see the following folders and files:

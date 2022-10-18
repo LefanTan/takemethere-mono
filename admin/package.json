@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview-live": "npx firebase hosting:channel:deploy",
+    "deploy": "npm run build && npx firebase deploy"
   },
   "dependencies": {
     "@quasar/extras": "^1.15.5",
