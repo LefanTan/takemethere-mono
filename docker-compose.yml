@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  db:
+    image: 'postgres:alpine'
+    container_name: takemethere-postgresql
+    restart: always
+    volumes:
+      - "./webapi/data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root

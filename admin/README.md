@@ -5,7 +5,7 @@
 Deployment using Firebase Hosting.
 Deployment to staging environment happens on merge to `main`.
 
-Link: https://takemethere-365622.web.app/
+Link: https://admin.takeme.blog
 
 ## 🧞 Commands
 

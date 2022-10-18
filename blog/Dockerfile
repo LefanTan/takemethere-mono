@@ -11,7 +11,7 @@ WORKDIR /usr/src
 COPY . /usr/src
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --only=prod
 
 # Build app
 RUN npm run build
