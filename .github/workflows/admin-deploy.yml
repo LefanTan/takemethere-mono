@@ -9,6 +9,9 @@ name: Deploy to Firebase Hosting on Merge or Dispatch
       - admin/**
       - common/**
   workflow_dispatch:
+    inputs:
+      note:
+        description: "Enter a short name"
 
 jobs:
   build_and_deploy:
