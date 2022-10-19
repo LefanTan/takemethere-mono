@@ -37,7 +37,7 @@ const showDrawer = ref(true);
                   </q-item-section>
                 </q-item>
                 <q-item class="rounded-lg px-3" clickable>
-                  <q-item-section> Upgrade to Premium</q-item-section>
+                  <q-item-section> Upgrade to Premium </q-item-section>
                   <q-item-section side>
                     <q-icon name="eva-arrow-ios-forward" />
                   </q-item-section>
