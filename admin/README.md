@@ -18,4 +18,4 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`        | Build your production site to `./dist/`                 |
 | `npm run preview`      | Preview your build locally, before deploying            |
 | `npm run preview-live` | Preview your build using a preview url before deploying |
-| `npm run deploy`       | Deploy your changes                                     |
+| `npm run deploy`       | Deploy your changes to firebase                         |
