@@ -1,6 +1,6 @@
 # Deploy admin when merge
 
-name: Deploy to Firebase Hosting on merge
+name: Deploy to Firebase Hosting on Merge or Dispatch
 "on":
   push:
     branches:
@@ -8,6 +8,8 @@ name: Deploy to Firebase Hosting on merge
     paths:
       - admin/**
       - common/**
+  workflow_dispatch:
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
