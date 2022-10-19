@@ -6,6 +6,7 @@ name: Deploy to Firebase Hosting on PR
   pull_request:
     path:
       - admin/**
+      - common/**
 
 jobs:
   build_and_preview:

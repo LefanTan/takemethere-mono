@@ -6,7 +6,7 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    tsconfigPaths(),
+    tsconfigPaths({ loose: true }),
     vue({
       template: { transformAssetUrls },
     }),

@@ -19,3 +19,4 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`    | Build your production site to `./dist/`                      |
 | `npm run migrate`  | Run migration, append `--name [NAME]` to name your migration |
 | `npm run generate` | Generate Prisma Client based on current schema               |
+| `npm run start`    | (CI/CD only) Apply pending migration and start webapi server |
