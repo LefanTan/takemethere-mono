@@ -9,3 +9,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String @id @default(uuid())
+  // Will be used for users' unique link. Ex. takeme.blog/lefan
+  username String @unique
+  email    String @unique
+
+  homePage   HomePage @relation(fields: [homePageId], references: [id])
+  homePageId String   @unique
+}
+
+model HomePage {
+  id   String @id @default(uuid())
+  user User?
+}
