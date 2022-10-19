@@ -21,14 +21,16 @@ jobs:
 
       - name: Use Node.js and Setup Cache
         uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: "npm"
-          cache-dependency-path: admin/package-lock.json
-        working-directory: admin/
-        run: |
-          npm ci --prefer-offline --only=prod
-          npm run build
+          with:
+            node-version: 16
+            cache: "npm"
+            cache-dependency-path: admin/package-lock.json
+            
+      - name: Install dependencies
+          working-directory: admin/
+          run: |
+            npm ci --prefer-offline --only=prod
+            npm run build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
