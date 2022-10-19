@@ -27,10 +27,10 @@ jobs:
           cache-dependency-path: admin/package-lock.json
 
       - name: Install dependencies
-          working-directory: admin/
-          run: |
-            npm ci --prefer-offline --only=prod
-            npm run build
+        working-directory: admin/
+        run: |
+          npm ci --prefer-offline --only=prod
+          npm run build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
