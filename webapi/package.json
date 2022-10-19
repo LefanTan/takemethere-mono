@@ -9,6 +9,7 @@
     "start": "NODE_ENV=production pm2 start ./dist/index.js --no-daemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npx prisma migrate dev && npm run generate",
+    "apply-migration": "npx prisma migrate deploy",
     "generate": "npx prisma generate && npx @kalissaac/prisma-typegen ../common/types ./prisma/schema.prisma --useType --generateInsertionTypes"
   },
   "author": "",

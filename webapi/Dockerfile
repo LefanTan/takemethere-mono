@@ -14,5 +14,6 @@ RUN npm i pm2
 
 # Build for production
 RUN npm run build
+RUN npx prisma migrate deploy
 
 CMD ["npm", "run", "start"]
