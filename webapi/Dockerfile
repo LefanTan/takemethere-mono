@@ -12,8 +12,12 @@ COPY . /app
 RUN npm ci --only=prod
 RUN npm i pm2
 
+# Reference the database url set in Cloud Build
+ENV DATABASE_URL ${_DATABASE_URL}
+
 # Build for production
 RUN npm run build
 RUN npx prisma migrate deploy
+
 
 CMD ["npm", "run", "start"]
