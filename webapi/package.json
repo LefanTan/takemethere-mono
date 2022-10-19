@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon ./src/index.ts",
     "build": "tsc -p .",
-    "start": "NODE_ENV=production pm2 start ./dist/index.js --no-daemon",
+    "start": "NODE_ENV=production npm run apply-migration && pm2 start ./dist/index.js --no-daemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npx prisma migrate dev && npm run generate",
     "apply-migration": "npx prisma migrate deploy",

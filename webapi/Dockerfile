@@ -17,7 +17,5 @@ ENV DATABASE_URL ${_DATABASE_URL}
 
 # Build for production
 RUN npm run build
-RUN npx prisma migrate deploy
-
 
 CMD ["npm", "run", "start"]
