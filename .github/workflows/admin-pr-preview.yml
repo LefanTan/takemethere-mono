@@ -14,13 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
+
+      - name: Use Node.js and Setup Cache
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: "16.14.2"
+          cache: "npm"
+          cache-dependency-path: admin/package-lock.json
+
       - name: Install dependencies
-        working-directory: admin
-        run: npm ci && npm run build
+        working-directory: admin/
+        run: |
+          npm ci --prefer-offline --no-audit
+          npm run build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
