@@ -5,6 +5,11 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/admin/",
+  build: {
+    outDir: "dist/admin/",
+  },
+
   plugins: [
     tsconfigPaths({ loose: true }),
     vue({

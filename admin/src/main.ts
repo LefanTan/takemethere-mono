@@ -23,6 +23,10 @@ const pinia = createPinia();
 
 app.use(Quasar, {
   plugins: { Dialog: Dialog, Notify: Notify, LoadingBar: LoadingBar }, // import Quasar plugins and add here
+
+  build: {
+    publicPath: "/admin/",
+  },
 });
 app.use(pinia);
 // Connect Vue Router
