@@ -31,9 +31,9 @@ jobs:
           npm run build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
-        working-directory: admin/
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_TAKEMETHERE_365622 }}"
           channelId: live
           projectId: takemethere-365622
+          entryPoint: admin
