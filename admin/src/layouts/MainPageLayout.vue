@@ -18,18 +18,18 @@ const navLinks = [
 ];
 
 const router = useRouter();
-const currentRoutePath = router.currentRoute.value.path;
+const currentRoutePath = computed(() => router.currentRoute.value.path);
 </script>
 
 <template>
   <q-page>
     <nav class="border-b border-gray-200 px-3 py-2">
-      <a
+      <router-link
         v-for="link in navLinks"
-        :href="link.to"
+        :to="link.to"
         class="inline-block text-lg font-medium transition-all py-2 px-3 h-full hover:bg-gray-50 rounded-lg"
         :class="{ 'text-gray-400': currentRoutePath !== link.to }"
-        >{{ link.text }}</a
+        >{{ link.text }}</router-link
       >
     </nav>
     <router-view />
