@@ -1,4 +1,4 @@
-import { User } from "@models/User";
+import { User } from "@models/user";
 import { defineStore } from "pinia";
 
 type AppState = {
