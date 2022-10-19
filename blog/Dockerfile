@@ -17,5 +17,4 @@ RUN npm ci --only=prod
 RUN npm run build
 
 # Start app 
-# CMD ["node", "./dist/server/entry.mjs"]
-CMD npm run preview
+CMD npm run start
