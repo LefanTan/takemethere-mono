@@ -21,11 +21,11 @@ jobs:
 
       - name: Use Node.js and Setup Cache
         uses: actions/setup-node@v3
-          with:
-            node-version: 16
-            cache: "npm"
-            cache-dependency-path: admin/package-lock.json
-            
+        with:
+          node-version: 16
+          cache: "npm"
+          cache-dependency-path: admin/package-lock.json
+
       - name: Install dependencies
           working-directory: admin/
           run: |
