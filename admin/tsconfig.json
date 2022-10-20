@@ -21,7 +21,8 @@
       "@components/*": ["src/components/*"],
       "@styles/*": ["src/styles/*"],
       "@models/*": ["src/models/*"],
-      "@stores/*": ["src/stores/*"]
+      "@stores/*": ["src/stores/*"],
+      "@lib/*": ["src/lib/*"]
     }
   },
   "exclude": ["/dist", ".quasar", "**/*.stories.ts"],
