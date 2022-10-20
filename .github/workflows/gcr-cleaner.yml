@@ -1,7 +1,7 @@
 # .github/workflows/gcr-cleaner.yml
 # Referenced: https://github.com/GoogleCloudPlatform/gcr-cleaner
 
-name: "gcr-cleaner"
+name: "GCR Cleaner"
 
 on:
   schedule:
@@ -23,6 +23,6 @@ jobs:
       - uses: "docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli"
         with:
           args: >-
-            -repo=us.gcr.io/takemethere-365622/takemethere-mono/blog
-            -repo=us.gcr.io/takemethere-365622/takemethere-mono/webapi
+            -repo=us.gcr.io/takemethere-365622/takemethere-mono
+            -recursive
             -grace=48h
