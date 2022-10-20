@@ -15,7 +15,7 @@ jobs:
       - name: Login to GAR
         uses: docker/login-action@v2
         with:
-          registry: gcr.io
+          registry: us.gcr.io
           username: _json_key
           password: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TAKEMETHERE_365622 }}
 
