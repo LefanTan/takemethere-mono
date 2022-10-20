@@ -24,4 +24,5 @@ jobs:
         with:
           args: >-
             -repo=gcr.io/takemethere-365622/takemethere-mono/blog
+            -repo=gcr.io/takemethere-365622/takemethere-mono/webapi
             -grace=48h
