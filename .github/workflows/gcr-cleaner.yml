@@ -17,7 +17,7 @@ jobs:
         with:
           registry: us-central1-docker.pkg.dev
           username: _json_key
-          password: ${{ secrets.GCR_JSON_KEY }}
+          password: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TAKEMETHERE_365622 }}
 
       # customize based on the gcr-cleaner flags
       - uses: "docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli"
