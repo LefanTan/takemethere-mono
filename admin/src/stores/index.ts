@@ -5,7 +5,7 @@ import useAppStore from "./appStore";
  * @returns
  */
 export default function useStore() {
-  const app = useAppStore;
+  const app = useAppStore();
 
   return { app };
 }

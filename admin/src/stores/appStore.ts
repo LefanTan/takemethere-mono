@@ -1,4 +1,5 @@
 import { auth } from "@src/lib/firebase";
+import router from "@src/routes";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -33,8 +34,10 @@ const useAppStore = defineStore("appStore", {
         password
       );
 
-      if (response) this.$state.user = response.user;
+      if (response) this.user = response.user;
       else throw new Error("Signup failed");
+
+      console.log("Signup Success!");
     },
 
     /**
@@ -44,8 +47,10 @@ const useAppStore = defineStore("appStore", {
     async signin(email: string, password: string) {
       const response = await signInWithEmailAndPassword(auth, email, password);
 
-      if (response) this.$state.user = response.user;
+      if (response) this.user = response.user;
       else throw new Error("Signin failed");
+
+      console.log("Login Success!");
     },
 
     /**
@@ -54,7 +59,8 @@ const useAppStore = defineStore("appStore", {
     async logout() {
       await signOut(auth);
 
-      this.$state.user = undefined;
+      this.user = undefined;
+      router.replace("/login");
     },
   },
 });

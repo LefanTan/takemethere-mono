@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 const navLinks = [
   {

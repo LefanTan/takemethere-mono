@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import IconButton from "@src/components/buttons/IconButton.vue";
 import MainPage from "./MainPageLayout.vue";
+import useStore from "@src/stores";
 
+const $store = useStore();
 const showDrawer = ref(true);
 </script>
 
@@ -56,6 +58,7 @@ const showDrawer = ref(true);
         }"
         size="2rem"
         class="mt-3 rotate-180"
+        @click="$store.app.logout()"
       />
     </q-drawer>
     <q-drawer :model-value="true" side="right" :width="300" bordered>

@@ -14,6 +14,7 @@ import "quasar/src/css/index.sass";
 
 // Import Vue Router instance
 import router from "./routes";
+import setupAuthenticationNavguard from "./routes/navguard";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -28,5 +29,10 @@ app.use(Quasar, {
 app.use(pinia);
 // Connect Vue Router
 app.use(router);
+
+/**
+ * Router navguards
+ */
+setupAuthenticationNavguard(router);
 
 app.mount("#app");

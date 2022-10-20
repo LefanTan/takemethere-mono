@@ -36,6 +36,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/login",
     component: () => import("@layouts/LoginLayout.vue"),
+    meta: { unauthenticatedOnly: true },
   },
 ];
 
