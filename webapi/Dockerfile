@@ -28,5 +28,6 @@ RUN npm ci --only=prod
 RUN npm install pm2 
 RUN npm install typescript
 
+EXPOSE ${PORT}
 
 CMD ["npm", "run", "start"]
