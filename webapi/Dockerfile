@@ -1,21 +1,48 @@
 # Production Build
 # Google Cloud Run will inject a $PORT env variable which will be consumed by Express during build. Ex. ENV PORT 5080
 
-FROM node:16.13.1-alpine3.14
+###############
+# build stage #
+###############
+
+FROM node:16-alpine AS build
+WORKDIR /app
+
+COPY package.json package-lock.json tsconfig.json swagger-output.json ./
+# installs both production and dev dependencies
+RUN npm ci
+
+COPY src ./src
+RUN npm run build
+
+
+###############
+# final stage #
+###############
+
+FROM node:16-slim
+
+RUN apt-get update
+# Open SSL required for Prisma
+RUN apt-get install -y openssl
 
 WORKDIR /app
 
-# Copy source files
-COPY . /app
+ARG NODE_ENV="production"
 
-# Install dependencies
+COPY package.json package-lock.json ./
+# installs only production dependencies
 RUN npm ci --only=prod
-RUN npm i pm2
 
-# Reference the database url set in Cloud Build
-ENV DATABASE_URL ${_DATABASE_URL}
+# Copy prisma config
+COPY /prisma ./
+RUN npm run apply-migration
 
-# Build for production
-RUN npm run build
+# Copy build files from Build step
+COPY --from=build /app/dist ./dist
+USER node
+
+ENV PORT 5080
+ENV DATABASE_URL ${DATABASE_URL}
 
 CMD ["npm", "run", "start"]
