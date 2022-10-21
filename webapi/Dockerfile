@@ -33,7 +33,7 @@ RUN npm ci
 COPY --from=build ./ ./
 USER node
 
-ENV PORT ${PORT}
+ENV PORT 5080
 ENV DATABASE_URL ${DATABASE_URL}
 
 CMD ["npm", "run", "start"]
