@@ -11,10 +11,8 @@ const openapiSpec = require("../swagger-output.json");
 const app = express();
 const port = process.env.PORT || 5080;
 
-const allowedOriginList = ["*.takeme.blog"];
-
 const corsOptions = {
-  origin: process.env.NODE_ENV !== "production" ? "*" : allowedOriginList,
+  origin: process.env.NODE_ENV !== "production" ? "*" : "*.takeme.blog",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
   optionsSuccessStatus: 204,
