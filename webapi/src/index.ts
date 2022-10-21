@@ -4,15 +4,36 @@ dotenv.config();
 import express from "express";
 import userRoutes from "./routes/userRoutes";
 import swaggerUi from "swagger-ui-express";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 
 const openapiSpec = require("../swagger-output.json");
 
 const app = express();
 const port = process.env.PORT || 5080;
 
-const corsOptions = {
-  origin: process.env.NODE_ENV !== "production" ? "*" : "*.takeme.blog",
+const allowedOrigins = ["https://takeme.blog"];
+
+const corsOptions: CorsOptions = {
+  origin:
+    process.env.NODE_ENV !== "production"
+      ? "*"
+      : function (origin, callback) {
+          // allow requests with no origin
+          // (like mobile apps or curl requests)
+          if (!origin) return callback(null, true);
+
+          console.log(origin);
+
+          if (allowedOrigins.indexOf(origin) === -1) {
+            return callback(
+              new Error(
+                "The CORS policy for this site does not allow access from the specified Origin."
+              ),
+              false
+            );
+          }
+          return callback(null, true);
+        },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
   optionsSuccessStatus: 204,
