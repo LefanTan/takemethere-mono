@@ -1,11 +1,15 @@
 # Production Build
 # Google Cloud Run will inject a $PORT env variable which will be consumed by Express during build. Ex. ENV PORT 5080
+FROM node:16-slim as node
+
+ENV PORT ${PORT}
+ENV DATABASE_URL ${_DATABASE_URL}
 
 ###############
 # build stage #
 ###############
 
-FROM node:16-alpine AS build
+FROM node AS build
 WORKDIR /app
 
 COPY package.json package-lock.json tsconfig.json swagger-output.json ./
@@ -20,16 +24,12 @@ RUN npm run build
 # final stage #
 ###############
 
-FROM node:16-slim
+FROM node as final
+WORKDIR /app
 
 RUN apt-get update
 # Open SSL required for Prisma
 RUN apt-get install -y openssl
-
-WORKDIR /app
-
-ENV PORT ${PORT}
-ENV DATABASE_URL ${_DATABASE_URL}
 
 ARG NODE_ENV="production"
 
