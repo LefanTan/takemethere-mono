@@ -1,5 +1,7 @@
 import { auth } from "@src/lib/firebase";
 import router from "@src/routes";
+import { UsersService } from "@common/webapi";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -24,33 +26,40 @@ const useAppStore = defineStore("appStore", {
   actions: {
     /**
      * Sign up using Firebase Authenticated
+     * @param username
      * @param email
      * @param password
      */
-    async signup(email: string, password: string) {
-      const response = await createUserWithEmailAndPassword(
-        auth,
+    async signup(username: string, email: string, password: string) {
+      const user = await UsersService.postUsersCreate({
+        username,
         email,
-        password
-      );
-
-      if (response) this.user = response.user;
-      else throw new Error("Signup failed");
+        password,
+      });
 
       console.log("Signup Success!");
+      return user;
     },
 
     /**
-     * Sign in using Firebase Authenticated
-     * @param email
+     * Sign in the user
+     * @param username
      */
-    async signin(email: string, password: string) {
-      const response = await signInWithEmailAndPassword(auth, email, password);
+    async signin(username: string, password: string) {
+      const user = await UsersService.getUsersEmail(username);
+      if (!user.email) throw new Error("No email found for user");
+
+      const response = await signInWithEmailAndPassword(
+        auth,
+        user.email,
+        password
+      );
 
       if (response) this.user = response.user;
       else throw new Error("Signin failed");
 
       console.log("Login Success!");
+      router.push({ name: "home" });
     },
 
     /**

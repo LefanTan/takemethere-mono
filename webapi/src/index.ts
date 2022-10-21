@@ -21,7 +21,12 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json()); // support json encoded bodies
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+); // Support application/x-www-form-urlencoded
 
 app.use("/users", userRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));

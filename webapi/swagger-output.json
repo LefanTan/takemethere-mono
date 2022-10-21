@@ -23,6 +23,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Retrieve email based on a given username",
         "description": "",
         "parameters": [
           {
@@ -34,7 +35,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Some description...",
+            "description": "OK",
             "schema": {
               "type": "object",
               "properties": {
@@ -47,6 +48,77 @@
                 "name": "main"
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/create": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user. Returns 404 if user already exists",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "lefanTan"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "lefantan@lol.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "veryNicePassword"
+                }
+              },
+              "required": [
+                "username",
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "adfn123nasdfnj1j129"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "lefan@gmail.com"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "lefan"
+                },
+                "homePageId": {
+                  "type": "string",
+                  "example": "123"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }

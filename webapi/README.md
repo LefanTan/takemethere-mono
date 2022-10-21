@@ -1,8 +1,8 @@
 # Backend service for TakeMeThere
 
-To start, go to root folder and run `docker compose up` to start a local postgresql server. Then go to `/webapi` and run `npm run dev` to start the dev server.
-
-Run `docker compose stop` to stop the postgres server
+1. To start, go to root folder and run `docker compose up` to start a local postgresql server. Then go to `/webapi` and run `npm run dev` to start the dev server.
+   - Run `docker compose stop` to stop the postgres server
+2. Place a firebase google service account json name `google-service-account.json` in `/webapi`
 
 ## Deployment
 

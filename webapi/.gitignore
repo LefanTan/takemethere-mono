@@ -7,3 +7,6 @@ dist
 
 # Docker volume
 data
+
+# Google service account
+google-service-account.json

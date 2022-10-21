@@ -11,10 +11,7 @@ const signInPassword = ref("");
 
 async function signIn() {
   try {
-    const user = await UsersService.getUsersEmail(signInUsername.value);
-    if (!user.email) throw new Error("No email found for user");
-
-    await $store.app.signin(user.email, signInPassword.value);
+    await $store.app.signin(signInUsername.value, signInPassword.value);
     router.push("/");
   } catch (e) {
     console.error(e);
