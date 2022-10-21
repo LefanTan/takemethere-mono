@@ -15,6 +15,9 @@ RUN npm run build
 FROM node as final
 WORKDIR /app
 
+# Default PORT value
+ARG PORT=5080
+
 # Reference the database url set in Cloud Build
 ENV DATABASE_URL ${_DATABASE_URL}
 
