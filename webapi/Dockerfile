@@ -1,35 +1,38 @@
 # Production Build
 # Google Cloud Run will inject a $PORT env variable which will be consumed by Express during build. Ex. ENV PORT 5080
-FROM node:16.13.1-alpine3.14 as node
 
-# Default PORT value
-ARG PORT=5080
+###############
+# build stage #
+###############
 
-# Build step
-FROM node as builder
+FROM node:16-alpine AS build
 WORKDIR /app
 
-COPY . /app
-RUN npm install
+COPY package.json package-lock.json tsconfig.json swagger-output.json ./
+# installs both production and dev dependencies
+RUN npm ci
+
+COPY src ./src       
 RUN npm run build
 
-# Runtime step
-FROM node as final
+###############
+# final stage #
+###############
+
+FROM node
 WORKDIR /app
 
-# Reference the database url set in Cloud Build
-ENV DATABASE_URL ${_DATABASE_URL}
+ARG NODE_ENV="production"
 
-# Copy files from build step
-COPY --from=builder /app/dist /app
-COPY --from=builder /app/package.json /app
-COPY --from=builder /app/package-lock.json /app
+COPY package.json package-lock.json ./
+COPY prisma ./
 
-# Install dependencies
-RUN npm ci --only=prod
-RUN npm install pm2 
-RUN npm install typescript
+# installs only production dependencies
+RUN npm ci
 
-EXPOSE ${PORT}
+COPY --from=build ./ ./
+USER node
+
+ENV DATABASE_URL ${DATABASE_URL}
 
 CMD ["npm", "run", "start"]

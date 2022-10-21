@@ -1,3 +1,6 @@
 .git
 .gitignore
 node_modules/
+dist/
+data/
+google-service-account.json

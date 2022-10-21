@@ -1,6 +1,5 @@
-import { Prisma } from "@prisma/client";
 import express from "express";
-import { body, check, validationResult } from "express-validator";
+import { check, validationResult } from "express-validator";
 import { firebaseAdmin, prisma } from "../config";
 
 /**
