@@ -22,8 +22,6 @@ const corsOptions: CorsOptions = {
           // (like mobile apps or curl requests)
           if (!origin) return callback(null, true);
 
-          console.log(origin);
-
           if (allowedOrigins.indexOf(origin) === -1) {
             return callback(
               new Error(
