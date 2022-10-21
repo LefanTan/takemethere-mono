@@ -28,8 +28,9 @@ RUN apt-get install -y openssl
 
 WORKDIR /app
 
-ENV PORT 5080
-ENV DATABASE_URL ${DATABASE_URL}
+ENV PORT ${PORT}
+ENV DATABASE_URL ${_DATABASE_URL}
+
 ARG NODE_ENV="production"
 
 COPY package.json package-lock.json ./
