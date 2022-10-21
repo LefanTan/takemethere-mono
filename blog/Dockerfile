@@ -1,5 +1,5 @@
-# Production Build
-# Google Cloud Run will inject a $PORT env variable which will be consumed by Astro during build. Ex. ENV PORT 8080
+# Production runtime
+# Google Cloud Run will inject a $PORT env variable which will be consumed by Astro during runtime. Ex. ENV PORT 8080
 
 FROM node:alpine3.16 as node
 FROM node as builder
