@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
     meta: { requireAuth: true },
     children: [
       {
-        path: "/",
+        path: "",
         name: "home",
         component: () => import("@components/pages/HomePage.vue"),
       },
@@ -37,6 +37,18 @@ const routes: RouteRecordRaw[] = [
     path: "/login",
     component: () => import("@layouts/LoginLayout.vue"),
     meta: { unauthenticatedOnly: true },
+    children: [
+      {
+        path: "",
+        name: "login",
+        component: () => import("@components/pages/auth/LoginPage.vue"),
+      },
+      {
+        path: "/signup",
+        name: "signup",
+        component: () => import("@components/pages/auth/SignUpPage.vue"),
+      },
+    ],
   },
 ];
 

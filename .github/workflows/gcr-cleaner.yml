@@ -23,5 +23,5 @@ jobs:
       - uses: "docker://us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli"
         with:
           args: >-
-            -repo=us.gcr.io/takemethere-365622/takemethere-mono/blog
+            -repo=gcr.io/takemethere-365622/takemethere-mono/blog
             -grace=24h
