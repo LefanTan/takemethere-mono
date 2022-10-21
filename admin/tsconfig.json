@@ -22,7 +22,8 @@
       "@styles/*": ["src/styles/*"],
       "@models/*": ["src/models/*"],
       "@stores/*": ["src/stores/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@common/*": ["../common/*"]
     }
   },
   "exclude": ["/dist", ".quasar", "**/*.stories.ts"],

@@ -1,15 +1,30 @@
-import express from "express";
 import dotenv from "dotenv";
-import userRoutes from "./routes/userRoutes";
-import { initConfig } from "./config";
-
 dotenv.config();
-initConfig();
+
+import express from "express";
+import userRoutes from "./routes/userRoutes";
+import swaggerUi from "swagger-ui-express";
+import cors from "cors";
+
+const openapiSpec = require("../swagger-output.json");
 
 const app = express();
 const port = process.env.PORT || 5080;
 
+const allowedOriginList = ["*.takeme.blog"];
+
+const corsOptions = {
+  origin: process.env.NODE_ENV !== "production" ? "*" : allowedOriginList,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
 app.use("/users", userRoutes);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.listen(port, () =>
   console.log(`[server]: Server is running on port ${port}`)

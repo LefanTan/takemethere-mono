@@ -2,6 +2,7 @@
 import router from "@src/routes";
 import useStore from "@src/stores";
 import { ref } from "vue";
+import { UsersService } from "@common/webapi";
 
 const $store = useStore();
 
@@ -9,11 +10,11 @@ const signInUsername = ref("");
 const signInPassword = ref("");
 
 async function signIn() {
-  // query email based on username
-  const signInEmail = "";
-
   try {
-    await $store.app.signin(signInEmail, signInPassword.value);
+    const user = await UsersService.getUsersEmail(signInUsername.value);
+    if (!user.email) throw new Error("No email found for user");
+
+    await $store.app.signin(user.email, signInPassword.value);
     router.push("/");
   } catch (e) {
     console.error(e);

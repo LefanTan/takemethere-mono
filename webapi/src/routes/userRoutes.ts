@@ -8,6 +8,14 @@ import { prisma } from "../config";
 const userRoutes = express.Router();
 
 userRoutes.get("/email/:username", async (req, res) => {
+  // #swagger.tags = ['Users']
+  /* #swagger.responses[200] = {
+      description: 'Some description...',
+      schema: {
+         email: 'lefan@gmail.com',
+      }
+    } */
+
   const username = req.params.username;
 
   const email = await prisma.user.findUnique({
