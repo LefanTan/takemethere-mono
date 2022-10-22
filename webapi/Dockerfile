@@ -12,7 +12,7 @@ COPY package.json package-lock.json tsconfig.json swagger-output.json ./
 # installs both production and dev dependencies
 RUN npm ci
 
-COPY src ./src
+COPY . /app
 RUN npm run build
 
 
@@ -34,16 +34,15 @@ COPY package.json package-lock.json ./
 # installs only production dependencies
 RUN npm ci --only=prod
 
-
-COPY /prisma ./
-# Copy build files from Build step
+COPY swagger-output.json ./
+COPY /prisma /app
+# Copy build files from Build step into /dist
 COPY --from=build /app/dist ./dist
+
 
 # Packages required to start the server
 RUN npm install pm2
 RUN npm install cross-env
-
-USER node
 
 EXPOSE 5080
 
