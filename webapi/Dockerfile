@@ -39,7 +39,6 @@ COPY /prisma /app
 # Copy build files from Build step into /dist
 COPY --from=build /app/dist ./dist
 
-
 # Packages required to start the server
 RUN npm install pm2
 RUN npm install cross-env
