@@ -16,6 +16,7 @@ TODO: Automate this step into a cloud run with [pub/sub](https://cloud.google.co
 
 1. Update your .env's `DATABASE_URL` to have the cloud sql url
 2. Run `npm run apply-migration`
+3. Update your .env's `DATABASE_URL` back to the local one!
 
 Link: https://api.takeme.blog
 
