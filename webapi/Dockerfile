@@ -32,8 +32,6 @@ RUN apt-get update
 # Open SSL required for Prisma
 RUN apt-get install -y openssl
 
-ARG NODE_ENV="production"
-
 COPY package.json package-lock.json ./
 # installs only production dependencies
 RUN npm ci --only=prod
