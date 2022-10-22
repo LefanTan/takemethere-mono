@@ -1,6 +1,7 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
 import { firebaseAdmin, prisma } from "../config";
+import authenticateJWT from "../middlewares/auth";
 
 /**
  * Everything that relates to User
@@ -57,7 +58,6 @@ userRoutes.post(
         id: 'adfn123nasdfnj1j129',
         email: 'lefan@gmail.com',
         username: 'lefan',
-        homePageId: '123'
       }
     } */
 
@@ -104,8 +104,8 @@ userRoutes.post(
           id: userRecord.uid,
           username,
           email,
-          // Create a new Home Page for the user
-          homePage: {
+          // Create a new Page for the user
+          page: {
             create: {},
           },
         },
@@ -117,5 +117,27 @@ userRoutes.post(
     }
   }
 );
+
+userRoutes.get("/user/:uid/allLinks", authenticateJWT, async (res, req) => {
+  // #swagger.summary = 'Grab all the links and blogs created by user, sorted by updatedAt'
+  // #swagger.tags = ['Users']
+  /* #swagger.parameters['body'] = {
+            in: 'body',
+            schema: {
+                $username: 'lefanTan',
+                $email: 'lefantan@lol.com',
+                password: 'veryNicePassword'
+            }
+        } */
+  /* #swagger.responses[200] = {
+      description: 'Returns a list of PageEntry',
+      schema: {
+        id: 'adfn123nasdfnj1j129',
+        email: 'lefan@gmail.com',
+        username: 'lefan',
+        homePageId: '123'
+      }
+    } */
+});
 
 export default userRoutes;
