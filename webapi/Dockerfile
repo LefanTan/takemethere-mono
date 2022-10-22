@@ -24,7 +24,6 @@ RUN npm run build
 
 FROM node:16-slim as final
 
-ENV PORT ${PORT}
 ENV DATABASE_URL ${_DATABASE_URL}
 
 WORKDIR /app
@@ -39,8 +38,8 @@ COPY package.json package-lock.json ./
 # installs only production dependencies
 RUN npm ci --only=prod
 
-# Copy build files from Build step
 COPY /prisma ./
+# Copy build files from Build step
 COPY --from=build /app/dist ./dist
 USER node
 
