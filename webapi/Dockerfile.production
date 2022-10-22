@@ -42,7 +42,6 @@ RUN npm run apply-migration
 COPY --from=build /app/dist ./dist
 USER node
 
-ENV PORT 5080
-ENV DATABASE_URL ${DATABASE_URL}
+ENV DATABASE_URL ${_DATABASE_URL}
 
 CMD ["npm", "run", "start"]
