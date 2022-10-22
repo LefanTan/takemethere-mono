@@ -11,6 +11,12 @@ Test your `Dockerfile` before deploying!
 1. ` docker build -t test-webapi .` to build the image
 2. `docker run --rm --env DATABASE_URL=postgresql://admin:root@localhost:5432/postgres?schema=public --env PORT=5080 --env GOOGLE_APPLICATION_CREDENTIALS=google-service-account.json -p 5080:5080 test-webapi` to run the container
 
+**Run migrations on the cloud**
+TODO: Automate this step into a cloud run with [pub/sub](https://cloud.google.com/build/docs/subscribe-build-notifications)
+
+1. Update your .env's `DATABASE_URL` to have the cloud sql url
+2. Run `npm run apply-migration`
+
 Link: https://api.takeme.blog
 
 ## 🧞 Commands
