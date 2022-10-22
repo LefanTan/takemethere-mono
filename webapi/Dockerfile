@@ -34,9 +34,6 @@ COPY package.json package-lock.json ./
 # installs only production dependencies
 RUN npm ci --only=prod
 
-# Packages required to start the server
-RUN npm i pm2
-RUN npm i cross-env
 
 COPY /prisma ./
 # Copy build files from Build step
@@ -44,5 +41,9 @@ COPY --from=build /app/dist ./dist
 USER node
 
 EXPOSE 5080
+
+# Packages required to start the server
+RUN npm install pm2
+RUN npm install cross-env
 
 CMD ["npm", "run", "start"]
