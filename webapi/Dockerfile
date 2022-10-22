@@ -38,12 +38,13 @@ RUN npm ci --only=prod
 COPY /prisma ./
 # Copy build files from Build step
 COPY --from=build /app/dist ./dist
-USER node
-
-EXPOSE 5080
 
 # Packages required to start the server
 RUN npm install pm2
 RUN npm install cross-env
+
+USER node
+
+EXPOSE 5080
 
 CMD ["npm", "run", "start"]
