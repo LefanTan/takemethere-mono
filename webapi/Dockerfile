@@ -23,7 +23,6 @@ RUN npm run build
 FROM node:16-slim as final
 
 ENV DATABASE_URL ${_DATABASE_URL}
-ENV PORT ${PORT}
 
 WORKDIR /app
 
@@ -34,6 +33,10 @@ RUN apt-get install -y openssl
 COPY package.json package-lock.json ./
 # installs only production dependencies
 RUN npm ci --only=prod
+
+# Packages required to start the server
+RUN npm i pm2
+RUN npm i cross-env
 
 COPY /prisma ./
 # Copy build files from Build step
