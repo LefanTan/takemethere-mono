@@ -5,8 +5,6 @@
 ###############
 
 FROM node:16-alpine AS build
-ENV PORT ${PORT}
-ENV DATABASE_URL ${_DATABASE_URL}
 
 WORKDIR /app
 
@@ -25,6 +23,7 @@ RUN npm run build
 FROM node:16-slim as final
 
 ENV DATABASE_URL ${_DATABASE_URL}
+ENV PORT ${PORT}
 
 WORKDIR /app
 
@@ -40,5 +39,7 @@ COPY /prisma ./
 # Copy build files from Build step
 COPY --from=build /app/dist ./dist
 USER node
+
+EXPOSE 5080
 
 CMD ["npm", "run", "start"]

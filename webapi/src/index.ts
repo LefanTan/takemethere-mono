@@ -9,7 +9,7 @@ import cors, { CorsOptions } from "cors";
 const openapiSpec = require("../swagger-output.json");
 
 const app = express();
-const port = 5080;
+const port = process.env.PORT || 5080;
 
 const allowedOrigins = ["https://takeme.blog"];
 
