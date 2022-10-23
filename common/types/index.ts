@@ -13,13 +13,13 @@ export type User = {
     username: string,
     email: string,
     plan?: PLAN,
+    pageId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
 
 export type Page = {
     id?: string,
-    userId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }

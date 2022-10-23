@@ -17,7 +17,8 @@ model User {
   email    String @unique
   plan     PLAN   @default(FREE)
 
-  page Page[]
+  page   Page   @relation(fields: [pageId], references: [id])
+  pageId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -25,14 +26,13 @@ model User {
 
 model Page {
   id          String      @id @default(uuid())
-  user        User?       @relation(fields: [userId], references: [id])
-  userId      String
   // Decide how the sections and links are categorized within the page
   // pageStructure Json
   pageEntries PageEntry[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  User      User[]
 }
 
 model PageEntry {

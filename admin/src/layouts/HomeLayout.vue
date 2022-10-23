@@ -1,17 +1,41 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import IconButton from "@src/components/buttons/IconButton.vue";
 import MainPage from "./MainPageLayout.vue";
 import useStore from "@src/stores";
+import router from "@routes/index";
+import { useQuasar } from "quasar";
 
+const $q = useQuasar();
 const $store = useStore();
-const showDrawer = ref(true);
+
+const isMobile = computed(() => $q.screen.width < 1023);
+
+const showLeftDrawer = ref(!isMobile.value);
+const showRightDrawer = ref(!isMobile.value);
+
+const navLinks = [
+  {
+    text: "Home",
+    to: "/",
+  },
+  {
+    text: "Appearance",
+    to: "/appearance",
+  },
+  {
+    text: "Settings",
+    to: "/settings",
+  },
+];
+
+const currentRoutePath = computed(() => router.currentRoute.value.path);
 </script>
 
 <template>
   <q-layout view="lhr lpr lfr">
     <q-drawer
-      v-model="showDrawer"
+      v-model="showLeftDrawer"
       side="left"
       :width="75"
       class="p-3 flex flex-col"
@@ -61,12 +85,23 @@ const showDrawer = ref(true);
         @click="$store.app.logout()"
       />
     </q-drawer>
-    <q-drawer :model-value="true" side="right" :width="300" bordered>
+    <q-drawer v-model="showRightDrawer" side="right" :width="400" bordered>
       Iframe
     </q-drawer>
 
-    <q-page-container>
-      <main-page />
+    <q-page-container class="flex flex-col min-h-0 max-h-screen flex-nowrap">
+      <nav class="border-b border-gray-200 px-3 py-2">
+        <router-link
+          v-for="link in navLinks"
+          :to="link.to"
+          class="inline-block text-lg font-medium transition-all py-2 px-3 h-full hover:bg-gray-50 rounded-lg"
+          :class="{ 'text-gray-400': currentRoutePath !== link.to }"
+          >{{ link.text }}</router-link
+        >
+      </nav>
+      <q-page class="overflow-auto flex-1" style="min-height: 0px">
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>

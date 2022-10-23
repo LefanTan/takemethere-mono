@@ -106,10 +106,6 @@
                 "username": {
                   "type": "string",
                   "example": "lefan"
-                },
-                "homePageId": {
-                  "type": "string",
-                  "example": "123"
                 }
               },
               "xml": {
@@ -119,6 +115,24 @@
           },
           "400": {
             "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/allEntries": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Grab all the page entries created by user, sorted by updatedAt",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns a list of PageEntry"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }

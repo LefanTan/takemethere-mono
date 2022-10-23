@@ -15,7 +15,7 @@ export default function setupAuthenticationNavguard(router: Router) {
     await new Promise((resolve, _) => {
       auth.onAuthStateChanged((user) => {
         if (user) {
-          $store.app.user = user;
+          $store.app.setUser(user);
         }
         resolve(0);
       });

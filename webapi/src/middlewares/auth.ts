@@ -23,7 +23,7 @@ async function authenticateJWT(
     try {
       const { uid } = await firebaseAdmin.auth().verifyIdToken(token);
       req.uid = uid;
-      next();
+      return next();
     } catch (err) {
       return res.sendStatus(403);
     }

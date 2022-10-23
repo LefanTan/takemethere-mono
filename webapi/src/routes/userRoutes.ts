@@ -1,5 +1,6 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
+import { AuthorizedRequest } from "src/types/request";
 import { firebaseAdmin, prisma } from "../config";
 import authenticateJWT from "../middlewares/auth";
 
@@ -120,26 +121,46 @@ userRoutes.post(
   }
 );
 
-userRoutes.get("/user/:uid/allLinks", authenticateJWT, async (res, req) => {
-  // #swagger.summary = 'Grab all the links and blogs created by user, sorted by updatedAt'
-  // #swagger.tags = ['Users']
-  /* #swagger.parameters['body'] = {
-            in: 'body',
-            schema: {
-                $username: 'lefanTan',
-                $email: 'lefantan@lol.com',
-                password: 'veryNicePassword'
-            }
-        } */
-  /* #swagger.responses[200] = {
+userRoutes.get(
+  "/allEntries",
+  authenticateJWT,
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Grab all the page entries created by user, sorted by updatedAt'
+    // #swagger.tags = ['Users']
+    /* #swagger.responses[200] = {
       description: 'Returns a list of PageEntry',
-      schema: {
-        id: 'adfn123nasdfnj1j129',
-        email: 'lefan@gmail.com',
-        username: 'lefan',
-        homePageId: '123'
-      }
     } */
-});
+
+    const uid = req.uid;
+
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: uid,
+        },
+        include: {
+          page: true,
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const pageEntries = await prisma.pageEntry.findMany({
+        where: {
+          pageId: user.pageId,
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+      });
+
+      return res.json(pageEntries);
+    } catch (error) {
+      return res.status(400).json({ error });
+    }
+  }
+);
 
 export default userRoutes;

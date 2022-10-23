@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nb-tsc-watch",
+      "type": "typescript",
+      "tsconfig": "backend/src/tsconfig.json",
+      "option": "watch",
+      "problemMatcher": ["$tsc-watch"]
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "webapi",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build - webapi",
+      "detail": "esbuild ./src/index.ts --platform=node --bundle --outfile=./dist/index.js --external:./node_modules/*"
+    }
+  ]
+}

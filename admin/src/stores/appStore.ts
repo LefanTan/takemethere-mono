@@ -1,13 +1,8 @@
 import { auth } from "@src/lib/firebase";
 import router from "@src/routes";
-import { UsersService } from "@common/webapi";
+import { OpenAPI, UsersService } from "@common/webapi";
 
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  User,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, User } from "firebase/auth";
 import { defineStore } from "pinia";
 
 type AppState = {
@@ -24,6 +19,15 @@ const useAppStore = defineStore("appStore", {
   state: (): AppState => ({}),
   getters: {},
   actions: {
+    /**
+     * Set the current user of the global store
+     * @param user
+     */
+    async setUser(user: User) {
+      this.user = user;
+      OpenAPI.TOKEN = await user.getIdToken();
+    },
+
     /**
      * Sign up using Firebase Authenticated
      * @param username
@@ -55,7 +59,7 @@ const useAppStore = defineStore("appStore", {
         password
       );
 
-      if (response) this.user = response.user;
+      if (response) this.setUser(response.user);
       else throw new Error("Signin failed");
 
       console.log("Login Success!");
@@ -69,6 +73,8 @@ const useAppStore = defineStore("appStore", {
       await signOut(auth);
 
       this.user = undefined;
+      OpenAPI.TOKEN = undefined;
+
       router.replace("/login");
     },
   },

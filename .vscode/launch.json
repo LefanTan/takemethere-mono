@@ -1,0 +1,23 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/webapi/**",
+        "!**/node_modules/**"
+      ],
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "localRoot": "${workspaceFolder}/webapi/",
+      "preLaunchTask": "npm: build - webapi",
+      "name": "Launch Webapi",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/webapi/src/index.ts",
+      "outFiles": ["${workspaceFolder}/webapi/dist/**/*.js"]
+    }
+  ]
+}

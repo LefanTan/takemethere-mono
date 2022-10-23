@@ -46,7 +46,6 @@ export class UsersService {
         id?: string;
         email?: string;
         username?: string;
-        homePageId?: string;
     }> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -54,6 +53,21 @@ export class UsersService {
             body: body,
             errors: {
                 400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
+     * Grab all the page entries created by user, sorted by updatedAt
+     * @returns any Returns a list of PageEntry
+     * @throws ApiError
+     */
+    public static getUsersAllEntries(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/allEntries',
+            errors: {
+                404: `Not Found`,
             },
         });
     }
