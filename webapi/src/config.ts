@@ -6,9 +6,7 @@ import { isProduction } from "./helpers/misc";
 /**
  * Initialize admin
  */
-const firebaseAdmin = isProduction()
-  ? admin.initializeApp()
-  : admin.initializeApp({ credential: applicationDefault() });
+const firebaseAdmin = admin.initializeApp();
 
 /**
  * Instantiate the PrismaClient. Only one instance should be created
