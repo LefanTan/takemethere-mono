@@ -18,26 +18,28 @@ RUN npm ci
 
 COPY . /app
 
-RUN npx prisma generate
 RUN npm run build
 
 ###############
 # final stage #
 ###############
 
-FROM node:16-alpine as final
+# FROM node:16-slim as final
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY package.json package-lock.json ./
-# installs only production dependencies
-RUN npm ci --only=prod
+# # :EYE: google-service-account is sus, temporarily only
+# COPY package.json package-lock.json google-service-account.json ./
+# # installs only production dependencies
+# RUN npm ci
 
-COPY swagger-output.json ./
-COPY /prisma /app
+# COPY swagger-output.json ./
+# COPY /prisma /app
 
-# Copy build files from Build step into /dist
-COPY --from=build /app/dist ./dist
+# # Copy build files from Build step into /dist
+# COPY --from=build /app/dist ./dist
+# # COPY --from=build /app/node_modules/@prisma/client ./node_modules/@prisma/client
+# # COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
 
 EXPOSE 5080
 

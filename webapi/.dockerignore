@@ -3,4 +3,5 @@
 node_modules/
 dist/
 data/
-google-service-account.json
+.env
+# google-service-account.json
