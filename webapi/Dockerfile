@@ -4,11 +4,7 @@
 # build stage #
 ###############
 
-FROM node:16-slim AS build
-
-RUN apt-get update
-# Open SSL required for Prisma
-RUN apt-get install -y openssl
+FROM node:16-alpine AS build
 
 WORKDIR /app
 
@@ -24,22 +20,28 @@ RUN npm run build
 # final stage #
 ###############
 
-# FROM node:16-slim as final
+FROM node:16-slim as final
 
-# WORKDIR /app
+RUN apt-get update
+# Open SSL required for Prisma
+RUN apt-get install -y openssl
 
-# # :EYE: google-service-account is sus, temporarily only
-# COPY package.json package-lock.json google-service-account.json ./
-# # installs only production dependencies
-# RUN npm ci
+# _DATABASE_URL provided by Cloud Build
+ENV DATABASE_URL ${_DATABASE_URL}
 
-# COPY swagger-output.json ./
-# COPY /prisma /app
+WORKDIR /app
 
-# # Copy build files from Build step into /dist
-# COPY --from=build /app/dist ./dist
-# # COPY --from=build /app/node_modules/@prisma/client ./node_modules/@prisma/client
-# # COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
+# :EYE: google-service-account is sus, temporarily only
+COPY package.json package-lock.json google-service-account.json ./
+# installs only production dependencies
+RUN npm ci --only=prod
+
+COPY swagger-output.json ./
+COPY /prisma /app
+
+# Copy build files from Build step into /dist
+COPY --from=build /app/dist ./dist
+RUN npx prisma generate
 
 EXPOSE 5080
 
