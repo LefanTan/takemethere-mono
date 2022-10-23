@@ -104,5 +104,5 @@
     "paths": {
       "@prisma-client/*": ["prisma/client/*"]
     }
-  },
+  }
 }

@@ -18,19 +18,21 @@ userRoutes.get("/email/:username", async (req, res) => {
       }
     } */
 
-  const username = req.params.username;
-
-  const email = await prisma.user
-    .findUniqueOrThrow({
+  try {
+    const username = req.params.username;
+    const email = await prisma.user.findUniqueOrThrow({
       where: {
         username,
       },
       select: {
         email: true,
       },
-    })
-    .catch((reason) => res.status(404).json({ message: "Username not found" }));
-  res.json(email);
+    });
+
+    return res.json(email);
+  } catch (error) {
+    return res.status(404).json({ message: "Username not found", error });
+  }
 });
 
 userRoutes.post(
