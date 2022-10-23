@@ -26,13 +26,17 @@ RUN apt-get update
 # Open SSL required for Prisma
 RUN apt-get install -y openssl
 
-# _DATABASE_URL provided by Cloud Build
-ENV DATABASE_URL ${_DATABASE_URL}
+# _DATABASE_URL provided by Cloud Build 
+# ENV DATABASE_URL ${_DATABASE_URL}
 
 WORKDIR /app
 
 # :EYE: google-service-account is sus, temporarily only
-COPY package.json package-lock.json google-service-account.json ./
+COPY package.json package-lock.json ./
+
+# Only during development
+# COPY google-service-account.json ./
+
 # installs only production dependencies
 RUN npm ci --only=prod
 
