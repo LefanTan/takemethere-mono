@@ -27,8 +27,6 @@ RUN npm run build
 
 FROM node:16-alpine as final
 
-ENV DATABASE_URL ${_DATABASE_URL}
-
 WORKDIR /app
 
 COPY package.json package-lock.json ./

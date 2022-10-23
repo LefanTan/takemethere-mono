@@ -101,8 +101,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "allowJs": true,
     "baseUrl": ".",
-    "paths": {
-      "@prisma-client/*": ["prisma/client/*"]
-    }
+    "paths": {}
   }
 }

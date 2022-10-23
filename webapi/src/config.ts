@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma-client/index";
+import { PrismaClient } from "@prisma/client";
 import * as admin from "firebase-admin";
 import { applicationDefault } from "firebase-admin/app";
-import { isProduction } from "./helpers/misc";
 
 /**
  * Initialize admin
