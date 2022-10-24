@@ -13,3 +13,5 @@ google-service-account.json
 
 # Firebase stuff
 firebase-debug.log
+
+.DS_Store

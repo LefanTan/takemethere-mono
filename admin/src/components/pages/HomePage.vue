@@ -32,10 +32,10 @@ watchDebounced(
 
     // Update pageEntries if pageEntries have changed
     if (!isEquals(page.value.pageEntries, oldPage.pageEntries)) {
-      const newPage = await PagesService.putPagePageEntries({
+      const result = await PagesService.putPagePageEntries({
         pageEntries: page.value.pageEntries,
       });
-      console.log(newPage);
+      console.log(result);
     } else oldPage = deepCopy(page.value);
   },
   { deep: true, debounce: 500 }
@@ -127,7 +127,8 @@ function deleteEntry(entryId: string) {
             <q-input
               label="Rating"
               type="number"
-              v-model="entry.blog!.rating"
+              :model-value="entry.blog!.rating"
+              @update:model-value="(val: any) => entry.blog!.rating = parseFloat(val)"
             />
             <q-input label="External Link" v-model="entry.blog!.externalLink" />
           </q-card-section>
