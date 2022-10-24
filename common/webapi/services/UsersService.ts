@@ -57,19 +57,4 @@ export class UsersService {
         });
     }
 
-    /**
-     * Grab all the page entries created by user, sorted by updatedAt
-     * @returns any Returns a list of PageEntry
-     * @throws ApiError
-     */
-    public static getUsersAllEntries(): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/allEntries',
-            errors: {
-                404: `Not Found`,
-            },
-        });
-    }
-
 }

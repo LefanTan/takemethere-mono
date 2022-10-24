@@ -21,7 +21,11 @@ const pinia = createPinia();
 
 app.use(Quasar, {
   plugins: { Dialog: Dialog, Notify: Notify, LoadingBar: LoadingBar }, // import Quasar plugins and add here
-
+  config: {
+    loadingBar: {
+      size: "6px",
+    },
+  },
   build: {
     publicPath: "/admin/",
   },

@@ -101,6 +101,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "allowJs": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@common/*": ["../common/*"]
+    }
   }
 }

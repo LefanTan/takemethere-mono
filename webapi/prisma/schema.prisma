@@ -17,8 +17,7 @@ model User {
   email    String @unique
   plan     PLAN   @default(FREE)
 
-  page   Page   @relation(fields: [pageId], references: [id])
-  pageId String
+  page Page?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -30,22 +29,21 @@ model Page {
   // pageStructure Json
   pageEntries PageEntry[]
 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  User      User[]
 }
 
 model PageEntry {
   id String @id @default(uuid())
 
-  linkId String?
-  blogId String?
+  link Link?
+  blog Blog?
 
-  link Link? @relation(fields: [linkId], references: [id])
-  blog Blog? @relation(fields: [blogId], references: [id])
-
-  Page   Page?   @relation(fields: [pageId], references: [id])
-  pageId String?
+  page   Page?  @relation(fields: [pageId], references: [id])
+  pageId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -56,12 +54,12 @@ model Link {
   displayText String
   link        String
 
-  pageEntry PageEntry[]
+  pageEntryId String    @unique
+  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id])
 
   // Google Storage url
-  mediaUrl         String?
-  entryAnalyticsId String          @unique
-  entryAnalytics   EntryAnalytics? @relation(fields: [entryAnalyticsId], references: [id])
+  mediaUrl       String?
+  entryAnalytics EntryAnalytics?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -74,14 +72,12 @@ model Blog {
   location     String?
   externalLink String?
 
-  pageEntry PageEntry[]
-
-  entryAnalyticsId String          @unique
-  entryAnalytics   EntryAnalytics? @relation(fields: [entryAnalyticsId], references: [id])
+  pageEntryId String    @unique
+  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id])
 
   // Google Storage url
   mediaUrl       String?
-  lifetimeClicks Int     @default(0)
+  entryAnalytics EntryAnalytics?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -92,8 +88,11 @@ model EntryAnalytics {
   id             String @id @default(uuid())
   lifetimeClicks Int    @default(0)
 
-  blog Blog?
-  link Link?
+  blog   Blog?  @relation(fields: [blogId], references: [id])
+  blogId String @unique
+
+  link   Link?  @relation(fields: [linkId], references: [id])
+  linkId String @unique
 }
 
 enum PLAN {

@@ -79,6 +79,9 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Page_userId_key" ON "Page"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Link_entryAnalyticsId_key" ON "Link"("entryAnalyticsId");
 
 -- CreateIndex

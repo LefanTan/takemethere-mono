@@ -1,8 +1,6 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
-import { AuthorizedRequest } from "src/types/request";
 import { firebaseAdmin, prisma } from "../config";
-import authenticateJWT from "../middlewares/auth";
 
 /**
  * Everything that relates to User
@@ -10,6 +8,9 @@ import authenticateJWT from "../middlewares/auth";
 
 const userRoutes = express.Router();
 
+/**
+ * Retrieve email based on a given username
+ */
 userRoutes.get("/email/:username", async (req, res) => {
   // #swagger.summary = 'Retrieve email based on a given username'
   // #swagger.tags = ['Users']
@@ -36,6 +37,9 @@ userRoutes.get("/email/:username", async (req, res) => {
   }
 });
 
+/**
+ * Create a new user. Returns 404 if user already exists
+ */
 userRoutes.post(
   "/create",
 
@@ -117,48 +121,6 @@ userRoutes.post(
       return res.json(user);
     } catch (error) {
       return res.status(400).json({ message: "Error creating user", error });
-    }
-  }
-);
-
-userRoutes.get(
-  "/allEntries",
-  authenticateJWT,
-  async (req: AuthorizedRequest, res) => {
-    // #swagger.summary = 'Grab all the page entries created by user, sorted by updatedAt'
-    // #swagger.tags = ['Users']
-    /* #swagger.responses[200] = {
-      description: 'Returns a list of PageEntry',
-    } */
-
-    const uid = req.uid;
-
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          id: uid,
-        },
-        include: {
-          page: true,
-        },
-      });
-
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      const pageEntries = await prisma.pageEntry.findMany({
-        where: {
-          pageId: user.pageId,
-        },
-        orderBy: {
-          updatedAt: "desc",
-        },
-      });
-
-      return res.json(pageEntries);
-    } catch (error) {
-      return res.status(400).json({ error });
     }
   }
 );

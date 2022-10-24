@@ -5,6 +5,7 @@ import express from "express";
 import userRoutes from "./routes/userRoutes";
 import swaggerUi from "swagger-ui-express";
 import cors, { CorsOptions } from "cors";
+import pageRoutes from "./routes/pageRoutes";
 
 const openapiSpec = require("../swagger-output.json");
 
@@ -46,6 +47,7 @@ app.use(
 ); // Support application/x-www-form-urlencoded
 
 app.use("/users", userRoutes);
+app.use("/page", pageRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.listen(port, () =>

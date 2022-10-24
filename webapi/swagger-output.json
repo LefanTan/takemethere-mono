@@ -119,20 +119,57 @@
         }
       }
     },
-    "/users/allEntries": {
+    "/page/": {
       "get": {
         "tags": [
-          "Users"
+          "Pages"
         ],
-        "summary": "Grab all the page entries created by user, sorted by updatedAt",
+        "summary": "Grab the authenticated user",
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Returns a list of PageEntry"
+            "description": "Returns a user"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/page/pageEntries": {
+      "put": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Update the authenticated user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated page"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }

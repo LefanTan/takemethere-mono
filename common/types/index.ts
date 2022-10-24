@@ -13,22 +13,20 @@ export type User = {
     username: string,
     email: string,
     plan?: PLAN,
-    pageId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
 
 export type Page = {
     id?: string,
+    userId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
 
 export type PageEntry = {
     id?: string,
-    linkId?: string | null,
-    blogId?: string | null,
-    pageId?: string | null,
+    pageId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
@@ -37,8 +35,8 @@ export type Link = {
     id?: string,
     displayText: string,
     link: string,
+    pageEntryId: string,
     mediaUrl?: string | null,
-    entryAnalyticsId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
@@ -49,9 +47,8 @@ export type Blog = {
     rating?: number | null,
     location?: string | null,
     externalLink?: string | null,
-    entryAnalyticsId: string,
+    pageEntryId: string,
     mediaUrl?: string | null,
-    lifetimeClicks?: number,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
@@ -59,4 +56,6 @@ export type Blog = {
 export type EntryAnalytics = {
     id?: string,
     lifetimeClicks?: number,
+    blogId: string,
+    linkId: string,
 }

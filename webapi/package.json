@@ -12,7 +12,7 @@
     "migrate": "npx prisma migrate dev && npm run generate",
     "apply-migration": "npx prisma migrate deploy",
     "codegen": "node ./src/swagger.js && openapi --input ./swagger-output.json --output ../common/webapi/",
-    "generate": "npx prisma generate && npx @kalissaac/prisma-typegen ../common/types ./prisma/schema.prisma --useType --generateInsertionTypes"
+    "generate": "npx prisma generate && npx @kalissaac/prisma-typegen ../common/types ./prisma/schema.prisma --useType --generateInsertionTypes && npm run codegen"
   },
   "author": "",
   "license": "ISC",
