@@ -38,7 +38,7 @@ watchDebounced(
       console.log(newPage);
     } else oldPage = deepCopy(page.value);
   },
-  { deep: true, debounce: 100 }
+  { deep: true, debounce: 500 }
 );
 
 async function addEntry(type: "Link" | "Blog") {
@@ -74,11 +74,11 @@ async function addEntry(type: "Link" | "Blog") {
     });
   }
 
-  // Sort by updatedAt, descending order
+  // Sort by createdAt, descending order
   page.value.pageEntries.sort((a, b) => {
     if (!a.createdAt || !b.createdAt) return 0;
 
-    if (a.createdAt > b.createdAt) return -1;
+    if (new Date(a.createdAt) > new Date(b.createdAt)) return -1;
     return 1;
   });
 }

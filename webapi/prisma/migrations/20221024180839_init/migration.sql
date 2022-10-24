@@ -26,9 +26,7 @@ CREATE TABLE "Page" (
 -- CreateTable
 CREATE TABLE "PageEntry" (
     "id" TEXT NOT NULL,
-    "linkId" TEXT,
-    "blogId" TEXT,
-    "pageId" TEXT,
+    "pageId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -40,8 +38,8 @@ CREATE TABLE "Link" (
     "id" TEXT NOT NULL,
     "displayText" TEXT NOT NULL,
     "link" TEXT NOT NULL,
+    "pageEntryId" TEXT NOT NULL,
     "mediaUrl" TEXT,
-    "entryAnalyticsId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -55,9 +53,8 @@ CREATE TABLE "Blog" (
     "rating" DOUBLE PRECISION,
     "location" TEXT,
     "externalLink" TEXT,
-    "entryAnalyticsId" TEXT NOT NULL,
+    "pageEntryId" TEXT NOT NULL,
     "mediaUrl" TEXT,
-    "lifetimeClicks" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -68,6 +65,8 @@ CREATE TABLE "Blog" (
 CREATE TABLE "EntryAnalytics" (
     "id" TEXT NOT NULL,
     "lifetimeClicks" INTEGER NOT NULL DEFAULT 0,
+    "blogId" TEXT NOT NULL,
+    "linkId" TEXT NOT NULL,
 
     CONSTRAINT "EntryAnalytics_pkey" PRIMARY KEY ("id")
 );
@@ -82,25 +81,31 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Page_userId_key" ON "Page"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Link_entryAnalyticsId_key" ON "Link"("entryAnalyticsId");
+CREATE UNIQUE INDEX "Link_pageEntryId_key" ON "Link"("pageEntryId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Blog_entryAnalyticsId_key" ON "Blog"("entryAnalyticsId");
+CREATE UNIQUE INDEX "Blog_pageEntryId_key" ON "Blog"("pageEntryId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EntryAnalytics_blogId_key" ON "EntryAnalytics"("blogId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EntryAnalytics_linkId_key" ON "EntryAnalytics"("linkId");
 
 -- AddForeignKey
-ALTER TABLE "Page" ADD CONSTRAINT "Page_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Page" ADD CONSTRAINT "Page_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PageEntry" ADD CONSTRAINT "PageEntry_linkId_fkey" FOREIGN KEY ("linkId") REFERENCES "Link"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "PageEntry" ADD CONSTRAINT "PageEntry_pageId_fkey" FOREIGN KEY ("pageId") REFERENCES "Page"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PageEntry" ADD CONSTRAINT "PageEntry_blogId_fkey" FOREIGN KEY ("blogId") REFERENCES "Blog"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Link" ADD CONSTRAINT "Link_pageEntryId_fkey" FOREIGN KEY ("pageEntryId") REFERENCES "PageEntry"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PageEntry" ADD CONSTRAINT "PageEntry_pageId_fkey" FOREIGN KEY ("pageId") REFERENCES "Page"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Blog" ADD CONSTRAINT "Blog_pageEntryId_fkey" FOREIGN KEY ("pageEntryId") REFERENCES "PageEntry"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Link" ADD CONSTRAINT "Link_entryAnalyticsId_fkey" FOREIGN KEY ("entryAnalyticsId") REFERENCES "EntryAnalytics"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EntryAnalytics" ADD CONSTRAINT "EntryAnalytics_blogId_fkey" FOREIGN KEY ("blogId") REFERENCES "Blog"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Blog" ADD CONSTRAINT "Blog_entryAnalyticsId_fkey" FOREIGN KEY ("entryAnalyticsId") REFERENCES "EntryAnalytics"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EntryAnalytics" ADD CONSTRAINT "EntryAnalytics_linkId_fkey" FOREIGN KEY ("linkId") REFERENCES "Link"("id") ON DELETE CASCADE ON UPDATE CASCADE;
