@@ -35,7 +35,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Only during development
-COPY google-service-account.json ./
+# COPY google-service-account.json ./
 
 # installs only production dependencies
 RUN npm ci --only=prod
