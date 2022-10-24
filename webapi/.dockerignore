@@ -4,4 +4,4 @@ node_modules/
 dist/
 data/
 .env
-# google-service-account.json
+google-service-account.json
