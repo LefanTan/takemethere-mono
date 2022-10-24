@@ -30,10 +30,10 @@ watchDebounced(
   async () => {
     if (!page.value) return;
 
-    // Update page if page have changed
-    if (!isEquals(page.value, oldPage)) {
+    // Update pageEntries if pageEntries have changed
+    if (!isEquals(page.value.pageEntries, oldPage.pageEntries)) {
       const newPage = await PagesService.putPagePageEntries({
-        page: page.value,
+        pageEntries: page.value.pageEntries,
       });
       console.log(newPage);
     } else oldPage = deepCopy(page.value);

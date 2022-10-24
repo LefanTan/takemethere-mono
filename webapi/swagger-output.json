@@ -154,7 +154,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "page": {
+                "pageEntries": {
                   "example": "any"
                 }
               }

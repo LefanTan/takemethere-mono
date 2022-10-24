@@ -29,7 +29,7 @@ model Page {
   // pageStructure Json
   pageEntries PageEntry[]
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
   createdAt DateTime @default(now())
@@ -42,7 +42,7 @@ model PageEntry {
   link Link?
   blog Blog?
 
-  page   Page?  @relation(fields: [pageId], references: [id])
+  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
   pageId String
 
   createdAt DateTime @default(now())
@@ -55,7 +55,7 @@ model Link {
   link        String
 
   pageEntryId String    @unique
-  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id])
+  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id], onDelete: Cascade)
 
   // Google Storage url
   mediaUrl       String?
@@ -73,7 +73,7 @@ model Blog {
   externalLink String?
 
   pageEntryId String    @unique
-  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id])
+  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id], onDelete: Cascade)
 
   // Google Storage url
   mediaUrl       String?
@@ -88,10 +88,10 @@ model EntryAnalytics {
   id             String @id @default(uuid())
   lifetimeClicks Int    @default(0)
 
-  blog   Blog?  @relation(fields: [blogId], references: [id])
+  blog   Blog?  @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId String @unique
 
-  link   Link?  @relation(fields: [linkId], references: [id])
+  link   Link?  @relation(fields: [linkId], references: [id], onDelete: Cascade)
   linkId String @unique
 }
 

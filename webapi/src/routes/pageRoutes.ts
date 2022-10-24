@@ -69,11 +69,11 @@ pageRoutes.get("/", async (req: AuthorizedRequest, res) => {
 });
 
 /**
- * Update the authenticated user's page and its entries.
+ * Update the authenticated user's page and its entries. Page Entries that aren't being passed in are considered as deleted!
  */
 pageRoutes.put(
   "/pageEntries",
-  body("page").notEmpty(),
+  body("pageEntries").notEmpty(),
   async (req: AuthorizedRequest, res) => {
     // #swagger.summary = 'Update the authenticated user's page.'
     /* #swagger.parameters['body'] = {
@@ -91,10 +91,32 @@ pageRoutes.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const pageEntries: PageEntriesWithBlogAndLink[] = req.body.page.pageEntries;
+    const pageEntries: PageEntriesWithBlogAndLink[] = req.body.pageEntries;
     if (!pageEntries) {
       return res.status(204).json({ message: "PageEntries not included" });
     }
+
+    const { pageEntries: oldPageEntries } = await prisma.page.findFirstOrThrow({
+      where: {
+        userId: req.uid,
+      },
+      select: {
+        pageEntries: true,
+      },
+    });
+
+    // Delete entries that aren't being passed in the request body
+    await Promise.all(
+      oldPageEntries
+        .filter((old) => !pageEntries.find((cur) => cur.id === old.id))
+        .map((entry) =>
+          prisma.pageEntry.delete({
+            where: {
+              id: entry.id,
+            },
+          })
+        )
+    );
 
     // Prisma upsert task that will create/update all page entries
     const entryTasks: Promise<any>[] = [];
@@ -126,6 +148,7 @@ pageRoutes.put(
     // Prisma upsert task that will create/update all link or blog links
     const linkAndBlogTasks: Promise<any>[] = [];
 
+    // Create/update all blog and link entries
     pageEntries.forEach((entry) => {
       // If link object is being passed in
       if (entry.link) {

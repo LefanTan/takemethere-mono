@@ -31,7 +31,7 @@ export class PagesService {
      */
     public static putPagePageEntries(
         body?: {
-            page?: any;
+            pageEntries?: any;
         },
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
