@@ -109,6 +109,11 @@ function deleteEntry(entryId: string) {
           <q-card-section>
             <q-input label="Display Text" v-model="entry.link!.displayText" />
             <q-input label="Link" v-model="entry.link!.link" />
+            <q-input
+              label="Photo Url"
+              type="url"
+              v-model="entry.link.mediaUrl"
+            />
           </q-card-section>
           <q-card-actions align="right">
             <q-btn
@@ -129,6 +134,11 @@ function deleteEntry(entryId: string) {
               type="number"
               :model-value="entry.blog!.rating"
               @update:model-value="(val: any) => entry.blog!.rating = parseFloat(val)"
+            />
+            <q-input
+              label="Photo Url"
+              type="url"
+              v-model="entry.blog.mediaUrl"
             />
             <q-input label="External Link" v-model="entry.blog!.externalLink" />
           </q-card-section>

@@ -46,6 +46,10 @@ app.use(
   })
 ); // Support application/x-www-form-urlencoded
 
+app.get("/", (req, res) => {
+  res.json("Welcome to TakeMe's API");
+});
+
 app.use("/users", userRoutes);
 app.use("/page", pageRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
