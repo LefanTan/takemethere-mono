@@ -11,8 +11,8 @@ WORKDIR /usr/src
 COPY . /usr/src
 
 # Install dependencies
-RUN npm ci --only=prod
 RUN npm install -g --unsafe-perm=true --allow-root sharp
+RUN npm ci --only=prod
 
 # Build app
 RUN npm run build

@@ -1,2 +1,5 @@
 @layer components {
+  .ring-black-2 {
+    @apply ring-2 ring-black;
+  }
 }

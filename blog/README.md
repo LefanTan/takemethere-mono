@@ -2,6 +2,8 @@
 
 Built using Astro, feel free to read the [documentation](https://docs.astro.build) on Astro before continuing!
 
+1. Install sharp globally with `npm install -g --unsafe-perm=true --allow-root sharp`
+
 ## Deployment
 
 Deployed using Google Cloud Run.

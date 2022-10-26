@@ -17,6 +17,8 @@ model User {
   email    String @unique
   plan     PLAN   @default(FREE)
 
+  profileMediaUrl String?
+
   page Page?
 
   createdAt DateTime @default(now())
