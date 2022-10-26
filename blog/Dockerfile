@@ -12,6 +12,7 @@ COPY . /usr/src
 
 # Install dependencies
 RUN npm ci --only=prod
+RUN npm install -g --unsafe-perm=true --allow-root sharp
 
 # Build app
 RUN npm run build
