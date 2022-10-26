@@ -18,13 +18,33 @@ export class PagesService {
             url: '/page/',
             errors: {
                 400: `Bad Request`,
-                404: `Not Found`,
             },
         });
     }
 
     /**
-     * Update the authenticated user
+     * Grab the user
+     * @param username
+     * @returns any Returns the user's page
+     * @throws ApiError
+     */
+    public static getPage1(
+        username: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/page/{username}',
+            path: {
+                'username': username,
+            },
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
+     * Update the authenticated user\'s page.
      * @param body
      * @returns any Returns the updated page
      * @throws ApiError

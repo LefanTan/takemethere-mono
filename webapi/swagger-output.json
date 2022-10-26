@@ -18,6 +18,17 @@
     "application/json"
   ],
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/users/email/{username}": {
       "get": {
         "tags": [
@@ -133,9 +144,31 @@
           },
           "400": {
             "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/page/{username}": {
+      "get": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Grab the user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user's page"
           },
-          "404": {
-            "description": "Not Found"
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -145,7 +178,7 @@
         "tags": [
           "Pages"
         ],
-        "summary": "Update the authenticated user",
+        "summary": "Update the authenticated user\\'s page.",
         "description": "",
         "parameters": [
           {

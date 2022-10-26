@@ -36,8 +36,11 @@ model Page {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
+// PageEntry represents a row in the page structure
+// A PageEntry should only be associated with either ONE of title, blog or link
 model PageEntry {
-  id String @id @default(uuid())
+  id    String  @id @default(uuid())
+  title String?
 
   link Link?
   blog Blog?

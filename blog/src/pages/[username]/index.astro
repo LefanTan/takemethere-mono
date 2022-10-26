@@ -1,0 +1,19 @@
+---
+import type { PageWithEntries } from "@common/types/client";
+import { fetchPageByUsername } from "@lib/gateway";
+
+const { username } = Astro.params;
+
+let page: PageWithEntries | undefined;
+
+try {
+  page = await fetchPageByUsername(username as string);
+} catch (error) {
+  return Astro.redirect("/404");
+}
+---
+
+<main>
+  <!-- Head -->
+  <div></div>
+</main>

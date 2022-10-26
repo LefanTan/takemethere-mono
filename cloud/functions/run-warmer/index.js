@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 /**
  * Triggered from a message on a Cloud Pub/Sub topic.
@@ -6,18 +6,16 @@ const fetch = require("node-fetch");
  * @param {!Object} event Event payload.
  * @param {!Object} context Metadata for the event.
  */
-exports.invokeGoogleRun = async (event, context) => {
-  const fetch = require("node-fetch");
+export function invokeGoogleRun(event, context) {
+  // Query webapi
+  const webApiTask = fetch("https://api.takeme.blog/");
 
-  try {
-    // Query webapi
-    await fetch("https://api.takeme.blog/");
+  // Query Blog page
+  const blogTask = fetch("https://takeme.blog/");
 
-    // Query Blog page
-    await fetch("https://takeme.blog/");
-
-    console.log("Success!");
-  } catch (err) {
-    console.error(err);
-  }
-};
+  Promise.all([webApiTask, blogTask])
+    .then(() => {
+      console.log("Success!");
+    })
+    .catch((err) => console.error(err));
+}

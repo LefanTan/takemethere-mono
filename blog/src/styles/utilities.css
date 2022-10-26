@@ -1,0 +1,5 @@
+@layer utilities {
+  .center {
+    @apply items-center justify-center;
+  }
+}

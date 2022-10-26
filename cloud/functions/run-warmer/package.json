@@ -1,6 +1,7 @@
 {
   "name": "run-warmer",
   "version": "0.0.1",
+  "type": "module",
   "dependencies": {
     "@google-cloud/pubsub": "^0.18.0",
     "node-fetch": "^3.2.10"

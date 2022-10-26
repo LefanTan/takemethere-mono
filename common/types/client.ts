@@ -1,4 +1,4 @@
-import { Blog, Link, Page, PageEntry } from "./index";
+import type { Blog, Link, Page, PageEntry } from "./index";
 
 export type PageEntriesWithBlogAndLink = PageEntry & {
   blog?: Blog | null;

@@ -16,5 +16,9 @@ export default defineConfig({
     port: command === "dev" ? 3000 : parseInt(process.env.PORT ?? 3000),
     host: "0.0.0.0",
   }),
-  integrations: [tailwind()],
+  integrations: [
+    tailwind({
+      config: { applyBaseStyles: false },
+    }),
+  ],
 });
