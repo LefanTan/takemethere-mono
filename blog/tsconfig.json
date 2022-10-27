@@ -1,5 +1,5 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -8,6 +8,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@lib/*": ["src/lib/*"],
       "@common/*": ["../common/*"]
-    }
-  }
+    },
+    "types": ["@astrojs/image/client"]
+  },
+  "include": ["**/*.ts", "**/*.astro", "**/*.tsx", "**/*.vue"]
 }

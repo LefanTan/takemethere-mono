@@ -18,6 +18,8 @@ async function loadData() {
   const loadedPage: PageWithEntries = await PagesService.getPage();
 
   page.value = loadedPage;
+  page.value.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+
   oldPage = deepCopy(page.value);
 }
 
@@ -32,20 +34,26 @@ watchDebounced(
 
     // Update pageEntries if pageEntries have changed
     if (!isEquals(page.value.pageEntries, oldPage.pageEntries)) {
+      const orderedEntries = page.value.pageEntries.map((entry, i) => ({
+        ...entry,
+        order: page.value!.pageEntries.length - i,
+      }));
+
       const result = await PagesService.putPagePageEntries({
-        pageEntries: page.value.pageEntries,
+        pageEntries: orderedEntries,
       });
-      console.log(result);
+      console.log("Saved", result);
     } else oldPage = deepCopy(page.value);
   },
   { deep: true, debounce: 500 }
 );
 
-async function addEntry(type: "Link" | "Blog") {
+async function addEntry(type: "Link" | "Blog" | "Category") {
   if (!page.value?.id) return;
 
   const newId = uuid();
   const newEntryId = uuid();
+  const newOrder = page.value.pageEntries.length + 1;
 
   if (type === "Blog") {
     page.value.pageEntries.push({
@@ -56,31 +64,31 @@ async function addEntry(type: "Link" | "Blog") {
         name: "",
         pageEntryId: newEntryId,
       },
-      link: null,
-      createdAt: new Date(),
+      order: newOrder,
     });
-  } else {
+  } else if (type === "Link") {
     page.value.pageEntries.push({
       id: newEntryId,
       pageId: page.value.id,
-      blog: null,
       link: {
         id: newId,
         displayText: "",
         link: "",
         pageEntryId: newEntryId,
       },
-      createdAt: new Date(),
+      order: newOrder,
+    });
+  } else {
+    page.value.pageEntries.push({
+      id: newEntryId,
+      pageId: page.value.id,
+      title: "",
+      order: newOrder,
     });
   }
 
   // Sort by createdAt, descending order
-  page.value.pageEntries.sort((a, b) => {
-    if (!a.createdAt || !b.createdAt) return 0;
-
-    if (new Date(a.createdAt) > new Date(b.createdAt)) return -1;
-    return 1;
-  });
+  page.value.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
 }
 
 function deleteEntry(entryId: string) {
@@ -97,6 +105,7 @@ function deleteEntry(entryId: string) {
     <div class="flex gap-2">
       <q-btn label="Add Link" @click="addEntry('Link')" />
       <q-btn label="Add Restaurant Blog" @click="addEntry('Blog')" />
+      <q-btn label="Add Category" @click="addEntry('Category')" />
     </div>
 
     <div class="flex flex-col mt-4 gap-4">
@@ -141,6 +150,19 @@ function deleteEntry(entryId: string) {
               v-model="entry.blog.mediaUrl"
             />
             <q-input label="External Link" v-model="entry.blog!.externalLink" />
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn
+              label="Delete"
+              color="secondary"
+              @click="deleteEntry(entry.id ?? '')"
+            />
+          </q-card-actions>
+        </q-card>
+
+        <q-card v-else>
+          <q-card-section>
+            <q-input label="Category Title" v-model="entry.title" />
           </q-card-section>
           <q-card-actions align="right">
             <q-btn

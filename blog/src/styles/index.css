@@ -6,6 +6,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Kumbh Sans";
+  src: url("/fonts/KumbhSans.ttf") format("truetype");
+  font-weight: 1 1000;
+}
+
 * {
   margin: 0;
   box-sizing: content-box;
@@ -14,9 +20,4 @@
 :root {
   font-family: "Kumbh Sans", sans-serif;
   font-size: 16px;
-
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }

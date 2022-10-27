@@ -13,6 +13,7 @@ export type User = {
     username: string,
     email: string,
     plan?: PLAN,
+    profileMediaUrl?: string | null,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),
 }
@@ -27,6 +28,7 @@ export type Page = {
 export type PageEntry = {
     id?: string,
     title?: string | null,
+    order?: number,
     pageId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),

@@ -14,9 +14,10 @@ export async function fetchPageByUsername(username: string) {
 
   // Usually we don't want to catch the errors here, but since Astro front matter doesn't allow
   try {
-    const page: PageWithEntries = await fetch(pagePath).then((res) =>
-      res.json()
-    );
+    const page: PageWithEntries = await fetch(pagePath).then(async (res) => {
+      if (res.status !== 200) throw new Error(await res.json());
+      return res.json();
+    });
 
     return page;
   } catch {

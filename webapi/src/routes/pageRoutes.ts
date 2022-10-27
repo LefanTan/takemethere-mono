@@ -81,6 +81,7 @@ pageRoutes.get("/:username", async (req, res) => {
 });
 
 /**
+ * TODO: Clean up this function. Add more validation to blog, entry and title
  * Update the authenticated user's page and its entries. Page Entries that aren't being passed in are considered as deleted!
  */
 pageRoutes.put(
@@ -108,6 +109,7 @@ pageRoutes.put(
     if (!pageEntries) {
       return res.status(204).json({ message: "PageEntries not included" });
     }
+
     try {
       const { pageEntries: oldPageEntries } =
         await prisma.page.findFirstOrThrow({

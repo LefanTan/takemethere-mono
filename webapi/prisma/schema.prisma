@@ -26,9 +26,9 @@ model User {
 }
 
 model Page {
-  id          String      @id @default(uuid())
+  id String @id @default(uuid())
+
   // Decide how the sections and links are categorized within the page
-  // pageStructure Json
   pageEntries PageEntry[]
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -46,6 +46,9 @@ model PageEntry {
 
   link Link?
   blog Blog?
+
+  // Highest order number starts at the top
+  order Int @default(0)
 
   page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
   pageId String
