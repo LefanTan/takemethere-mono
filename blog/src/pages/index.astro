@@ -1,13 +1,12 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const users = await fetch(
   "https://random-data-api.com/api/v2/users?size=10"
 ).then((res) => res.json());
 ---
 
-<Layout title="Welcome to Astro.">
+<BaseLayout title="Welcome to Astro.">
   <main>
     <h1>Welcome to <span class="text-gradient">TakeMe's</span> Landing Page</h1>
     <p class="instructions">
@@ -17,10 +16,10 @@ const users = await fetch(
       <a href="/test/">Go to test page</a>
     </p>
     <ul role="list" class="link-card-grid">
-      {users.map((user: any) => <Card title={user.username} />)}
+      {users.map((user: any) => <p>{user.username}</p>)}
     </ul>
   </main>
-</Layout>
+</BaseLayout>
 
 <style>
   main {

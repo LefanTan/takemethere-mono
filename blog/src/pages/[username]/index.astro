@@ -1,5 +1,8 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
+
+import Profile from "@components/Profile.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { fetchPageByUsername } from "@lib/gateway";
 
 const { username } = Astro.params;
@@ -11,25 +14,15 @@ if (!page) return Astro.redirect("/404");
 const bgColor = "#FFF";
 ---
 
-<main>
-  <!-- Content with a width cap -->
-  <div class="w-full sm:max-w-xl p-5">
-    <!-- user profile -->
-    <div class="flex gap-3">
-      <Image
-        src="https://storage.googleapis.com/takeme-public-assets/mugs.png"
-        alt="default profile image"
-        width={125}
-        aspectRatio={1}
-        class="rounded-lg ring-black-2"
-      />
-      <div class="flex flex-col">
-        <h1>Lefan</h1>
-        <p set:html={"Food connoisseur 🥜 <br /> Adventure enthusiast 🤹‍♂️"} />
-      </div>
+<BaseLayout title={page.userId}>
+  <main>
+    <!-- Content with a width cap -->
+    <div class="w-full sm:max-w-xl p-5">
+      <!-- user profile -->
+      <Profile />
     </div>
-  </div>
-</main>
+  </main>
+</BaseLayout>
 
 <style lang="less" define:vars={{ bgColor }}>
   main {
