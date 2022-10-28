@@ -46,9 +46,10 @@ watchDebounced(
       });
 
       $store.app.updatePreview();
+      oldPage = deepCopy(page.value);
 
       console.log("Saved", result);
-    } else oldPage = deepCopy(page.value);
+    }
   },
   { deep: true, debounce: 500 }
 );
