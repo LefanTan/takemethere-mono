@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useQuasar } from "quasar";
 import { computed, ref, watch } from "vue";
+
 import IconButton from "@src/components/buttons/IconButton.vue";
-import MainPage from "./MainPageLayout.vue";
+import Preview from "@components/Preview.vue";
 import useStore from "@src/stores";
 import router from "@routes/index";
-import { useQuasar } from "quasar";
 
 const $q = useQuasar();
 const $store = useStore();
@@ -85,8 +86,13 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
         @click="$store.app.logout()"
       />
     </q-drawer>
+
     <q-drawer v-model="showRightDrawer" side="right" :width="400" bordered>
-      Iframe
+      <Suspense>
+        <preview />
+
+        <template #fallback> Loading... </template>
+      </Suspense>
     </q-drawer>
 
     <q-page-container class="flex flex-col min-h-0 max-h-screen flex-nowrap">

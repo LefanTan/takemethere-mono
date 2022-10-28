@@ -31,6 +31,21 @@ export class UsersService {
     }
 
     /**
+     * Get User data through JWT
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static getUsers(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/',
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
      * Create a new user. Returns 404 if user already exists
      * @param body
      * @returns any Returns a user

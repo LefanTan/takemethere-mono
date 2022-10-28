@@ -1,6 +1,8 @@
 import { auth } from "@src/lib/firebase";
 import router from "@src/routes";
 import { OpenAPI, UsersService } from "@common/webapi";
+import { User as TakeMeUser } from "@common/types/index";
+import { PageWithEntries } from "@common/types/client";
 
 import { signInWithEmailAndPassword, signOut, User } from "firebase/auth";
 import { defineStore } from "pinia";
@@ -10,6 +12,14 @@ type AppState = {
    * Google Authenticated User
    */
   user?: User;
+  /**
+   * Take Me User
+   */
+  takeMeUser?: TakeMeUser;
+  /**
+   * Most up to date Page
+   */
+  page?: PageWithEntries;
 };
 
 /**
@@ -76,6 +86,26 @@ const useAppStore = defineStore("appStore", {
       OpenAPI.TOKEN = undefined;
 
       router.replace("/login");
+    },
+
+    /**
+     * Get user data that's store in TakeMe's db
+     */
+    async getTakeMeUserData() {
+      if (!this.takeMeUser) {
+        this.takeMeUser = await UsersService.getUsers();
+      }
+
+      return this.takeMeUser;
+    },
+
+    /**
+     * Dispatch a custom event of type 'pageChange' to trigger preview reload
+     */
+    async updatePreview() {
+      const pageChange = new CustomEvent("pageChange", {});
+
+      document.documentElement.dispatchEvent(pageChange);
     },
   },
 });

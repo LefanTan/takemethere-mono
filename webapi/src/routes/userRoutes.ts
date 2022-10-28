@@ -1,5 +1,7 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
+import authenticateJWT from "src/middlewares/auth";
+import { AuthorizedRequest } from "src/types/request";
 import { firebaseAdmin, prisma } from "../config";
 
 /**
@@ -34,6 +36,23 @@ userRoutes.get("/email/:username", async (req, res) => {
     return res.json(email);
   } catch (error) {
     return res.status(404).json({ message: "Username not found", error });
+  }
+});
+
+userRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
+  // #swagger.summary = 'Get User data through JWT'
+  // #swagger.tags = ['Users']
+
+  try {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: req.uid,
+      },
+    });
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json(error);
   }
 });
 

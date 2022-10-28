@@ -1,4 +1,6 @@
 ---
+import { Image } from "@astrojs/image/components";
+
 // TODO: Get User Profile props
 export interface Props {}
 
@@ -12,6 +14,13 @@ const {} = Astro.props;
       alt="default profile image"
       class="w-24 h-24 sm:w-28 sm:h-28 rounded-lg ring-black-2"
     />
+
+    <!-- <Image
+      alt=""
+      src="https://storage.googleapis.com/takeme-public-assets/mugs.png"
+      width={125}
+      aspectRatio={1}
+    /> -->
 
     <div class="flex flex-col ml-4">
       <h1>Lefan</h1>
