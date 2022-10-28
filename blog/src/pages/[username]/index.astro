@@ -23,7 +23,7 @@ const bgColor = "#FFF";
       <Profile />
 
       <!-- If first item of the entry isn't a title, add a space since only title has margin top -->
-      {!page.pageEntries[0].title && <br />}
+      {!page.pageEntries[0]?.title && <br />}
 
       {
         page.pageEntries.map((entry) => {
