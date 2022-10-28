@@ -26,7 +26,7 @@ const bgColor = "#FFF";
       {!page.pageEntries[0].title && <br />}
 
       {
-        page.pageEntries.map((entry, i) => {
+        page.pageEntries.map((entry) => {
           // Is a Category entry
           if (entry.title) {
             return <h2 class="mb-4 mt-6">{entry.title}</h2>;
