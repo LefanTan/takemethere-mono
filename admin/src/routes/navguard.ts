@@ -1,3 +1,4 @@
+import { UsersService } from "@common/webapi";
 import { auth } from "@src/lib/firebase";
 import useStore from "@src/stores";
 import { Router } from "vue-router";
@@ -13,9 +14,12 @@ export default function setupAuthenticationNavguard(router: Router) {
 
     // Wait for authStateChange to resolve/reject before moving on to check if user is logged in
     await new Promise((resolve, _) => {
-      auth.onAuthStateChanged((user) => {
+      auth.onAuthStateChanged(async (user) => {
         if (user) {
-          $store.app.setUser(user);
+          // Required so that token is set
+          await $store.app.setUser(user);
+
+          $store.app.takeMeUser = await UsersService.getUsers();
         }
         resolve(0);
       });

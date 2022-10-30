@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start:emulator": "firebase emulators:start --export-on-exit=./auth-data",
+    "start:emulator": "firebase emulators:start --import=./auth-data --export-on-exit=./auth-data",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
     "build": "esbuild ./src/index.ts --platform=node --bundle --outfile=./dist/index.js --external:./node_modules/*",
     "start": "node ./dist/index.js --no-daemon",

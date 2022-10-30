@@ -127,7 +127,9 @@ pageRoutes.put(
           .filter((old) => !pageEntries.find((cur) => cur.id === old.id))
           .map((entry) =>
             prisma.pageEntry.delete({
-              where: {},
+              where: {
+                id: entry.id,
+              },
             })
           )
       );

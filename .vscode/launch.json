@@ -12,9 +12,7 @@
         "!**/node_modules/**"
       ],
       // Crucial for TS!
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "localRoot": "${workspaceFolder}/webapi/",
-      "preLaunchTask": "npm: build - webapi",
+      "localRoot": "${workspaceFolder}/webapi",
       "name": "Launch Webapi",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/webapi/src/index.ts",

@@ -72,8 +72,10 @@ const useAppStore = defineStore("appStore", {
         password
       );
 
-      if (response) this.setUser(response.user);
-      else throw new Error("Signin failed");
+      if (response) {
+        this.setUser(response.user);
+        this.takeMeUser = await UsersService.getUsers();
+      } else throw new Error("Signin failed");
 
       console.log("Login Success!");
       router.push({ name: "home" });
@@ -90,17 +92,6 @@ const useAppStore = defineStore("appStore", {
       OpenAPI.TOKEN = undefined;
 
       router.replace("/login");
-    },
-
-    /**
-     * Get user data that's store in TakeMe's db
-     */
-    async getTakeMeUserData() {
-      if (!this.takeMeUser) {
-        this.takeMeUser = await UsersService.getUsers();
-      }
-
-      return this.takeMeUser;
     },
 
     /**

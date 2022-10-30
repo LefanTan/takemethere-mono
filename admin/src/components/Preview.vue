@@ -6,7 +6,7 @@ const preview = ref<HTMLIFrameElement>();
 
 const $store = useStore();
 const iframeLoaded = ref(false);
-const userData = await $store.app.getTakeMeUserData();
+const userData = $store.app.takeMeUser;
 
 const previewUrl = import.meta.env.PROD
   ? `https://takeme.blog/${userData?.username}`
@@ -35,7 +35,7 @@ onBeforeUnmount(() => {
       <iframe
         ref="preview"
         :src="previewUrl"
-        height="650px"
+        height="500px"
         width="100%"
         class="rounded-lg ring-4 ring-black small-scrollbar"
         @load="iframeLoaded = true"

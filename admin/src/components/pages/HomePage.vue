@@ -10,6 +10,7 @@ import { PageWithEntries } from "@common/types/client";
 import { PagesService } from "@common/webapi";
 import { deepCopy } from "@firebase/util";
 import useStore from "@src/stores";
+import IconButton from "../buttons/IconButton.vue";
 
 const $store = useStore();
 
@@ -118,9 +119,21 @@ function dragEnd() {
 <template>
   <div class="p-5">
     <div class="flex gap-2">
-      <q-btn label="Add Link" @click="addEntry('Link')" />
-      <q-btn label="Add Restaurant Blog" @click="addEntry('Blog')" />
-      <q-btn label="Add Category" @click="addEntry('Category')" />
+      <q-btn
+        label="Add Link"
+        class="takeme-button black"
+        @click="addEntry('Link')"
+      />
+      <q-btn
+        label="Add Restaurant Blog"
+        class="takeme-button black"
+        @click="addEntry('Blog')"
+      />
+      <q-btn
+        label="Add Category"
+        class="takeme-button black"
+        @click="addEntry('Category')"
+      />
     </div>
 
     <draggable
@@ -140,71 +153,109 @@ function dragEnd() {
               class="handle self-center"
             />
 
-            <q-card-section class="flex-1" v-if="element.link">
+            <q-card-section class="flex-1">
+              <q-card-section
+                horizontal
+                class="justify-end mb-4 [&>button]:pl-4"
+              >
+                <h4 class="mr-auto">
+                  {{
+                    element.link
+                      ? "Link"
+                      : element.blog
+                      ? "Restaurant"
+                      : "Category Title"
+                  }}
+                </h4>
+                <icon-button
+                  name="eva-bar-chart-2-outline"
+                  tooltip-label="View analytic"
+                  @click="deleteEntry(element.id ?? '')"
+                />
+                <icon-button
+                  name="eva-eye-outline"
+                  tooltip-label="Hide this link"
+                  @click="deleteEntry(element.id ?? '')"
+                />
+                <icon-button
+                  name="eva-trash-2-outline"
+                  tooltip-label="Delete this link"
+                  @click="deleteEntry(element.id ?? '')"
+                />
+              </q-card-section>
+
               <!-- Link Entry -->
-              <q-card-section>
+              <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="element.link">
                 <q-input
-                  label="Display Text"
+                  standout
+                  dense
+                  placeholder="Display Text"
                   v-model="element.link!.displayText"
                 />
-                <q-input label="Link" v-model="element.link!.link" />
                 <q-input
-                  label="Photo Url"
+                  standout
+                  dense
+                  placeholder="Link"
+                  v-model="element.link!.link"
+                />
+                <q-input
+                  standout
+                  dense
+                  placeholder="Photo Url"
                   type="url"
                   v-model="element.link.mediaUrl"
                 />
               </q-card-section>
-              <q-card-actions align="right">
-                <q-btn
-                  label="Delete"
-                  color="secondary"
-                  @click="deleteEntry(element.id ?? '')"
-                />
-              </q-card-actions>
-            </q-card-section>
 
-            <q-card-section class="flex-1" v-else-if="element.blog">
               <!-- Blog Entry -->
-              <q-card-section>
-                <q-input label="Restaurant Name" v-model="element.blog!.name" />
-                <q-input label="Location" v-model="element.blog!.location" />
+              <q-card-section
+                class="flex-1 p-0 [&>*]:mb-2"
+                v-else-if="element.blog"
+              >
                 <q-input
-                  label="Rating"
+                  standout
+                  dense
+                  placeholder="Restaurant Name"
+                  v-model="element.blog!.name"
+                />
+                <q-input
+                  standout
+                  dense
+                  placeholder="Location"
+                  v-model="element.blog!.location"
+                />
+                <q-input
+                  standout
+                  dense
+                  placeholder="Rating"
                   type="number"
                   :model-value="element.blog!.rating"
                   @update:model-value="(val: any) => element.blog!.rating = parseFloat(val)"
                 />
                 <q-input
-                  label="Photo Url"
+                  standout
+                  dense
+                  placeholder="Photo Url"
                   type="url"
                   v-model="element.blog.mediaUrl"
                 />
                 <q-input
-                  label="External Link"
+                  standout
+                  dense
+                  placeholder="External Link"
                   v-model="element.blog!.externalLink"
                 />
               </q-card-section>
-              <q-card-actions align="right">
-                <q-btn
-                  label="Delete"
-                  color="secondary"
-                  @click="deleteEntry(element.id ?? '')"
-                />
-              </q-card-actions>
-            </q-card-section>
 
-            <q-card-section class="flex-1" v-else>
               <!-- Category title Entry -->
-              <q-card-section>
-                <q-input label="Category Title" v-model="element.title" />
-              </q-card-section>
-              <q-card-actions align="right">
-                <q-btn
-                  label="Delete"
-                  color="secondary"
-                  @click="deleteEntry(element.id ?? '')"
+              <q-card-section class="flex-1 p-0" v-else>
+                <q-input
+                  standout
+                  dense
+                  placeholder="Category Title"
+                  v-model="element.title"
                 />
-              </q-card-actions>
+              </q-card-section>
             </q-card-section>
           </q-card-section>
         </q-card>

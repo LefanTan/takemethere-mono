@@ -2,7 +2,6 @@ import express from "express";
 import multer from "multer";
 import { Storage } from "@google-cloud/storage";
 import sharp from "sharp";
-import fs from "fs";
 
 import authenticateJWT from "src/middlewares/auth";
 import { AuthorizedRequest } from "src/types/request";

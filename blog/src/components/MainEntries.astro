@@ -12,7 +12,7 @@ const { pageEntries } = Astro.props;
   {
     pageEntries.map((entry) => {
       // Is a Category entry
-      if (entry.title) {
+      if (entry.title || entry.title === "") {
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
       }
 
@@ -41,7 +41,7 @@ const { pageEntries } = Astro.props;
         );
       }
 
-      if (entry.link) {
+      if (entry.link.link && entry.link.displayText) {
         return (
           <a
             href={entry.link.link}

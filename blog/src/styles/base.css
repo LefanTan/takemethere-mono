@@ -1,6 +1,6 @@
 @layer base {
   h1 {
-    @apply text-3xl font-medium;
+    @apply text-3xl font-medium leading-none;
   }
 
   h2 {
