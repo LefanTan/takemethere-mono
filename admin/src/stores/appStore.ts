@@ -20,13 +20,16 @@ type AppState = {
    * Most up to date Page
    */
   page?: PageWithEntries;
+  allowedMediaFormat?: string;
 };
 
 /**
  * App related global states
  */
 const useAppStore = defineStore("appStore", {
-  state: (): AppState => ({}),
+  state: (): AppState => ({
+    allowedMediaFormat: "image/png, image/jpeg, image/jpg, image/webp",
+  }),
   getters: {},
   actions: {
     /**
@@ -83,6 +86,7 @@ const useAppStore = defineStore("appStore", {
       await signOut(auth);
 
       this.user = undefined;
+      this.takeMeUser = undefined;
       OpenAPI.TOKEN = undefined;
 
       router.replace("/login");

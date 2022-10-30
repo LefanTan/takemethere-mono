@@ -127,9 +127,7 @@ pageRoutes.put(
           .filter((old) => !pageEntries.find((cur) => cur.id === old.id))
           .map((entry) =>
             prisma.pageEntry.delete({
-              where: {
-                id: entry.id,
-              },
+              where: {},
             })
           )
       );
@@ -213,7 +211,7 @@ async function getPageByUserId(userId: string) {
     include: {
       pageEntries: {
         orderBy: {
-          createdAt: "desc",
+          order: "desc",
         },
         include: {
           blog: true,

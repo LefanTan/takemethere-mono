@@ -11,6 +11,7 @@
     "deploy": "npm run build && npx firebase deploy"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.6.0",
     "@quasar/extras": "^1.15.5",
     "@vueuse/core": "^9.3.1",
     "firebase": "^9.12.1",

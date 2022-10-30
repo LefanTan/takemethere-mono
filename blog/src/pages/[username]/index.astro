@@ -1,86 +1,29 @@
 ---
+import MainEntries from "@components/MainEntries.astro";
 import Profile from "@components/Profile.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { fetchPageByUsername } from "@lib/gateway";
+import { fetchUserObjectByUsername } from "@lib/gateway";
 
 const { username } = Astro.params;
 
-const page = await fetchPageByUsername(username as string);
+const user = await fetchUserObjectByUsername(username as string);
 
-if (!page) return Astro.redirect("/404");
-
-// Sort the entries by order descendingly
-page.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+if (!user) return Astro.redirect("/404");
 
 const bgColor = "#FFF";
 ---
 
-<BaseLayout title={page.userId}>
+<BaseLayout title={user.username}>
   <main class="flex justify-center">
     <!-- Content with a width cap -->
     <div class="w-full sm:max-w-xl p-5">
-      <!-- user profile -->
-      <Profile />
+      <!-- User profile -->
+      <Profile user={user} />
 
       <!-- If first item of the entry isn't a title, add a space since only title has margin top -->
-      {!page.pageEntries[0]?.title && <br />}
+      {!user.page.pageEntries[0]?.title && <br />}
 
-      {
-        page.pageEntries.map((entry) => {
-          // Is a Category entry
-          if (entry.title) {
-            return <h2 class="mb-4 mt-6">{entry.title}</h2>;
-          }
-
-          if (entry.blog) {
-            return (
-              // Blog Entry
-              <div class="flex rounded-lg ring-black-2 h-32 overflow-hidden mb-4">
-                <img
-                  src={entry.blog.mediaUrl}
-                  class="h-full w-28 sm:w-36 object-cover"
-                  alt={entry.blog.name}
-                />
-                <div class="p-2 flex-1">
-                  <h3 class="font-medium">{entry.blog.name}</h3>
-
-                  <div class="flex items-center flex-1">
-                    <span class="font-light">Edmonton</span>
-
-                    <h4 class="text-4xl ml-auto">
-                      {entry.blog.rating}
-                      <span class="text-base -ml-1">/ 10</span>
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            );
-          }
-
-          if (entry.link) {
-            return (
-              <a
-                href={entry.link.link}
-                target="_blank"
-                class="flex rounded-lg ring-black-2 overflow-hidden mb-4"
-              >
-                {entry.link.mediaUrl && (
-                  <img src={entry.link.mediaUrl} alt="" class="w-16 h-16" />
-                )}
-
-                <p
-                  class:list={[
-                    "p-4 text-lg text-center flex items-center justify-center flex-1",
-                    { "-ml-16": entry.link.mediaUrl },
-                  ]}
-                >
-                  {entry.link.displayText}
-                </p>
-              </a>
-            );
-          }
-        })
-      }
+      <MainEntries pageEntries={user.page.pageEntries} />
     </div>
   </main>
 </BaseLayout>

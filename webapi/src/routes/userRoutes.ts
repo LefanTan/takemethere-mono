@@ -1,5 +1,5 @@
 import express from "express";
-import { check, validationResult } from "express-validator";
+import { body, check, validationResult } from "express-validator";
 import authenticateJWT from "src/middlewares/auth";
 import { AuthorizedRequest } from "src/types/request";
 import { firebaseAdmin, prisma } from "../config";
@@ -39,14 +39,80 @@ userRoutes.get("/email/:username", async (req, res) => {
   }
 });
 
+/**
+ * Retrieve user object and all page data based on a given username
+ */
+userRoutes.get("/:username/page", async (req: AuthorizedRequest, res) => {
+  // #swagger.summary = 'Get User data (without page) through JWT'
+  // #swagger.tags = ['Users']
+
+  try {
+    const username = req.params.username;
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        username,
+      },
+      include: {
+        page: {
+          include: {
+            pageEntries: {
+              orderBy: {
+                order: "desc",
+              },
+              include: {
+                blog: true,
+                link: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
+
+/**
+ * Retrieve user object (without page)
+ */
 userRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
-  // #swagger.summary = 'Get User data through JWT'
+  // #swagger.summary = 'Get User data (without page) through JWT'
   // #swagger.tags = ['Users']
 
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id: req.uid,
+      },
+    });
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
+
+/**
+ * Update user data
+ */
+userRoutes.put("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
+  // #swagger.summary = 'Update TakeMe user data through JWT'
+  /*  #swagger.parameters['body'] = {
+            in: 'body',
+        } */
+  // #swagger.tags = ['Users']
+
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id: req.uid,
+      },
+      data: {
+        // TODO: add validation
+        ...req.body,
       },
     });
 
@@ -129,6 +195,7 @@ userRoutes.post(
         data: {
           id: userRecord.uid,
           username,
+          displayName: username,
           email,
           // Create a new Page for the user
           page: {

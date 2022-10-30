@@ -31,7 +31,28 @@ export class UsersService {
     }
 
     /**
-     * Get User data through JWT
+     * Get User data (without page) through JWT
+     * @param username
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static getUsersPage(
+        username: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/{username}/page',
+            path: {
+                'username': username,
+            },
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
+     * Get User data (without page) through JWT
      * @returns any OK
      * @throws ApiError
      */
@@ -39,6 +60,25 @@ export class UsersService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/users/',
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
+     * Update TakeMe user data through JWT
+     * @param body
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static putUsers(
+        body?: any,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/users/',
+            body: body,
             errors: {
                 400: `Bad Request`,
             },

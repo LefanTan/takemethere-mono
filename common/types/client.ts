@@ -1,4 +1,4 @@
-import type { Blog, Link, Page, PageEntry } from "./index";
+import type { Blog, Link, Page, PageEntry, User } from "./index";
 
 export type PageEntriesWithBlogAndLink = PageEntry & {
   blog?: Blog | null;
@@ -7,4 +7,8 @@ export type PageEntriesWithBlogAndLink = PageEntry & {
 
 export type PageWithEntries = Page & {
   pageEntries: PageEntriesWithBlogAndLink[];
+};
+
+export type UserWithPage = User & {
+  page: PageWithEntries;
 };

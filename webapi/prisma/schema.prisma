@@ -17,6 +17,13 @@ model User {
   email    String @unique
   plan     PLAN   @default(FREE)
 
+  displayName String
+  bio         String?
+
+  tiktokUrl    String?
+  instagramUrl String?
+  youtubeUrl   String?
+
   profileMediaUrl String?
 
   page Page?

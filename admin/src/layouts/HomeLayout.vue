@@ -25,6 +25,10 @@ const navLinks = [
     to: "/appearance",
   },
   {
+    text: "Profile",
+    to: "/profile",
+  },
+  {
     text: "Settings",
     to: "/settings",
   },
@@ -43,10 +47,13 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       bordered
     >
       <!-- replace with logo -->
-      <q-img
-        src="https://i.pinimg.com/originals/7f/c7/17/7fc717724414a8f51fbb592c1a36b33d.png"
-        fit="contain"
-      />
+      <router-link to="/profile">
+        <q-img
+          src="https://i.pinimg.com/originals/7f/c7/17/7fc717724414a8f51fbb592c1a36b33d.png"
+          fit="contain"
+        />
+      </router-link>
+
       <q-img
         class="mt-auto rounded-full cursor-pointer"
         :ratio="1"
@@ -106,7 +113,9 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
         >
       </nav>
       <q-page class="overflow-auto flex-1" style="min-height: 0px">
-        <router-view />
+        <Suspense>
+          <router-view />
+        </Suspense>
       </q-page>
     </q-page-container>
   </q-layout>

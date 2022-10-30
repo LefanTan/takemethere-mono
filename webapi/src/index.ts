@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoutes";
 import swaggerUi from "swagger-ui-express";
 import cors, { CorsOptions } from "cors";
 import pageRoutes from "./routes/pageRoutes";
+import mediaRoutes from "./routes/mediaRoutes";
 
 const openapiSpec = require("../swagger-output.json");
 
@@ -52,6 +53,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/page", pageRoutes);
+app.use("/media", mediaRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.listen(port, () =>

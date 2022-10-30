@@ -5,6 +5,7 @@ import { onMounted, onBeforeUnmount, ref } from "vue";
 const preview = ref<HTMLIFrameElement>();
 
 const $store = useStore();
+const iframeLoaded = ref(false);
 const userData = await $store.app.getTakeMeUserData();
 
 const previewUrl = import.meta.env.PROD
@@ -12,6 +13,7 @@ const previewUrl = import.meta.env.PROD
   : `http://localhost:3000/${userData?.username}`;
 
 function triggerIframeReload() {
+  iframeLoaded.value = false;
   preview.value?.contentWindow?.postMessage("reload", previewUrl);
 }
 
@@ -29,13 +31,24 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="w-full h-full flex flex-col items-center justify-center p-6">
-    <iframe
-      ref="preview"
-      :src="previewUrl"
-      height="650px"
-      width="100%"
-      class="rounded-lg ring-4 ring-black small-scrollbar"
-    />
+    <div class="relative w-full">
+      <iframe
+        ref="preview"
+        :src="previewUrl"
+        height="650px"
+        width="100%"
+        class="rounded-lg ring-4 ring-black small-scrollbar"
+        @load="iframeLoaded = true"
+      >
+      </iframe>
+      <q-spinner
+        v-if="!iframeLoaded"
+        color="black"
+        size="2em"
+        :thickness="4"
+        class="absolute top-2 right-2"
+      />
+    </div>
 
     <q-btn
       label="Open Link"

@@ -1,44 +1,73 @@
 ---
-import { Image, Picture } from "@astrojs/image/components";
+import { User } from "@common/types";
+import { isUrl } from "@lib/helper";
 
 // TODO: Get User Profile props
-export interface Props {}
+export interface Props {
+  user: User;
+}
 
-const {} = Astro.props;
+const { user } = Astro.props;
+
+// To be used as Profile Picture if user hasn't uploaded any profile picture
+const firstValidLetter = [...user.displayName]
+  .find((char) => char.toUpperCase() != char.toLowerCase())
+  .toUpperCase();
 ---
 
 <section class="flex flex-col">
   <div class="flex items-start mb-3">
-    <!-- <img
-      src="https://storage.googleapis.com/takeme-public-assets/mugs.png"
-      alt="default profile image"
-      class="w-24 h-24 sm:w-28 sm:h-28 rounded-lg ring-black-2"
-    /> -->
+    {
+      user.profileMediaUrl ? (
+        <img
+          src={user.profileMediaUrl}
+          alt="default profile image"
+          class="w-24 h-24 sm:w-28 sm:h-28 rounded-lg ring-black-2 object-cover"
+        />
+      ) : (
+        <div class="w-24 h-24 bg-black sm:w-28 sm:h-28 rounded-lg ring-black-2 flex items-center justify-center">
+          <h1 class="text-4xl text-white">{firstValidLetter}</h1>
+        </div>
+      )
+    }
 
-    <Picture
+    <!-- <Picture
       alt=""
       src="https://storage.googleapis.com/takeme-public-assets/mugs.png"
       widths={[100, 200]}
-      sizes="125px"
       aspectRatio={1}
+      sizes="(min-width: 640px) 125px, 115px"
       class="rounded-lg ring-black-2"
-    />
+    /> -->
 
     <div class="flex flex-col ml-4">
-      <h1>Lefan</h1>
+      <h1>{user.displayName}</h1>
 
       <!-- Link Icons -->
       <div class="flex flex-wrap gap-2 mt-2">
-        <a href="https://www.tiktok.com/" target="_blank">
-          <iconify-icon icon="akar-icons:tiktok-fill" width="1.5rem" />
-        </a>
-        <a href="https://www.instagram.com/" target="_blank">
-          <iconify-icon icon="akar-icons:instagram-fill" width="1.5rem" />
-        </a>
-        <!-- <iconify-icon icon="entypo:link" width="1.5rem" />
-          <iconify-icon icon="ant-design:youtube-outlined" width="1.5rem" /> -->
+        {
+          isUrl(user.tiktokUrl) && (
+            <a href={user.tiktokUrl} target="_blank">
+              <iconify-icon icon="akar-icons:tiktok-fill" width="1.5rem" />
+            </a>
+          )
+        }
+        {
+          isUrl(user.instagramUrl) && (
+            <a href={user.instagramUrl} target="_blank">
+              <iconify-icon icon="akar-icons:instagram-fill" width="1.5rem" />
+            </a>
+          )
+        }
+        {
+          isUrl(user.youtubeUrl) && (
+            <a href={user.youtubeUrl} target="_blank">
+              <iconify-icon icon="iconoir:youtube" width="1.5rem" />
+            </a>
+          )
+        }
       </div>
     </div>
   </div>
-  <p set:html={"Food connoisseur 🥜 <br /> Adventure enthusiast 🤹‍♂️"} />
+  <p set:html={user.bio} />
 </section>
