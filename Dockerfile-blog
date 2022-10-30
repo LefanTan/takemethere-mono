@@ -4,12 +4,15 @@
 FROM node:alpine3.16 as node
 FROM node as builder
 
-RUN mkdir -p /usr/src
+RUN mkdir -p /usr/src/blog
+
+# Copy common files
 WORKDIR /usr/src
+COPY ./common ./common
 
 # Copy source files
-COPY . /usr/src
-
+COPY ./blog ./blog
+WORKDIR /usr/src/blog
 # Install dependencies
 RUN npm ci --only=prod
 
