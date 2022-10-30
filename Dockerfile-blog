@@ -12,7 +12,7 @@ COPY ./common ./common
 
 WORKDIR /usr/src/blog
 
-# Copy source files
+# Copy blog src files
 COPY ./blog ./
 # Install dependencies
 RUN npm ci --only=prod
