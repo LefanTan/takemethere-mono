@@ -10,9 +10,10 @@ RUN mkdir -p /usr/src/blog
 WORKDIR /usr/src
 COPY ./common ./common
 
-# Copy source files
-COPY ./blog ./blog
 WORKDIR /usr/src/blog
+
+# Copy source files
+COPY ./blog ./
 # Install dependencies
 RUN npm ci --only=prod
 
