@@ -92,9 +92,9 @@ function deleteCurrentProfilePicture() {
 
             <button
               @click.stop="deleteCurrentProfilePicture"
-              class="absolute top-1 right-1 cursor-pointer"
+              class="absolute top-1 right-1 cursor-pointer bg-white rounded-full p-0.5"
             >
-              <q-icon name="eva-trash-2" size="1.5rem" />
+              <q-icon name="eva-trash-2-outline" size="1.25rem" />
             </button>
           </label>
 

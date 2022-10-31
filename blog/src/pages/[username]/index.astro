@@ -14,7 +14,7 @@ const bgColor = "#FFF";
 ---
 
 <BaseLayout title={user.username}>
-  <main class="flex justify-center">
+  <main class="flex flex-1 justify-center">
     <!-- Content with a width cap -->
     <div class="w-full sm:max-w-xl p-5">
       <!-- User profile -->
@@ -26,6 +26,15 @@ const bgColor = "#FFF";
       <MainEntries pageEntries={user.page.pageEntries} />
     </div>
   </main>
+  <footer class="p-4">
+    <a href="https://takeme.blog/admin" target="_blank">
+      <img
+        alt="take me logo"
+        src="https://storage.googleapis.com/takeme-public-assets/logo.png"
+        class="object-contain w-24 sm:w-36 mx-auto mt-auto"
+      />
+    </a>
+  </footer>
 </BaseLayout>
 
 <script>

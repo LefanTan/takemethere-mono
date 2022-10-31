@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import useStore from "@src/stores";
+import { useClipboard } from "@vueuse/core";
+import { useQuasar } from "quasar";
 import { onMounted, onBeforeUnmount, ref } from "vue";
+import IconButton from "./buttons/IconButton.vue";
 
 const preview = ref<HTMLIFrameElement>();
 
+const $q = useQuasar();
 const $store = useStore();
 const iframeLoaded = ref(false);
+
 const userData = $store.app.takeMeUser;
 
 const previewUrl = import.meta.env.PROD
   ? `https://takeme.blog/${userData?.username}`
   : `http://localhost:3000/${userData?.username}`;
 
-function triggerIframeReload() {
-  iframeLoaded.value = false;
-  preview.value?.contentWindow?.postMessage("reload", previewUrl);
-}
+const { copy } = useClipboard({ source: previewUrl });
 
 onMounted(() => {
   document.documentElement?.addEventListener("pageChange", triggerIframeReload);
@@ -27,10 +29,30 @@ onBeforeUnmount(() => {
     triggerIframeReload
   );
 });
+
+function triggerIframeReload() {
+  iframeLoaded.value = false;
+  preview.value?.contentWindow?.postMessage("reload", previewUrl);
+}
+
+function onCopyClipboard() {
+  copy();
+  $q.notify({ message: "Link copied!" });
+}
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col items-center justify-center p-6">
+  <p class="text-base flex items-center justify-center m-6">
+    <a :href="previewUrl" target="_blank" class="font-semibold mr-2">{{
+      previewUrl
+    }}</a>
+    <icon-button
+      name="eva-share-outline"
+      class="bg-black text-white rounded-lg p-1"
+      @click="onCopyClipboard"
+    />
+  </p>
+  <div class="flex-1 flex flex-col justify-center items-center -mt-20 p-6">
     <div class="relative w-full">
       <iframe
         ref="preview"
@@ -49,14 +71,6 @@ onBeforeUnmount(() => {
         class="absolute top-2 right-2"
       />
     </div>
-
-    <q-btn
-      label="Open Link"
-      class="my-4 text-white bg-black"
-      :href="previewUrl"
-      replace
-      target="_blank"
-    />
   </div>
 </template>
 

@@ -127,7 +127,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       v-model="showRightDrawer"
       side="right"
       :width="350"
-      class="shadow-lg"
+      class="shadow-lg flex flex-col"
     >
       <Suspense>
         <preview />

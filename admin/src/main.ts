@@ -37,6 +37,10 @@ app.use(Quasar, {
     loadingBar: {
       size: "6px",
     },
+    notify: {
+      position: "top",
+      type: "positive",
+    },
   },
   build: {
     publicPath: "/admin/",
