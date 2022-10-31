@@ -68,12 +68,12 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
         :ratio="1"
         :src="$store.app.takeMeUser?.profileMediaUrl ?? ''"
       >
-        <h5
+        <h3
           v-if="!$store.app.takeMeUser?.profileMediaUrl"
-          class="text-white absolute center-absolute font-semibold"
+          class="text-white absolute center-absolute"
         >
           {{ firstValidLetter }}
-        </h5>
+        </h3>
         <q-popup-proxy :offset="[-40, 10]">
           <q-card class="py-3 rounded-lg">
             <strong class="px-6">Lefan</strong>

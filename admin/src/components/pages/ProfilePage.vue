@@ -72,12 +72,12 @@ function deleteCurrentProfilePicture() {
       <q-card-section class="flex flex-col gap-2">
         <div class="flex items-end">
           <label
-            class="relative h-28 w-28 rounded-lg overflow-hidden hover:brightness-75 cursor-pointer bg-gray-200 transition-all"
+            class="relative h-28 w-28 rounded-lg overflow-hidden hover:brightness-75 cursor-pointer transition-all"
             @click="() => open({ accept: $store.app.allowedMediaFormat })"
           >
             <div
               v-if="!localFileUrl && !user.profileMediaUrl"
-              class="w-full h-full bg-gray-200 flex items-center justify-center"
+              class="w-full h-full bg-secondary-light flex items-center justify-center"
             >
               <q-icon name="eva-image-outline" size="2rem" />
             </div>
