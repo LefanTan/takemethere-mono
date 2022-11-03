@@ -4,18 +4,18 @@
   }
 
   h2 {
-    @apply text-2xl font-medium;
+    @apply text-2xl leading-none font-medium;
   }
 
   h3 {
-    @apply text-xl font-medium;
+    @apply text-xl leading-none font-medium;
   }
 
   h4 {
-    @apply text-lg font-normal;
+    @apply text-lg font-normal leading-none;
   }
 
   p {
-    @apply leading-tight;
+    @apply leading-none;
   }
 }

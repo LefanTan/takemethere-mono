@@ -9,7 +9,7 @@ import { AuthorizedRequest } from "../types/request";
  * @param res
  * @param next
  */
-async function authenticateJWT(
+export async function authenticateJWT(
   req: AuthorizedRequest,
   res: Response,
   next: NextFunction
@@ -30,5 +30,3 @@ async function authenticateJWT(
   }
   return res.sendStatus(403);
 }
-
-export default authenticateJWT;

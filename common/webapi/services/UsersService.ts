@@ -53,34 +53,47 @@ export class UsersService {
 
     /**
      * Get User data (without page) through JWT
+     * @param authorization
      * @returns any OK
      * @throws ApiError
      */
-    public static getUsers(): CancelablePromise<any> {
+    public static getUsers(
+        authorization?: string,
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/users/',
+            headers: {
+                'authorization': authorization,
+            },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
 
     /**
      * Update TakeMe user data through JWT
+     * @param authorization
      * @param body
      * @returns any OK
      * @throws ApiError
      */
     public static putUsers(
+        authorization?: string,
         body?: any,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/users/',
+            headers: {
+                'authorization': authorization,
+            },
             body: body,
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }

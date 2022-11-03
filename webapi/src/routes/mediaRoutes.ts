@@ -3,7 +3,7 @@ import multer from "multer";
 import { Storage } from "@google-cloud/storage";
 import sharp from "sharp";
 
-import authenticateJWT from "src/middlewares/auth";
+import { authenticateJWT } from "src/middlewares/auth";
 import { AuthorizedRequest } from "src/types/request";
 
 const storage = new Storage();

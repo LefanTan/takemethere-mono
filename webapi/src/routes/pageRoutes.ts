@@ -7,7 +7,7 @@ import express from "express";
 import { body, validationResult } from "express-validator";
 
 import { prisma } from "../config";
-import authenticateJWT from "../middlewares/auth";
+import { authenticateJWT } from "../middlewares/auth";
 import { AuthorizedRequest } from "../types/request";
 import {
   PageEntriesWithBlogAndLink,
@@ -86,8 +86,8 @@ pageRoutes.get("/:username", async (req, res) => {
  */
 pageRoutes.put(
   "/pageEntries",
-  authenticateJWT,
   body("pageEntries").notEmpty(),
+  authenticateJWT,
   async (req: AuthorizedRequest, res) => {
     // #swagger.summary = 'Update the authenticated user\'s page.'
     /* #swagger.parameters['body'] = {

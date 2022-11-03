@@ -2,7 +2,7 @@
 import useStore from "@src/stores";
 import { useClipboard } from "@vueuse/core";
 import { useQuasar } from "quasar";
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref, computed } from "vue";
 import IconButton from "./buttons/IconButton.vue";
 
 const preview = ref<HTMLIFrameElement>();
@@ -16,6 +16,10 @@ const userData = $store.app.takeMeUser;
 const previewUrl = import.meta.env.PROD
   ? `https://takeme.blog/${userData?.username}`
   : `http://localhost:3000/${userData?.username}`;
+
+const previewHeight = computed(() => {
+  return `${$q.screen.gt.md ? 750 : 500}px`;
+});
 
 const { copy } = useClipboard({ source: previewUrl });
 
@@ -57,7 +61,7 @@ function onCopyClipboard() {
       <iframe
         ref="preview"
         :src="previewUrl"
-        height="500px"
+        :height="previewHeight"
         width="100%"
         class="rounded-lg ring-4 ring-black small-scrollbar"
         @load="iframeLoaded = true"

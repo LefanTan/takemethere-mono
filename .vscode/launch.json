@@ -11,11 +11,12 @@
         "${workspaceFolder}/webapi/**",
         "!**/node_modules/**"
       ],
-      // Crucial for TS!
-      "localRoot": "${workspaceFolder}/webapi",
+
+      "localRoot": "${workspaceFolder}/webapi/",
       "name": "Launch Webapi",
+      "preLaunchTask": "npm: build - webapi",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/webapi/src/index.ts",
+      "program": "${workspaceFolder}/webapi/dist/index.js",
       "outFiles": ["${workspaceFolder}/webapi/dist/**/*.js"]
     }
   ]

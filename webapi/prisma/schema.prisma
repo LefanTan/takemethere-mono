@@ -20,9 +20,12 @@ model User {
   displayName String
   bio         String?
 
-  tiktokUrl    String?
-  instagramUrl String?
-  youtubeUrl   String?
+  tiktokUrl     String?
+  instagramUrl  String?
+  youtubeUrl    String?
+  facebookUrl   String?
+  twitterUrl    String?
+  externalEmail String?
 
   profileMediaUrl String?
 
@@ -93,6 +96,13 @@ model Blog {
   // Google Storage url
   mediaUrl       String?
   entryAnalytics EntryAnalytics?
+
+  shortReview     String?
+  firstButtonText String?
+  firstButtonLink String?
+
+  secondButtonText String?
+  secondButtonLink String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

@@ -10,20 +10,26 @@ export class MediasService {
     /**
      * Upload a picture to the users folder
      * @param profilePicture Profile Picture
+     * @param authorization
      * @returns any OK
      * @throws ApiError
      */
     public static postMediaAddProfilePicture(
         profilePicture: Blob,
+        authorization?: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/media/addProfilePicture',
+            headers: {
+                'authorization': authorization,
+            },
             formData: {
                 'profilePicture': profilePicture,
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -31,11 +37,13 @@ export class MediasService {
     /**
      * Delete a file from the user
      * @param filename
+     * @param authorization
      * @returns any OK
      * @throws ApiError
      */
     public static deleteMedia(
         filename: string,
+        authorization?: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
@@ -43,8 +51,12 @@ export class MediasService {
             path: {
                 'filename': filename,
             },
+            headers: {
+                'authorization': authorization,
+            },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }

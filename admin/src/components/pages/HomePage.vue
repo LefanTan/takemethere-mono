@@ -11,6 +11,8 @@ import { PagesService } from "@common/webapi";
 import { deepCopy } from "@firebase/util";
 import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
+import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
+import BlogEntryCardSection from "../cardSections/BlogEntryCardSection.vue";
 
 const $store = useStore();
 
@@ -42,7 +44,7 @@ watchDebounced(
         order: page.value!.pageEntries.length - i,
       }));
 
-      const result = await PagesService.putPagePageEntries({
+      const result = await PagesService.putPagePageEntries(undefined, {
         pageEntries: orderedEntries,
       });
 
@@ -167,85 +169,36 @@ function dragEnd() {
                       : "Category Title"
                   }}
                 </h4>
-                <icon-button
-                  name="eva-bar-chart-2-outline"
-                  tooltip-label="View analytic"
-                  @click="deleteEntry(element.id ?? '')"
-                />
-                <icon-button
-                  name="eva-eye-outline"
-                  tooltip-label="Hide this link"
-                  @click="deleteEntry(element.id ?? '')"
-                />
-                <icon-button
-                  name="eva-trash-2-outline"
-                  tooltip-label="Delete this link"
-                  @click="deleteEntry(element.id ?? '')"
-                />
+                <template v-if="!element.title">
+                  <icon-button
+                    name="eva-bar-chart-2-outline"
+                    tooltip-label="View analytic"
+                    @click="deleteEntry(element.id ?? '')"
+                  />
+                  <icon-button
+                    name="eva-eye-outline"
+                    tooltip-label="Hide this link"
+                    @click="deleteEntry(element.id ?? '')"
+                  />
+                  <icon-button
+                    name="eva-trash-2-outline"
+                    tooltip-label="Delete this link"
+                    @click="deleteEntry(element.id ?? '')"
+                  />
+                </template>
               </q-card-section>
 
               <!-- Link Entry -->
-              <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="element.link">
-                <q-input
-                  standout
-                  dense
-                  placeholder="Display Text"
-                  v-model="element.link!.displayText"
-                />
-                <q-input
-                  standout
-                  dense
-                  placeholder="Link"
-                  v-model="element.link!.link"
-                />
-                <q-input
-                  standout
-                  dense
-                  placeholder="Photo Url"
-                  type="url"
-                  v-model="element.link.mediaUrl"
-                />
-              </q-card-section>
+              <link-entry-card-section
+                :page-entry="element"
+                v-if="element.link"
+              />
 
               <!-- Blog Entry -->
-              <q-card-section
-                class="flex-1 p-0 [&>*]:mb-2"
+              <blog-entry-card-section
+                :page-entry="element"
                 v-else-if="element.blog"
-              >
-                <q-input
-                  standout
-                  dense
-                  placeholder="Restaurant Name"
-                  v-model="element.blog!.name"
-                />
-                <q-input
-                  standout
-                  dense
-                  placeholder="Location"
-                  v-model="element.blog!.location"
-                />
-                <q-input
-                  standout
-                  dense
-                  placeholder="Rating"
-                  type="number"
-                  :model-value="element.blog!.rating"
-                  @update:model-value="(val: any) => element.blog!.rating = parseFloat(val)"
-                />
-                <q-input
-                  standout
-                  dense
-                  placeholder="Photo Url"
-                  type="url"
-                  v-model="element.blog.mediaUrl"
-                />
-                <q-input
-                  standout
-                  dense
-                  placeholder="External Link"
-                  v-model="element.blog!.externalLink"
-                />
-              </q-card-section>
+              />
 
               <!-- Category title Entry -->
               <q-card-section class="flex-1 p-0" v-else>

@@ -19,19 +19,23 @@ const { pageEntries } = Astro.props;
       if (entry.blog) {
         return (
           // Blog Entry
-          <div class="flex rounded-lg ring-black-2 h-32 overflow-hidden mb-4">
-            <img
-              src={entry.blog.mediaUrl}
-              class="h-full w-28 sm:w-36 object-cover"
-              alt={entry.blog.name}
-            />
-            <div class="p-2 flex-1">
+          <div class="flex rounded-lg ring-black-2 h-28 sm:h-32 overflow-hidden mb-4">
+            {entry.blog.mediaUrl && (
+              <img
+                src={entry.blog.mediaUrl}
+                class="h-full w-20 sm:w-36 object-cover"
+                alt={entry.blog.name}
+              />
+            )}
+            <div class="p-2 flex flex-col flex-1">
               <h3 class="font-medium">{entry.blog.name}</h3>
 
-              <div class="flex items-center flex-1">
-                <span class="font-light">Edmonton</span>
+              <div class="flex items-start flex-1 mt-2">
+                <p class="font-light text-sm sm:text-base leading-none">
+                  {entry.blog.location}
+                </p>
 
-                <h4 class="text-4xl ml-auto">
+                <h4 class="text-4xl shrink-0 mt-auto ml-auto">
                   {entry.blog.rating}
                   <span class="text-base -ml-1">/ 10</span>
                 </h4>
@@ -52,14 +56,13 @@ const { pageEntries } = Astro.props;
               <img
                 src={entry.link.mediaUrl}
                 alt=""
-                class="w-16 h-16 object-cover"
+                class="w-16 full object-cover"
               />
             )}
 
             <p
               class:list={[
                 "p-4 text-lg text-center flex items-center justify-center flex-1",
-                { "-ml-16": entry.link.mediaUrl },
               ]}
             >
               {entry.link.displayText}

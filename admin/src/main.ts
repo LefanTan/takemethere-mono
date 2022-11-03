@@ -1,5 +1,4 @@
 import { createApp } from "vue";
-import "./styles/index.css";
 import App from "./App.vue";
 import { createPinia } from "pinia";
 import { Quasar, Dialog, LoadingBar, Notify } from "quasar";
@@ -23,6 +22,8 @@ import "@quasar/extras/bootstrap-icons/bootstrap-icons.css";
 
 // Import Quasar css
 import "quasar/src/css/index.sass";
+
+import "./styles/index.css";
 
 // Import Vue Router instance
 import router from "./routes";

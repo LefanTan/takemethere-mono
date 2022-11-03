@@ -1,6 +1,6 @@
 import express from "express";
 import { body, check, validationResult } from "express-validator";
-import authenticateJWT from "src/middlewares/auth";
+import { authenticateJWT } from "src/middlewares/auth";
 import { AuthorizedRequest } from "src/types/request";
 import { firebaseAdmin, prisma } from "../config";
 

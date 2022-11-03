@@ -18,7 +18,6 @@ export default function setupAuthenticationNavguard(router: Router) {
         if (user) {
           // Required so that token is set
           await $store.app.setUser(user);
-
           $store.app.takeMeUser = await UsersService.getUsers();
         }
         resolve(0);

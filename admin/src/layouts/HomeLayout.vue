@@ -22,6 +22,10 @@ const firstValidLetter = computed(() =>
     ?.toUpperCase()
 );
 
+const rightDrawerSize = computed(() => {
+  return $q.screen.gt.md ? 500 : 350;
+});
+
 const navLinks = [
   {
     text: "Home",
@@ -126,7 +130,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
     <q-drawer
       v-model="showRightDrawer"
       side="right"
-      :width="350"
+      :width="rightDrawerSize"
       class="shadow-lg flex flex-col"
     >
       <Suspense>

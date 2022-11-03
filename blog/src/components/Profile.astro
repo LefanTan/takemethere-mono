@@ -44,7 +44,14 @@ const firstValidLetter = [...user.displayName]
       <h1>{user.displayName}</h1>
 
       <!-- Link Icons -->
-      <div class="flex flex-wrap gap-2 mt-2">
+      <address class="flex flex-wrap gap-2 mt-2">
+        {
+          user.externalEmail && (
+            <a href={`mailto:${user.externalEmail}`}>
+              <iconify-icon icon="eva:email-outline" width="1.5rem" />
+            </a>
+          )
+        }
         {
           isUrl(user.tiktokUrl) && (
             <a href={user.tiktokUrl} target="_blank">
@@ -66,7 +73,14 @@ const firstValidLetter = [...user.displayName]
             </a>
           )
         }
-      </div>
+        {
+          isUrl(user.twitterUrl) && (
+            <a href={user.twitterUrl} target="_blank">
+              <iconify-icon icon="akar-icons:twitter-fill" width="1.5rem" />
+            </a>
+          )
+        }
+      </address>
     </div>
   </div>
   <p set:html={user.bio} />

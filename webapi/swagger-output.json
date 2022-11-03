@@ -98,13 +98,22 @@
         ],
         "summary": "Get User data (without page) through JWT",
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       },
@@ -115,6 +124,11 @@
         "summary": "Update TakeMe user data through JWT",
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -130,6 +144,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
@@ -205,13 +222,22 @@
         ],
         "summary": "Grab the authenticated user",
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Returns a user"
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
@@ -250,6 +276,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "schema": {
@@ -271,6 +302,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
@@ -287,6 +321,11 @@
         ],
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "profilePicture",
             "in": "formData",
             "type": "file",
@@ -300,6 +339,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
@@ -317,6 +359,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -325,6 +372,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }

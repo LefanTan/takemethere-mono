@@ -9,20 +9,12 @@ import { UsersService } from "@common/webapi/services/UsersService";
 import { MediasService } from "@common/webapi/services/MediasService";
 import { useFileDialog } from "@vueuse/core";
 import { User } from "@common/types";
+import FileInput from "../FileInput.vue";
 
 const $store = useStore();
 const takeMeUserData = $store.app.takeMeUser ?? ({} as User);
 
 const user = ref(takeMeUserData);
-
-// Profile Media
-const { files, open, reset } = useFileDialog();
-
-const localFileUrl = computed(() => {
-  if (!files.value || (files.value?.length ?? 0) <= 0) return;
-
-  return URL.createObjectURL(files.value[0]);
-});
 
 // To be used as comparison with user to see if there's changes made
 let oldUser = deepCopy(user.value);
@@ -32,7 +24,7 @@ watchDebounced(
   async () => {
     if (!isEqual(user.value, oldUser)) {
       // Call API
-      await UsersService.putUsers(user.value);
+      await UsersService.putUsers(undefined, user.value);
 
       $store.app.updatePreview();
       console.log("Update OK");
@@ -42,24 +34,17 @@ watchDebounced(
   { deep: true, debounce: 500 }
 );
 
-watch(files, async () => {
-  if (files.value && (files.value?.length ?? 0) > 0) {
-    const res = await MediasService.postMediaAddProfilePicture(files.value[0]);
+async function onFileAdded(files: FileList) {
+  const res = await MediasService.postMediaAddProfilePicture(files[0]);
 
-    // Assign newly upload media to user's object
-    user.value.profileMediaUrl = res;
-
-    // Reset local file url if there's any
-    reset();
-  }
-});
+  // Assign newly upload media to user's object
+  user.value.profileMediaUrl = res;
+}
 
 function deleteCurrentProfilePicture() {
-  if ((files.value?.length ?? 0) > 0) reset();
-
   const splitUrl = user.value.profileMediaUrl?.split("/") ?? [];
 
-  // Call api to delete current profile picture
+  // Grab the file name and Call api to delete current profile picture
   MediasService.deleteMedia(splitUrl[splitUrl?.length - 1]);
 
   user.value.profileMediaUrl = null;
@@ -71,32 +56,11 @@ function deleteCurrentProfilePicture() {
     <q-card>
       <q-card-section class="flex flex-col gap-2">
         <div class="flex items-end">
-          <label
-            class="relative h-28 w-28 rounded-lg overflow-hidden hover:brightness-75 cursor-pointer transition-all"
-            @click="() => open({ accept: $store.app.allowedMediaFormat })"
-          >
-            <div
-              v-if="!localFileUrl && !user.profileMediaUrl"
-              class="w-full h-full bg-secondary-light flex items-center justify-center"
-            >
-              <q-icon name="eva-image-outline" size="2rem" />
-            </div>
-
-            <q-img
-              v-else
-              :src="localFileUrl || (user.profileMediaUrl ?? '')"
-              alt="profile picture"
-              class="w-full h-full"
-              fit="cover"
-            />
-
-            <button
-              @click.stop="deleteCurrentProfilePicture"
-              class="absolute top-1 right-1 cursor-pointer bg-white rounded-full p-0.5"
-            >
-              <q-icon name="eva-trash-2-outline" size="1.25rem" />
-            </button>
-          </label>
+          <file-input
+            :uploaded-url="user.profileMediaUrl"
+            @file-added="onFileAdded"
+            @delete="deleteCurrentProfilePicture"
+          />
 
           <!-- Add validation to be non null -->
           <q-input
@@ -139,6 +103,17 @@ function deleteCurrentProfilePicture() {
         />
 
         <q-card-section horizontal class="flex items-center mt-2">
+          <q-icon size="1.25rem" name="eva-email-outline" class="mr-2" />
+          <q-input
+            v-model="user.externalEmail"
+            dense
+            placeholder="Add your contact email"
+            standout
+            class="flex-1"
+          />
+        </q-card-section>
+
+        <q-card-section horizontal class="flex items-center">
           <q-icon size="1.25rem" name="fa-brands fa-tiktok" class="mr-2" />
           <q-input
             v-model="user.tiktokUrl"
@@ -165,7 +140,18 @@ function deleteCurrentProfilePicture() {
           <q-input
             v-model="user.youtubeUrl"
             dense
-            placeholder="Add a Instagram Url"
+            placeholder="Add a Youtube Url"
+            standout
+            class="flex-1"
+          />
+        </q-card-section>
+
+        <q-card-section horizontal class="flex items-center">
+          <q-icon size="1.25rem" name="eva-twitter" class="mr-2" />
+          <q-input
+            v-model="user.twitterUrl"
+            dense
+            placeholder="Add a Twitter Url"
             standout
             class="flex-1"
           />
