@@ -346,6 +346,92 @@
         }
       }
     },
+    "/media/addToBlog/{blogId}": {
+      "post": {
+        "tags": [
+          "Medias"
+        ],
+        "summary": "Upload a picture to blog",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "blogId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "media",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Media to attach to blog"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/media/addToLink/{linkId}": {
+      "post": {
+        "tags": [
+          "Medias"
+        ],
+        "summary": "Upload a picture to link",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "linkId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "media",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Media to attach to link"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/media/{filename}": {
       "delete": {
         "tags": [

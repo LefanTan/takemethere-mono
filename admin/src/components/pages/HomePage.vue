@@ -13,11 +13,12 @@ import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
 import BlogEntryCardSection from "../cardSections/BlogEntryCardSection.vue";
+import { storeToRefs } from "pinia";
 
 const $store = useStore();
 
 let oldPage: PageWithEntries;
-const page = ref<PageWithEntries>();
+const { page } = storeToRefs($store.app);
 
 async function loadData() {
   const loadedPage: PageWithEntries = await PagesService.getPage();

@@ -1,25 +1,67 @@
 <script setup lang="ts">
 import { PageEntriesWithBlogAndLink } from "@common/types/client";
+import { MediasService } from "@common/webapi";
+import useStore from "@src/stores";
+import FileInput from "../FileInput.vue";
 
-defineProps<{ pageEntry: PageEntriesWithBlogAndLink }>();
+const $store = useStore();
+
+const props = defineProps<{ pageEntry: PageEntriesWithBlogAndLink }>();
+
+// Assign newly upload media to pageEntry's Blog object
+const pageEntryIndex = $store.app.page.pageEntries.findIndex(
+  (entry) => entry.id === props.pageEntry.id
+);
+
+const link =
+  pageEntryIndex !== -1
+    ? $store.app.page.pageEntries[pageEntryIndex].link
+    : undefined;
+
+async function onFileAdded(files: FileList) {
+  if (!link?.id) return;
+
+  const res = await MediasService.postMediaAddToLink(link?.id, files[0]);
+
+  if (link) link.mediaUrl = res;
+}
+
+function deleteMedia() {
+  if (!link?.mediaUrl) return;
+
+  const splitUrl = link.mediaUrl.split("/") ?? [];
+
+  // Grab the file name and Call api to delete current profile picture
+  MediasService.deleteMedia(splitUrl[splitUrl?.length - 1]);
+
+  link.mediaUrl = null;
+}
 </script>
 
 <template>
-  <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="pageEntry.link">
-    <q-input
-      standout
-      dense
-      placeholder="Display Text"
-      v-model="pageEntry.link!.displayText"
+  <q-card-section horizontal v-if="pageEntry.link">
+    <file-input
+      :uploaded-url="pageEntry.link.mediaUrl"
+      @file-added="onFileAdded"
+      @delete="deleteMedia"
+      class="h-22"
     />
-    <q-input standout dense placeholder="Link" v-model="pageEntry.link!.link" />
-    <q-input
-      standout
-      dense
-      placeholder="Photo Url"
-      type="url"
-      v-model="pageEntry.link.mediaUrl"
-    />
+
+    <q-card-section class="flex-1 p-0 ml-2">
+      <q-input
+        standout
+        dense
+        placeholder="Display Text"
+        class="mb-2"
+        v-model="pageEntry.link!.displayText"
+      />
+      <q-input
+        standout
+        dense
+        placeholder="Link"
+        v-model="pageEntry.link!.link"
+      />
+    </q-card-section>
   </q-card-section>
 </template>
 

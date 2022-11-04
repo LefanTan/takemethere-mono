@@ -30,3 +30,39 @@
 * {
   font-family: "Kumbh Sans";
 }
+
+/* Quasar Override */
+#body .q-card {
+  @apply rounded-lg shadow-lg;
+}
+
+.q-textarea.q-field--standout.q-field--highlighted {
+  border-radius: 40px;
+  .q-field__native {
+    color: #000;
+  }
+
+  .q-field__control {
+    background: var(--secondary-light) !important;
+    box-shadow: none;
+  }
+}
+
+.q-input.q-field--standout.q-field--highlighted {
+  .q-field__native {
+    color: #000;
+  }
+
+  .q-field__control {
+    background: var(--secondary-light) !important;
+    box-shadow: none;
+  }
+}
+
+#body .takeme-button {
+  @apply font-medium rounded-md;
+  &.black {
+    @apply text-white bg-black;
+    text-transform: none;
+  }
+}

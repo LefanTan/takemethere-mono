@@ -6,6 +6,9 @@ module.exports = {
   important: "#body",
   theme: {
     extend: {
+      spacing: {
+        22: "5.5rem",
+      },
       colors: {
         "secondary-light": "var(--secondary-light)",
       },

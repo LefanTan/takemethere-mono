@@ -52,19 +52,85 @@ mediaRoutes.post(
     if (!file) return res.status(400).json({ message: "no file lmao!" });
 
     const filePath = `${req.uid}/${file.originalname.split(".")[0]}.webp`;
-    const blob = bucket.file(filePath);
-    const blobStream = blob.createWriteStream();
 
-    const convertedBuffer = await sharp(file.buffer)
-      .resize(125, 125)
-      .toFormat("webp")
-      .toBuffer();
+    const resultPath = await uploadOptimizedImageToGoogle(
+      file,
+      filePath,
+      125,
+      125
+    );
 
-    blobStream.on("finish", () => {
-      return res.json(`${publicUrl}/${filePath}`);
-    });
+    return res.json(resultPath);
+  }
+);
 
-    blobStream.end(convertedBuffer);
+mediaRoutes.post(
+  "/addToBlog/:blogId",
+  authenticateJWT,
+  upload.single("media"),
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Upload a picture to blog'
+    // #swagger.consumes = ['multipart/form-data']
+    // #swagger.tags = ['Medias']
+    /* 
+    #swagger.parameters['media'] = {
+        in: 'formData',
+        type: 'file',
+        required: 'true',
+        description: 'Media to attach to blog',
+    }
+    */
+
+    const file = req.file;
+
+    if (!file) return res.status(400).json({ message: "no file lmao!" });
+
+    const filePath = `${req.uid}/${req.params.blogId}/${
+      file.originalname.split(".")[0]
+    }.webp`;
+    const resultPath = await uploadOptimizedImageToGoogle(
+      file,
+      filePath,
+      300,
+      300
+    );
+
+    return res.json(resultPath);
+  }
+);
+
+mediaRoutes.post(
+  "/addToLink/:linkId",
+  authenticateJWT,
+  upload.single("media"),
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Upload a picture to link'
+    // #swagger.consumes = ['multipart/form-data']
+    // #swagger.tags = ['Medias']
+    /* 
+    #swagger.parameters['media'] = {
+        in: 'formData',
+        type: 'file',
+        required: 'true',
+        description: 'Media to attach to link',
+    }
+    */
+
+    const file = req.file;
+
+    if (!file) return res.status(400).json({ message: "no file lmao!" });
+
+    const filePath = `${req.uid}/${req.params.linkId}/${
+      file.originalname.split(".")[0]
+    }.webp`;
+    const resultPath = await uploadOptimizedImageToGoogle(
+      file,
+      filePath,
+      125,
+      125
+    );
+
+    return res.json(resultPath);
   }
 );
 
@@ -90,5 +156,30 @@ mediaRoutes.delete(
     }
   }
 );
+
+async function uploadOptimizedImageToGoogle(
+  file: Express.Multer.File,
+  filePath: string,
+  width: number,
+  height: number
+) {
+  const blob = bucket.file(filePath);
+  const blobStream = blob.createWriteStream();
+
+  const convertedBuffer = await sharp(file.buffer)
+    .resize(width, height)
+    .toFormat("webp")
+    .toBuffer();
+
+  const result = new Promise<string>((resolve, reject) => {
+    blobStream.on("finish", () => {
+      return resolve(`${publicUrl}/${filePath}` as string);
+    });
+  });
+
+  blobStream.end(convertedBuffer);
+
+  return result;
+}
 
 export default mediaRoutes;

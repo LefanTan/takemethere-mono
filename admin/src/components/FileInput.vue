@@ -28,8 +28,9 @@ watch(files, async () => {
 
 <template>
   <label
+    for="media"
     class="relative w-28 rounded-lg overflow-hidden hover:brightness-75 cursor-pointer transition-all"
-    @click="() => open({ accept: $store.app.allowedMediaFormat })"
+    @click.stop="() => open({ accept: $store.app.allowedMediaFormat })"
   >
     <!-- If there's no locally selected url or uploaded url, show default logo -->
     <div
@@ -54,7 +55,7 @@ watch(files, async () => {
           reset();
         }
       "
-      class="absolute top-1 right-1 cursor-pointer bg-white rounded-full p-0.5"
+      class="absolute top-1 right-1 bg-white rounded-full p-0.5"
     >
       <q-icon name="eva-trash-2-outline" size="1.25rem" />
     </button>

@@ -1,14 +1,55 @@
 <script setup lang="ts">
 import { PageEntriesWithBlogAndLink } from "@common/types/client";
+import { MediasService } from "@common/webapi";
+import useStore from "@src/stores";
 import FileInput from "../FileInput.vue";
 
-defineProps<{ pageEntry: PageEntriesWithBlogAndLink }>();
+const $store = useStore();
+
+const props = defineProps<{ pageEntry: PageEntriesWithBlogAndLink }>();
+
+// Assign newly upload media to pageEntry's Blog object
+const pageEntryIndex = $store.app.page.pageEntries.findIndex(
+  (entry) => entry.id === props.pageEntry.id
+);
+
+const blog =
+  pageEntryIndex !== -1
+    ? $store.app.page.pageEntries[pageEntryIndex].blog
+    : undefined;
+
+async function onFileAdded(files: FileList) {
+  if (!props.pageEntry.blog?.id) return;
+
+  const res = await MediasService.postMediaAddToBlog(
+    props.pageEntry.blog.id,
+    files[0]
+  );
+
+  if (blog) blog.mediaUrl = res;
+}
+
+function deleteMedia() {
+  if (!blog?.mediaUrl) return;
+
+  const splitUrl = blog.mediaUrl.split("/") ?? [];
+
+  // Grab the file name and Call api to delete current profile picture
+  MediasService.deleteMedia(splitUrl[splitUrl?.length - 1]);
+
+  blog.mediaUrl = null;
+}
 </script>
 
 <template>
   <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="pageEntry.blog">
     <q-card-section horizontal>
-      <file-input class="mr-4" />
+      <file-input
+        :uploaded-url="pageEntry.blog.mediaUrl"
+        @file-added="onFileAdded"
+        @delete="deleteMedia"
+        class="mr-4"
+      />
       <div class="flex flex-col flex-1 [&>*]:mb-2">
         <q-input
           standout
@@ -79,8 +120,15 @@ defineProps<{ pageEntry: PageEntriesWithBlogAndLink }>();
       placeholder="Enter a short review!"
       type="textarea"
       class="test"
+      :maxlength="350"
       v-model="pageEntry.blog.shortReview"
-    />
+    >
+      <template #append>
+        <p class="absolute bottom-2 right-2 text-black text-sm">
+          {{ 350 - (pageEntry.blog.shortReview?.length ?? 0) }}/350
+        </p>
+      </template>
+    </q-input>
   </q-card-section>
 </template>
 

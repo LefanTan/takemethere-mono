@@ -7,7 +7,6 @@ import { deepCopy } from "@src/lib/helpers";
 import useStore from "@src/stores";
 import { UsersService } from "@common/webapi/services/UsersService";
 import { MediasService } from "@common/webapi/services/MediasService";
-import { useFileDialog } from "@vueuse/core";
 import { User } from "@common/types";
 import FileInput from "../FileInput.vue";
 
@@ -60,6 +59,7 @@ function deleteCurrentProfilePicture() {
             :uploaded-url="user.profileMediaUrl"
             @file-added="onFileAdded"
             @delete="deleteCurrentProfilePicture"
+            class="h-28"
           />
 
           <!-- Add validation to be non null -->
