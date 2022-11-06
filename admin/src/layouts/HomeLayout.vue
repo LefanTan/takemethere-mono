@@ -17,7 +17,7 @@ const showRightDrawer = ref(!isMobile.value);
 const rightDrawerSize = computed(() => {
   if ($q.screen.gt.sm) {
     if ($q.screen.gt.lg) {
-      return 500;
+      return 475;
     }
     return 400;
   }

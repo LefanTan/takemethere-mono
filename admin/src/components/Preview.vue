@@ -21,12 +21,15 @@ const previewUrl = import.meta.env.PROD
 
 const previewHeight = computed(() => {
   if ($q.screen.gt.sm) {
-    if ($q.screen.gt.lg) {
-      // large size
-      return 750;
+    if ($q.screen.gt.md) {
+      if ($q.screen.gt.lg) {
+        // large size
+        return 750;
+      }
+      // mid size
+      return 650;
     }
-    // mid size
-    return 650;
+    return 600;
   }
   // Phone size
   return 500;
@@ -67,12 +70,15 @@ function onCopyClipboard() {
       @click="onCopyClipboard"
     />
   </p>
-  <div class="flex-1 flex flex-col justify-center items-center -mt-20 p-6">
-    <div class="relative w-full">
+  <div
+    class="flex-1 flex flex-col flex-nowrap justify-center items-center -mt-20 p-6"
+  >
+    <div class="relative w-full flex justify-center">
       <iframe
         ref="preview"
         :src="previewUrl"
         :height="`${previewHeight}px`"
+        :style="{ 'max-width': `${previewHeight / 1.5}px` }"
         width="100%"
         class="rounded-lg ring-4 ring-black small-scrollbar"
         @load="iframeLoaded = true"
@@ -89,7 +95,7 @@ function onCopyClipboard() {
     <q-btn
       label="Close"
       icon="eva-close-outline"
-      class="takeme-button black mobile-only mt-4"
+      class="takeme-button black only-mobile mt-4"
       @click="$emit('close')"
     />
   </div>
