@@ -6,6 +6,9 @@ module.exports = {
   important: "#body",
   theme: {
     extend: {
+      screens: {
+        md: "824px",
+      },
       spacing: {
         22: "5.5rem",
       },

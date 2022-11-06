@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { v4 as uuid } from "uuid";
-import { useQuasar } from "quasar";
 import draggable from "vuedraggable";
 import { watchDebounced } from "@vueuse/core";
 import isEquals from "lodash.isequal";
@@ -170,7 +169,7 @@ function dragEnd() {
                       : "Category Title"
                   }}
                 </h4>
-                <template v-if="!element.title">
+                <template v-if="element.blog || element.link">
                   <icon-button
                     name="eva-bar-chart-2-outline"
                     tooltip-label="View analytic"

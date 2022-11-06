@@ -4,6 +4,6 @@
   }
 
   .only-mobile {
-    @apply flex lg:hidden;
+    @apply flex md:hidden;
   }
 }

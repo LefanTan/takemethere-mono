@@ -20,14 +20,17 @@ const previewUrl = import.meta.env.PROD
   : `http://localhost:3000/${userData?.username}`;
 
 const previewHeight = computed(() => {
-  return `${
-    $q.screen.gt.md ? 750 : $q.screen.gt.sm ? 650 : $q.screen.gt.sm ? 600 : 500
-  }px`;
+  if ($q.screen.gt.sm) {
+    if ($q.screen.gt.lg) {
+      // large size
+      return 750;
+    }
+    // mid size
+    return 650;
+  }
+  // Phone size
+  return 500;
 });
-
-// const previewWidth = computed(() => {
-//   return `${$q.screen.gt.md ? 750 : }px`;
-// });
 
 const { copy } = useClipboard({ source: previewUrl });
 
@@ -69,7 +72,7 @@ function onCopyClipboard() {
       <iframe
         ref="preview"
         :src="previewUrl"
-        :height="previewHeight"
+        :height="`${previewHeight}px`"
         width="100%"
         class="rounded-lg ring-4 ring-black small-scrollbar"
         @load="iframeLoaded = true"

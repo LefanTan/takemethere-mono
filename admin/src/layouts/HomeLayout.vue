@@ -3,7 +3,6 @@ import { useQuasar } from "quasar";
 import { computed, ref, watch } from "vue";
 
 import Preview from "@components/Preview.vue";
-import useStore from "@src/stores";
 import router from "@routes/index";
 import UserNavBar from "@src/components/UserNavBar.vue";
 import UserProfile from "@src/components/UserProfile.vue";
@@ -16,8 +15,13 @@ const showLeftDrawer = ref(!isMobile.value);
 const showRightDrawer = ref(!isMobile.value);
 
 const rightDrawerSize = computed(() => {
-  // make the condition a global variable
-  return $q.screen.gt.md ? 500 : $q.screen.gt.sm ? 450 : $q.screen.width;
+  if ($q.screen.gt.sm) {
+    if ($q.screen.gt.lg) {
+      return 500;
+    }
+    return 400;
+  }
+  return $q.screen.width;
 });
 
 const navLinks = [
@@ -44,12 +48,21 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
 
 <template>
   <q-layout view="lhr lpr lfr" class="bg-secondary-light">
-    <q-drawer v-model="showLeftDrawer" side="left" :width="100" class="flex">
+    <q-drawer
+      v-model="showLeftDrawer"
+      :breakpoint="$q.screen.sizes.md"
+      show-if-above
+      side="left"
+      :width="100"
+      class="flex"
+    >
       <UserNavBar class="flex-1" />
     </q-drawer>
 
     <q-drawer
       v-model="showRightDrawer"
+      :breakpoint="$q.screen.sizes.md"
+      show-if-above
       side="right"
       :width="rightDrawerSize"
       class="shadow-lg flex flex-col gap-8"
