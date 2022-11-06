@@ -12,6 +12,11 @@ const { pageEntries } = Astro.props;
 <>
   {
     pageEntries.map((entry) => {
+      const hasBody =
+        (entry.blog.firstButtonText && entry.blog.firstButtonLink) ||
+        (entry.blog.secondButtonText && entry.blog.secondButtonLink) ||
+        entry.blog.shortReview;
+
       // Is a Category entry
       if (entry.title || entry.title === "") {
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
@@ -46,33 +51,35 @@ const { pageEntries } = Astro.props;
                 </div>
               </div>
             </div>
-            <div class="flex flex-col p-2">
-              {entry.blog.firstButtonText && (
-                <a
-                  href={entry.blog.firstButtonLink}
-                  target="_blank"
-                  class="bg-black rounded-md mb-2 p-1 text-white text-sm text-center"
-                >
-                  {entry.blog.firstButtonText}
-                </a>
-              )}
-              {entry.blog.secondButtonText && (
-                <a
-                  href={entry.blog.secondButtonLink}
-                  target="_blank"
-                  class="bg-secondary-light rounded-md mb-2 p-1 text-sm text-center"
-                >
-                  {entry.blog.secondButtonText}
-                </a>
-              )}
-              {entry.blog.shortReview && (
-                <TruncatedText
-                  client:idle
-                  text={entry.blog.shortReview}
-                  className="text-sm sm:text-base leading-tight"
-                />
-              )}
-            </div>
+            {hasBody && (
+              <div class="flex flex-col p-2">
+                {entry.blog.firstButtonText && (
+                  <a
+                    href={entry.blog.firstButtonLink}
+                    target="_blank"
+                    class="bg-black rounded-md mb-2 p-1 text-white text-sm text-center"
+                  >
+                    {entry.blog.firstButtonText}
+                  </a>
+                )}
+                {entry.blog.secondButtonText && (
+                  <a
+                    href={entry.blog.secondButtonLink}
+                    target="_blank"
+                    class="bg-secondary-light rounded-md mb-2 p-1 text-sm text-center"
+                  >
+                    {entry.blog.secondButtonText}
+                  </a>
+                )}
+                {entry.blog.shortReview && (
+                  <TruncatedText
+                    client:idle
+                    text={entry.blog.shortReview}
+                    className="text-sm sm:text-base leading-tight"
+                  />
+                )}
+              </div>
+            )}
           </div>
         );
       }
