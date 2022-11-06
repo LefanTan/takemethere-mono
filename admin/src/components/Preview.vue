@@ -18,7 +18,7 @@ const previewUrl = import.meta.env.PROD
   : `http://localhost:3000/${userData?.username}`;
 
 const previewHeight = computed(() => {
-  return `${$q.screen.gt.md ? 750 : 500}px`;
+  return `${$q.screen.gt.md ? 750 : 600}px`;
 });
 
 const { copy } = useClipboard({ source: previewUrl });

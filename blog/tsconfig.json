@@ -3,13 +3,31 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@styles/*": ["src/styles/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@lib/*": ["src/lib/*"],
-      "@common/*": ["../common/*"]
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@common/*": [
+        "../common/*"
+      ]
     },
-    "types": ["@astrojs/image/client"]
+    "types": [
+      "@astrojs/image/client"
+    ],
+    "jsx": "preserve"
   },
-  "include": ["**/*.ts", "**/*.astro", "**/*.tsx", "**/*.vue"]
+  "include": [
+    "**/*.ts",
+    "**/*.astro",
+    "**/*.tsx",
+    "**/*.vue"
+  ]
 }

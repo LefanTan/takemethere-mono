@@ -1,5 +1,6 @@
 ---
 import { PageEntriesWithBlogAndLink } from "@common/types/client";
+import TruncatedText from "./TruncatedText.vue";
 
 export interface Props {
   pageEntries: PageEntriesWithBlogAndLink[];
@@ -11,7 +12,6 @@ const { pageEntries } = Astro.props;
 <>
   {
     pageEntries.map((entry) => {
-      console.log(entry);
       // Is a Category entry
       if (entry.title || entry.title === "") {
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
@@ -25,7 +25,7 @@ const { pageEntries } = Astro.props;
               {entry.blog.mediaUrl && (
                 <img
                   src={entry.blog.mediaUrl}
-                  class="h-full w-20 sm:w-36 object-cover"
+                  class="w-20 sm:w-36 object-cover"
                   alt={entry.blog.name}
                 />
               )}
@@ -66,7 +66,11 @@ const { pageEntries } = Astro.props;
                 </a>
               )}
               {entry.blog.shortReview && (
-                <p class="text-sm leading-tight">{entry.blog.shortReview}</p>
+                <TruncatedText
+                  client:idle
+                  text={entry.blog.shortReview}
+                  className="text-sm sm:text-base leading-tight"
+                />
               )}
             </div>
           </div>

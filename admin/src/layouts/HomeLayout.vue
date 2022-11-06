@@ -23,7 +23,7 @@ const firstValidLetter = computed(() =>
 );
 
 const rightDrawerSize = computed(() => {
-  return $q.screen.gt.md ? 500 : 350;
+  return $q.screen.gt.md ? 500 : 400;
 });
 
 const navLinks = [
@@ -131,7 +131,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       v-model="showRightDrawer"
       side="right"
       :width="rightDrawerSize"
-      class="shadow-lg flex flex-col"
+      class="shadow-lg flex flex-col gap-4"
     >
       <Suspense>
         <preview />

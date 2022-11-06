@@ -1,8 +1,10 @@
 import { defineConfig } from "astro/config";
-
 import image from "@astrojs/image";
 import node from "@astrojs/node";
 import tailwind from "@astrojs/tailwind";
+
+// https://astro.build/config
+import vue from "@astrojs/vue";
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,10 +18,19 @@ export default defineConfig({
   }),
   integrations: [
     tailwind({
-      config: { applyBaseStyles: false },
+      config: {
+        applyBaseStyles: false,
+      },
     }),
     image({
       serviceEntryPoint: "@astrojs/image/sharp",
+    }),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith("iconify-"),
+        },
+      },
     }),
   ],
 });
