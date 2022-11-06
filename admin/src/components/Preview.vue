@@ -5,6 +5,8 @@ import { useQuasar } from "quasar";
 import { onMounted, onBeforeUnmount, ref, computed } from "vue";
 import IconButton from "./buttons/IconButton.vue";
 
+defineEmits(["close"]);
+
 const preview = ref<HTMLIFrameElement>();
 
 const $q = useQuasar();
@@ -18,8 +20,14 @@ const previewUrl = import.meta.env.PROD
   : `http://localhost:3000/${userData?.username}`;
 
 const previewHeight = computed(() => {
-  return `${$q.screen.gt.md ? 750 : 600}px`;
+  return `${
+    $q.screen.gt.md ? 750 : $q.screen.gt.sm ? 650 : $q.screen.gt.sm ? 600 : 500
+  }px`;
 });
+
+// const previewWidth = computed(() => {
+//   return `${$q.screen.gt.md ? 750 : }px`;
+// });
 
 const { copy } = useClipboard({ source: previewUrl });
 
@@ -75,6 +83,12 @@ function onCopyClipboard() {
         class="absolute top-2 right-2"
       />
     </div>
+    <q-btn
+      label="Close"
+      icon="eva-close-outline"
+      class="takeme-button black mobile-only mt-4"
+      @click="$emit('close')"
+    />
   </div>
 </template>
 

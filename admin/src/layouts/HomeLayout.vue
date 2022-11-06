@@ -2,28 +2,22 @@
 import { useQuasar } from "quasar";
 import { computed, ref, watch } from "vue";
 
-import IconButton from "@src/components/buttons/IconButton.vue";
 import Preview from "@components/Preview.vue";
 import useStore from "@src/stores";
 import router from "@routes/index";
+import UserNavBar from "@src/components/UserNavBar.vue";
+import UserProfile from "@src/components/UserProfile.vue";
 
 const $q = useQuasar();
-const $store = useStore();
 
 const isMobile = computed(() => $q.screen.width < 1023);
 
 const showLeftDrawer = ref(!isMobile.value);
 const showRightDrawer = ref(!isMobile.value);
 
-// To be used as Profile Picture if user hasn't uploaded any profile picture
-const firstValidLetter = computed(() =>
-  [...($store.app.takeMeUser?.displayName ?? "")]
-    .find((char) => char.toUpperCase() != char.toLowerCase())
-    ?.toUpperCase()
-);
-
 const rightDrawerSize = computed(() => {
-  return $q.screen.gt.md ? 500 : 400;
+  // make the condition a global variable
+  return $q.screen.gt.md ? 500 : $q.screen.gt.sm ? 450 : $q.screen.width;
 });
 
 const navLinks = [
@@ -50,97 +44,38 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
 
 <template>
   <q-layout view="lhr lpr lfr" class="bg-secondary-light">
-    <q-drawer
-      v-model="showLeftDrawer"
-      side="left"
-      :width="100"
-      class="p-3 flex flex-col no-wrap items-center shadow-lg"
-    >
-      <!-- replace with logo -->
-      <router-link to="/" class="h-12 w-full">
-        <q-img
-          src="https://storage.googleapis.com/takeme-public-assets/compact-logo.png"
-          fit="contain"
-          class="block"
-          img-class="block"
-        />
-      </router-link>
-
-      <q-img
-        class="mt-6 h-16 w-16 rounded-full cursor-pointer"
-        :class="{ 'bg-black': !$store.app.takeMeUser?.profileMediaUrl }"
-        :ratio="1"
-        :src="$store.app.takeMeUser?.profileMediaUrl ?? ''"
-      >
-        <h3
-          v-if="!$store.app.takeMeUser?.profileMediaUrl"
-          class="text-white absolute center-absolute"
-        >
-          {{ firstValidLetter }}
-        </h3>
-        <q-popup-proxy :offset="[-40, 10]">
-          <q-card class="py-3 rounded-lg">
-            <strong class="px-6">Lefan</strong>
-            <q-card-section class="px-3 py-0">
-              <q-list class="mt-2">
-                <q-item to="/profile" replace class="rounded-lg px-3" clickable>
-                  <q-item-section> Account Settings </q-item-section>
-                  <q-item-section side>
-                    <q-icon name="eva-arrow-ios-forward" />
-                  </q-item-section>
-                </q-item>
-                <q-item class="rounded-lg px-3" clickable>
-                  <q-item-section> Upgrade to Premium </q-item-section>
-                  <q-item-section side>
-                    <q-icon name="eva-arrow-ios-forward" />
-                  </q-item-section>
-                </q-item>
-              </q-list> </q-card-section
-          ></q-card>
-        </q-popup-proxy>
-      </q-img>
-
-      <icon-button
-        name="eva-question-mark"
-        tooltip-label="Get help"
-        :tooltip-props="{
-          offset: [40, 0],
-          anchor: 'center end',
-          self: 'center middle',
-        }"
-        size="2rem"
-        class="mt-auto h-12 w-12 rounded-full bg-black text-white"
-        @click="$store.app.logout()"
-      />
-
-      <icon-button
-        name="eva-log-out"
-        tooltip-label="Logout"
-        :tooltip-props="{
-          offset: [40, 0],
-          anchor: 'center end',
-          self: 'center middle',
-        }"
-        size="2rem"
-        class="mt-2 rotate-180"
-        @click="$store.app.logout()"
-      />
+    <q-drawer v-model="showLeftDrawer" side="left" :width="100" class="flex">
+      <UserNavBar class="flex-1" />
     </q-drawer>
 
     <q-drawer
       v-model="showRightDrawer"
       side="right"
       :width="rightDrawerSize"
-      class="shadow-lg flex flex-col gap-4"
+      class="shadow-lg flex flex-col gap-8"
     >
       <Suspense>
-        <preview />
+        <preview @close="showRightDrawer = false" />
 
         <template #fallback> Loading... </template>
       </Suspense>
     </q-drawer>
 
     <q-page-container class="flex flex-col min-h-0 max-h-screen flex-nowrap">
+      <!-- Mobile only header -->
+      <div
+        class="only-mobile items-center justify-between w-full p-3 bg-white border-b-2 border-secondary-light"
+      >
+        <router-link to="/" class="w-28">
+          <q-img
+            src="https://storage.googleapis.com/takeme-public-assets/logo.png"
+            fit="contain"
+            class="block"
+            img-class="block"
+          />
+        </router-link>
+        <UserProfile class="w-12 h-12" />
+      </div>
       <nav class="px-3 py-2 shadow-md z-10 bg-white">
         <router-link
           v-for="link in navLinks"
@@ -155,6 +90,12 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
           <router-view />
         </Suspense>
       </q-page>
+      <q-btn
+        label="Preview page"
+        icon="eva-eye-outline"
+        class="takeme-button black only-mobile fixed bottom-4 left-1/2 -translate-x-1/2"
+        @click="showRightDrawer = true"
+      />
     </q-page-container>
   </q-layout>
 </template>

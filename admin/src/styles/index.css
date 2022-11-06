@@ -61,8 +61,9 @@
 
 #body .takeme-button {
   @apply font-medium rounded-md;
+  text-transform: none;
+
   &.black {
     @apply text-white bg-black;
-    text-transform: none;
   }
 }

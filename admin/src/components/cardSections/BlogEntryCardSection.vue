@@ -43,12 +43,12 @@ function deleteMedia() {
 
 <template>
   <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="pageEntry.blog">
-    <q-card-section horizontal>
+    <q-card-section horizontal class="flex-col lg:flex-row">
       <file-input
         :uploaded-url="pageEntry.blog.mediaUrl"
         @file-added="onFileAdded"
         @delete="deleteMedia"
-        class="mr-4"
+        class="mr-4 mb-4 lg:mb-0"
       />
       <div class="flex flex-col flex-1 [&>*]:mb-2">
         <q-input
@@ -63,7 +63,7 @@ function deleteMedia() {
           placeholder="Location"
           v-model="pageEntry.blog.location"
         />
-        <div class="flex items-end self-end">
+        <div class="flex items-end lg:self-end">
           <q-input
             standout
             dense
