@@ -17,6 +17,7 @@
     "@astrojs/vue": "^1.2.1",
     "@iconify/iconify": "^3.0.0",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "analytic-tracker": "^1.0.10",
     "astro": "^1.6.0",
     "cross-env": "^7.0.3",
     "postcss-import": "^15.0.0",

@@ -9,6 +9,20 @@ export interface Props {
 const { pageEntries } = Astro.props;
 ---
 
+<script>
+  const linkClickHandler = (context: any) => {
+    window.AnalyticTracker.logAnalytic("LinkClick", {
+      linkId: context.dataset.linkId,
+    });
+  };
+
+  Array.from(document.getElementsByClassName("takeme-link")).forEach(
+    (element) =>
+      element.addEventListener("click", function () {
+        linkClickHandler(this);
+      })
+  );
+</script>
 <>
   {
     pageEntries.map((entry) => {
@@ -87,9 +101,10 @@ const { pageEntries } = Astro.props;
       if (entry.link.link && entry.link.displayText) {
         return (
           <a
+            data-link-id={entry.link.id}
             href={entry.link.link}
             target="_blank"
-            class="flex rounded-lg ring-black-2 overflow-hidden mb-4"
+            class="takeme-link flex rounded-lg ring-black-2 overflow-hidden mb-4"
           >
             {entry.link.mediaUrl && (
               <img

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { ref } from "vue";
+
 import router from "@src/routes";
 import useStore from "@src/stores";
-import { ref } from "vue";
-import { UsersService } from "@common/webapi";
 
 const $store = useStore();
 

@@ -21,6 +21,16 @@ const { title } = Astro.props;
     <script
       src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.1/dist/iconify-icon.min.js"
     ></script>
+    <script>
+      import { AnalyticTracker } from "@common/analytic-tracker/src/index";
+
+      window.AnalyticTracker = new AnalyticTracker(
+        "takeme-blog",
+        import.meta.env.PROD
+          ? "https://api.takeme.blog/"
+          : "http://localhost:5080"
+      );
+    </script>
   </head>
   <body class="small-scrollbar overflow-auto flex flex-col h-screen">
     <slot />

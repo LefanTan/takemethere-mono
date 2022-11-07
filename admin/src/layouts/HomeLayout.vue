@@ -65,7 +65,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       show-if-above
       side="right"
       :width="rightDrawerSize"
-      class="shadow-lg flex flex-col gap-8"
+      class="shadow-lg flex flex-col flex-nowrap gap-8"
     >
       <Suspense>
         <preview @close="showRightDrawer = false" />

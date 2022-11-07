@@ -20,18 +20,19 @@ const $store = useStore();
 
     <UserProfile class="w-16 h-16 mt-6" />
 
-    <icon-button
-      name="eva-question-mark"
-      tooltip-label="Get help"
-      :tooltip-props="{
-        offset: [40, 0],
-        anchor: 'center end',
-        self: 'center middle',
-      }"
-      size="2rem"
-      class="mt-auto h-12 w-12 rounded-full bg-black text-white"
-      @click="$store.app.logout()"
-    />
+    <a href="mailto:lefantan@hotmail.com" target="_blank" class="mt-auto">
+      <icon-button
+        name="eva-question-mark"
+        tooltip-label="Get help"
+        :tooltip-props="{
+          offset: [40, 0],
+          anchor: 'center end',
+          self: 'center middle',
+        }"
+        size="2rem"
+        class="h-12 w-12 rounded-full bg-black text-white"
+      />
+    </a>
 
     <icon-button
       name="eva-log-out"

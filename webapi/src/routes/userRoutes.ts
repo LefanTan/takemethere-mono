@@ -11,6 +11,25 @@ import { firebaseAdmin, prisma } from "../config";
 const userRoutes = express.Router();
 
 /**
+ * Check if a given username is available or taken
+ */
+userRoutes.get("/:username/available", async (req, res) => {
+  // #swagger.summary = 'Check if a given username is available or taken'
+  // #swagger.tags = ['Users']
+
+  const user = await prisma.user.findFirst({
+    where: {
+      username: req.params.username,
+    },
+  });
+
+  if (!user) {
+    return res.sendStatus(200);
+  }
+  return res.status(400).json({ message: "Username taken!" });
+});
+
+/**
  * Retrieve email based on a given username
  */
 userRoutes.get("/email/:username", async (req, res) => {

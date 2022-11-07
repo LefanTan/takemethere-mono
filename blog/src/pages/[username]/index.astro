@@ -48,6 +48,11 @@ const bgColor = "#FFF";
       window.location.reload();
     }
   });
+
+  // Log PageVisit on load
+  addEventListener("load", () => {
+    window.AnalyticTracker?.logAnalytic("PageVisit");
+  });
 </script>
 
 <style lang="less" define:vars={{ bgColor }}>

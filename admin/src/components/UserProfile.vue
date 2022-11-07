@@ -36,15 +36,19 @@ const firstValidLetter = computed(() =>
                 <q-icon name="eva-arrow-ios-forward" />
               </q-item-section>
             </q-item>
-            <!-- <q-item class="rounded-lg px-3" clickable>
-              <q-item-section> Upgrade to Premium </q-item-section>
+            <q-item
+              tag="a"
+              href="mailto:lefantan@hotmail.com"
+              class="rounded-lg px-3"
+              clickable
+            >
+              <q-item-section> Get Help </q-item-section>
               <q-item-section side>
                 <q-icon name="eva-arrow-ios-forward" />
               </q-item-section>
-            </q-item> -->
-          </q-list>
-        </q-card-section></q-card
-      >
+            </q-item>
+          </q-list> </q-card-section
+      ></q-card>
     </q-popup-proxy>
   </q-img>
 </template>

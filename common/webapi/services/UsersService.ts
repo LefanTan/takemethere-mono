@@ -8,6 +8,27 @@ import { request as __request } from '../core/request';
 export class UsersService {
 
     /**
+     * Check if a given username is available or taken
+     * @param username
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static getUsersAvailable(
+        username: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/{username}/available',
+            path: {
+                'username': username,
+            },
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
      * Retrieve email based on a given username
      * @param username
      * @returns any OK

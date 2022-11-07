@@ -29,6 +29,31 @@
         }
       }
     },
+    "/users/{username}/available": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Check if a given username is available or taken",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/users/email/{username}": {
       "get": {
         "tags": [
