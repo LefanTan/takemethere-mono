@@ -11,7 +11,7 @@ const $store = useStore();
   <div class="p-3 flex flex-col no-wrap items-center shadow-lg">
     <router-link to="/" class="h-12 w-full">
       <q-img
-        src="https://storage.googleapis.com/takeme-public-assets/compact-logo.png"
+        src="https://storage.googleapis.com/takeme-public-assets/takeme/compact-logo.png"
         fit="contain"
         class="block"
         img-class="block"

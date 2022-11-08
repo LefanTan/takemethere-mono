@@ -81,7 +81,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       >
         <router-link to="/" class="w-28">
           <q-img
-            src="https://storage.googleapis.com/takeme-public-assets/logo.png"
+            src="https://storage.googleapis.com/takeme-public-assets/takeme/logo.png"
             fit="contain"
             class="block"
             img-class="block"

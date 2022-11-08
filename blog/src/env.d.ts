@@ -1,6 +1,6 @@
 /// <reference types="@astrojs/image/client" />
 
-import { AnalyticTracker } from "@common/analytic-tracker/src/index";
+import { AnalyticTracker } from "analytic-tracker";
 
 declare global {
   interface Window {

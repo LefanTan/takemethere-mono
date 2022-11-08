@@ -7,6 +7,7 @@ export class AnalyticRecord {
   // Implicitly creates these fields
   constructor(
     public readonly appId: string,
+    public readonly propertyId: string,
     public readonly eventId: string,
     public readonly sessionId: string,
     public readonly userAgent: string,
@@ -46,7 +47,11 @@ export class AnalyticTracker {
   private readonly referrer: string;
   private readonly sessionId: string;
 
-  constructor(public appId: string, public readonly endpoint: string) {
+  constructor(
+    public appId: string,
+    public propertyId: string,
+    public readonly endpoint: string
+  ) {
     // Initialize session
     this.ua = navigator.userAgent;
     this.referrer = document.referrer;
@@ -94,6 +99,7 @@ export class AnalyticTracker {
   logAnalytic(eventId: string, eventProperties?: object) {
     const record = new AnalyticRecord(
       this.appId,
+      this.propertyId,
       eventId,
       this.sessionId,
       this.ua,

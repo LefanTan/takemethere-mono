@@ -4,12 +4,13 @@
  */
 export declare class AnalyticRecord {
     readonly appId: string;
+    readonly propertyId: string;
     readonly eventId: string;
     readonly sessionId: string;
     readonly userAgent: string;
     readonly referrer: string;
     readonly eventProperties?: object | undefined;
-    constructor(appId: string, eventId: string, sessionId: string, userAgent: string, referrer: string, eventProperties?: object | undefined);
+    constructor(appId: string, propertyId: string, eventId: string, sessionId: string, userAgent: string, referrer: string, eventProperties?: object | undefined);
     /**
      * Human-readable description of the record
      * @returns
@@ -26,11 +27,12 @@ export declare class AnalyticRecord {
  */
 export declare class AnalyticTracker {
     appId: string;
+    propertyId: string;
     readonly endpoint: string;
     private readonly ua;
     private readonly referrer;
     private readonly sessionId;
-    constructor(appId: string, endpoint: string);
+    constructor(appId: string, propertyId: string, endpoint: string);
     /**
      * Create a post request given the specified data
      * @param eventId

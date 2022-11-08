@@ -14,6 +14,7 @@ module.exports = {
       },
       colors: {
         "secondary-light": "var(--secondary-light)",
+        beige: "#FFF1E3",
       },
       boxShadow: {
         md: "0 0px 6px -1px rgb(0 0 0 / 0.1)",
