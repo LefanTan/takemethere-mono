@@ -79,7 +79,7 @@ userRoutes.get("/:username/page", async (req: AuthorizedRequest, res) => {
                 order: "desc",
               },
               include: {
-                blog: true,
+                review: true,
                 link: true,
               },
             },
