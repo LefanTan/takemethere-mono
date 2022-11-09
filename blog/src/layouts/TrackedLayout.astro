@@ -1,0 +1,45 @@
+---
+/**
+ * TrackedLayout - Layout to be used on all TakeMe Links
+ * 1. SEO optimized
+ * 2. Contains analytic script
+ */
+
+export interface Props {
+  user: User;
+}
+
+import { User } from "@common/types";
+import SEO from "@components/SEO.astro";
+import BaseLayout from "./BaseLayout.astro";
+
+const prod = import.meta.env.PROD;
+
+const { user } = Astro.props;
+---
+
+<BaseLayout title="">
+  <!-- Goes into header -->
+  <!-- TODO: Replace with hardcoded url with vanity url -->
+  <SEO
+    slot="header"
+    title={`${user.username} | TakeMe - Link in Bio tool for Bloggers`}
+    description={user.bio}
+    image={user.profileMediaUrl}
+    url={`https://takeme.blog/${user.username}`}
+  />
+
+  <!-- Main content -->
+  <slot />
+
+  <!-- Goes after main content/slot -->
+  <script slot="append" type="module" define:vars={{ uid: user.id, prod }}>
+    import { AnalyticTracker } from "../../node_modules/analytic-tracker/dist/index";
+
+    window.AnalyticTracker = new AnalyticTracker(
+      "takeme-blog",
+      uid,
+      prod ? "https://api.takeme.blog/" : "http://localhost:5080"
+    );
+  </script>
+</BaseLayout>

@@ -1,5 +1,23 @@
 ---
-import "@styles/index.css";
+import { Image } from "@astrojs/image/components";
+import BaseLayout from "@layouts/BaseLayout.astro";
 ---
 
-<main class="w-screen h-screen flex center">404 :(</main>
+<BaseLayout title="TakeMe Page not found!">
+  <main class="flex flex-col flex-1 center p-6">
+    <Image
+      src="https://storage.googleapis.com/takeme-public-assets/takeme/logo.png"
+      width={225}
+      height={90}
+      fit="cover"
+      alt="take me logo"
+      class="bg-white mb-2"
+    />
+    <h1 class="leading-snug">
+      This TakeMe Page doesn't exist, <a
+        class="underline underline-offset-3"
+        href="https://takeme.blog/admin/login">make one?</a
+      >
+    </h1>
+  </main>
+</BaseLayout>
