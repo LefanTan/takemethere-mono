@@ -52,13 +52,15 @@ mediaRoutes.post(
     if (!file) return res.status(400).json({ message: "no file lmao!" });
 
     const filePath = `${req.uid}/${file.originalname.split(".")[0]}.webp`;
+    const enlargeFilePath = `${req.uid}/${
+      file.originalname.split(".")[0]
+    }-large.webp`;
 
-    const resultPath = await uploadOptimizedImageToGoogle(
-      file,
-      filePath,
-      125,
-      125
-    );
+    // Create a larger version of the image
+    const [resultPath] = await Promise.all([
+      uploadOptimizedImageToGoogle(file, filePath, 125, 125),
+      uploadOptimizedImageToGoogle(file, enlargeFilePath, 500, 500),
+    ]);
 
     return res.json(resultPath);
   }
