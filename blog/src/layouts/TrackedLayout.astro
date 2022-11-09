@@ -25,7 +25,9 @@ const { user } = Astro.props;
     slot="header"
     title={`${user.username} | TakeMe - Link in Bio tool for Bloggers`}
     description={user.bio}
-    image={user.profileMediaUrl}
+    image={user.profileMediaUrl
+      ? `${user.profileMediaUrl?.split(".webp")[0]}-large.webp`
+      : undefined}
     url={`https://takeme.blog/${user.username}`}
   />
 

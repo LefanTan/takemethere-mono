@@ -12,23 +12,38 @@ const { title, description, image, url } = Astro.props;
 const cleanDescription = description?.replaceAll(/<[^>]*>/g, "") ?? "";
 ---
 
-<head>
-  <!-- HTML Meta Tags -->
-  <title>{title}</title>
-  <meta name="description" content={cleanDescription} />
+<!-- HTML Meta Tags -->
+<title>{title}</title>
+<meta name="description" content={cleanDescription} />
 
-  <!-- Facebook Meta Tags -->
-  <meta property="og:url" content={url} />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={cleanDescription} />
-  <meta property="og:image" content={image} />
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content={url} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
 
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary" />
-  <meta property="twitter:domain" content={url} />
-  <meta property="twitter:url" content={url} />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={cleanDescription} />
-  <meta name="twitter:image" content={image} />
-</head>
+<!-- Image meta tags -->
+{
+  image && (
+    <>
+      <meta property="og:image" content={image} />
+      <meta name="twitter:image" content={image} />
+    </>
+  )
+}
+
+<!-- Description meta tags -->
+
+{
+  cleanDescription && (
+    <>
+      <meta property="og:description" content={cleanDescription} />
+      <meta name="twitter:description" content={cleanDescription} />
+    </>
+  )
+}
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:domain" content={url} />
+<meta property="twitter:url" content={url} />
+<meta name="twitter:title" content={title} />
