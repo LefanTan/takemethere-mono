@@ -11,7 +11,7 @@ import { deepCopy } from "@firebase/util";
 import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
-import BlogEntryCardSection from "../cardSections/BlogEntryCardSection.vue";
+import ReviewEntryCardSection from "../cardSections/ReviewEntryCardSection.vue";
 import { storeToRefs } from "pinia";
 
 const $store = useStore();
@@ -57,18 +57,18 @@ watchDebounced(
   { deep: true, debounce: 500 }
 );
 
-async function addEntry(type: "Link" | "Blog" | "Category") {
+async function addEntry(type: "Link" | "Review" | "Category") {
   if (!page.value?.id) return;
 
   const newId = uuid();
   const newEntryId = uuid();
   const newOrder = page.value.pageEntries.length + 1;
 
-  if (type === "Blog") {
+  if (type === "Review") {
     page.value.pageEntries.push({
       id: newEntryId,
       pageId: page.value.id,
-      blog: {
+      review: {
         id: newId,
         name: "",
         pageEntryId: newEntryId,
@@ -127,12 +127,12 @@ function dragEnd() {
         @click="addEntry('Link')"
       />
       <q-btn
-        label="Add Restaurant Blog"
+        label="Add Restaurant Review"
         class="takeme-button black"
-        @click="addEntry('Blog')"
+        @click="addEntry('Review')"
       />
       <q-btn
-        label="Add Category"
+        label="Add Title Text"
         class="takeme-button black"
         @click="addEntry('Category')"
       />
@@ -164,12 +164,12 @@ function dragEnd() {
                   {{
                     element.link
                       ? "Link"
-                      : element.blog
+                      : element.review
                       ? "Restaurant"
                       : "Category Title"
                   }}
                 </h4>
-                <template v-if="element.blog || element.link">
+                <template v-if="element.review || element.link">
                   <icon-button
                     name="eva-bar-chart-2-outline"
                     tooltip-label="View analytic"
@@ -194,10 +194,10 @@ function dragEnd() {
                 v-if="element.link"
               />
 
-              <!-- Blog Entry -->
-              <blog-entry-card-section
+              <!-- Review Entry -->
+              <review-entry-card-section
                 :page-entry="element"
-                v-else-if="element.blog"
+                v-else-if="element.review"
               />
 
               <!-- Category title Entry -->

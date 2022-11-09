@@ -1,9 +1,9 @@
 ---
-import { PageEntriesWithBlogAndLink } from "@common/types/client";
+import { PageEntriesWithData } from "@common/types/client";
 import TruncatedText from "./TruncatedText.vue";
 
 export interface Props {
-  pageEntries: PageEntriesWithBlogAndLink[];
+  pageEntries: PageEntriesWithData[];
 }
 
 const { pageEntries } = Astro.props;
@@ -31,34 +31,34 @@ const { pageEntries } = Astro.props;
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
       }
 
-      if (entry.blog) {
+      if (entry.review) {
         const hasBody =
-          (entry.blog.firstButtonText && entry.blog.firstButtonLink) ||
-          (entry.blog.secondButtonText && entry.blog.secondButtonLink) ||
-          entry.blog.shortReview;
+          (entry.review.firstButtonText && entry.review.firstButtonLink) ||
+          (entry.review.secondButtonText && entry.review.secondButtonLink) ||
+          entry.review.shortReview;
 
         return (
           // Blog Entry
           <div class="flex flex-col rounded-lg ring-black-2 overflow-hidden mb-4">
             <div class="flex flex-1">
-              {entry.blog.mediaUrl && (
+              {entry.review.mediaUrl && (
                 <img
-                  src={entry.blog.mediaUrl}
+                  src={entry.review.mediaUrl}
                   class="w-20 sm:w-36 object-cover"
-                  alt={entry.blog.name}
+                  alt={entry.review.name}
                 />
               )}
               <div class="p-2 flex flex-col flex-1">
-                <h3 class="font-medium">{entry.blog.name}</h3>
+                <h3 class="font-medium">{entry.review.name}</h3>
 
                 <div class="flex items-start flex-1 mt-2">
                   <p class="font-light text-sm sm:text-base leading-none">
-                    {entry.blog.location}
+                    {entry.review.location}
                   </p>
 
-                  {(entry.blog.rating ?? -1) >= 0 && (
+                  {(entry.review.rating ?? -1) >= 0 && (
                     <h4 class="text-4xl shrink-0 mt-auto ml-auto">
-                      {entry.blog.rating}
+                      {entry.review.rating}
                       <span class="text-base -ml-1">/ 10</span>
                     </h4>
                   )}
@@ -67,28 +67,28 @@ const { pageEntries } = Astro.props;
             </div>
             {hasBody && (
               <div class="flex flex-col p-2">
-                {entry.blog.firstButtonText && (
+                {entry.review.firstButtonText && (
                   <a
-                    href={entry.blog.firstButtonLink}
+                    href={entry.review.firstButtonLink}
                     target="_blank"
                     class="bg-black rounded-md mb-2 p-1 text-white text-sm text-center"
                   >
-                    {entry.blog.firstButtonText}
+                    {entry.review.firstButtonText}
                   </a>
                 )}
-                {entry.blog.secondButtonText && (
+                {entry.review.secondButtonText && (
                   <a
-                    href={entry.blog.secondButtonLink}
+                    href={entry.review.secondButtonLink}
                     target="_blank"
                     class="bg-secondary-light rounded-md mb-2 p-1 text-sm text-center"
                   >
-                    {entry.blog.secondButtonText}
+                    {entry.review.secondButtonText}
                   </a>
                 )}
-                {entry.blog.shortReview && (
+                {entry.review.shortReview && (
                   <TruncatedText
                     client:idle
-                    text={entry.blog.shortReview}
+                    text={entry.review.shortReview}
                     className="text-sm sm:text-base leading-tight"
                   />
                 )}

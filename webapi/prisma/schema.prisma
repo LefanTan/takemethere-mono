@@ -49,13 +49,13 @@ model Page {
 }
 
 // PageEntry represents a row in the page structure
-// A PageEntry should only be associated with either ONE of title, blog or link
+// A PageEntry should only be associated with either ONE of title, review or link
 model PageEntry {
   id    String  @id @default(uuid())
   title String?
 
-  link Link?
-  blog Blog?
+  link   Link?
+  review Review?
 
   // Highest order number starts at the top
   order Int @default(0)
@@ -83,7 +83,7 @@ model Link {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model Blog {
+model Review {
   id           String  @id @default(uuid())
   name         String
   rating       Float?
@@ -108,13 +108,13 @@ model Blog {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-// Analytics for individual link/blogs
+// Analytics for individual page entries
 model EntryAnalytics {
   id             String @id @default(uuid())
   lifetimeClicks Int    @default(0)
 
-  blog   Blog?  @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId String @unique
+  review   Review? @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId String  @unique
 
   link   Link?  @relation(fields: [linkId], references: [id], onDelete: Cascade)
   linkId String @unique

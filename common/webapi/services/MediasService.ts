@@ -35,23 +35,23 @@ export class MediasService {
     }
 
     /**
-     * Upload a picture to blog
-     * @param blogId
-     * @param media Media to attach to blog
+     * Upload a picture to review
+     * @param reviewId
+     * @param media Media to attach to review
      * @param authorization
      * @returns any OK
      * @throws ApiError
      */
-    public static postMediaAddToBlog(
-        blogId: string,
+    public static postMediaAddToReview(
+        reviewId: string,
         media: Blob,
         authorization?: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/media/addToBlog/{blogId}',
+            url: '/media/addToReview/{reviewId}',
             path: {
-                'blogId': blogId,
+                'reviewId': reviewId,
             },
             headers: {
                 'authorization': authorization,

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { PageEntriesWithBlogAndLink } from "@common/types/client";
+import { PageEntriesWithData } from "@common/types/client";
 import { MediasService } from "@common/webapi";
 import useStore from "@src/stores";
 import FileInput from "../FileInput.vue";
 
 const $store = useStore();
 
-const props = defineProps<{ pageEntry: PageEntriesWithBlogAndLink }>();
+const props = defineProps<{ pageEntry: PageEntriesWithData }>();
 
 // Assign newly upload media to pageEntry's Blog object
 const pageEntryIndex = $store.app.page.pageEntries.findIndex(

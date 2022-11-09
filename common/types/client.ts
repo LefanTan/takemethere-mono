@@ -1,12 +1,12 @@
-import type { Blog, Link, Page, PageEntry, User } from "./index";
+import type { Review, Link, Page, PageEntry, User } from "./index";
 
-export type PageEntriesWithBlogAndLink = PageEntry & {
-  blog?: Blog | null;
+export type PageEntriesWithData = PageEntry & {
+  review?: Review | null;
   link?: Link | null;
 };
 
 export type PageWithEntries = Page & {
-  pageEntries: PageEntriesWithBlogAndLink[];
+  pageEntries: PageEntriesWithData[];
 };
 
 export type UserWithPage = User & {

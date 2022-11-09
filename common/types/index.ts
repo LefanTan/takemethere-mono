@@ -52,7 +52,7 @@ export type Link = {
     updatedAt?: (Date | string),
 }
 
-export type Blog = {
+export type Review = {
     id?: string,
     name: string,
     rating?: number | null,
@@ -72,6 +72,6 @@ export type Blog = {
 export type EntryAnalytics = {
     id?: string,
     lifetimeClicks?: number,
-    blogId: string,
+    reviewId: string,
     linkId: string,
 }

@@ -9,10 +9,7 @@ import { body, validationResult } from "express-validator";
 import { prisma } from "../config";
 import { authenticateJWT } from "../middlewares/auth";
 import { AuthorizedRequest } from "../types/request";
-import {
-  PageEntriesWithBlogAndLink,
-  PageWithEntries,
-} from "@common/types/client";
+import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
 
 const pageRoutes = express.Router();
 
@@ -57,7 +54,7 @@ pageRoutes.get("/:username", async (req, res) => {
           include: {
             pageEntries: {
               include: {
-                blog: {
+                review: {
                   include: {
                     entryAnalytics: true,
                   },
@@ -81,7 +78,7 @@ pageRoutes.get("/:username", async (req, res) => {
 });
 
 /**
- * TODO: Clean up this function. Add more validation to blog, entry and title
+ * TODO: Clean up this function. Add more validation.
  * Update the authenticated user's page and its entries. Page Entries that aren't being passed in are considered as deleted!
  */
 pageRoutes.put(
@@ -105,7 +102,7 @@ pageRoutes.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const pageEntries: PageEntriesWithBlogAndLink[] = req.body.pageEntries;
+    const pageEntries: PageEntriesWithData[] = req.body.pageEntries;
     if (!pageEntries) {
       return res.status(204).json({ message: "PageEntries not included" });
     }
@@ -138,14 +135,14 @@ pageRoutes.put(
       const entryTasks: Promise<any>[] = [];
 
       // Create a copy of the original pageEnries, because we're deleting some attributes
-      const copiedPageEntries: PageEntriesWithBlogAndLink[] = JSON.parse(
+      const copiedPageEntries: PageEntriesWithData[] = JSON.parse(
         JSON.stringify(pageEntries)
       );
 
       // Create/update all page entries
       copiedPageEntries.forEach((entry) => {
-        // Delete blog and link attributes because they don't exist in the db model
-        delete entry.blog;
+        // Delete revoew and link attributes because they don't exist in the db model
+        delete entry.review;
         delete entry.link;
 
         entryTasks.push(
@@ -161,14 +158,14 @@ pageRoutes.put(
 
       await Promise.all(entryTasks);
 
-      // Prisma upsert task that will create/update all link or blog links
-      const linkAndBlogTasks: Promise<any>[] = [];
+      // Prisma upsert task that will create/update all links
+      const linkWithDataTasks: Promise<any>[] = [];
 
-      // Create/update all blog and link entries
+      // Create/update all entries
       pageEntries.forEach((entry) => {
         // If link object is being passed in
         if (entry.link) {
-          linkAndBlogTasks.push(
+          linkWithDataTasks.push(
             prisma.link.upsert({
               where: {
                 id: entry.link.id,
@@ -179,20 +176,20 @@ pageRoutes.put(
           );
         }
 
-        if (entry.blog) {
-          linkAndBlogTasks.push(
-            prisma.blog.upsert({
+        if (entry.review) {
+          linkWithDataTasks.push(
+            prisma.review.upsert({
               where: {
-                id: entry.blog.id,
+                id: entry.review.id,
               },
-              update: entry.blog,
-              create: entry.blog,
+              update: entry.review,
+              create: entry.review,
             })
           );
         }
       });
 
-      await Promise.all(linkAndBlogTasks);
+      await Promise.all(linkWithDataTasks);
       return res.sendStatus(200);
     } catch (error) {
       console.error({ error });
@@ -216,7 +213,7 @@ async function getPageByUserId(userId: string) {
           order: "desc",
         },
         include: {
-          blog: true,
+          review: true,
           link: true,
         },
       },

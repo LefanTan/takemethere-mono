@@ -371,19 +371,19 @@
         }
       }
     },
-    "/media/addToBlog/{blogId}": {
+    "/media/addToReview/{reviewId}": {
       "post": {
         "tags": [
           "Medias"
         ],
-        "summary": "Upload a picture to blog",
+        "summary": "Upload a picture to review",
         "description": "",
         "consumes": [
           "multipart/form-data"
         ],
         "parameters": [
           {
-            "name": "blogId",
+            "name": "reviewId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -398,7 +398,7 @@
             "in": "formData",
             "type": "file",
             "required": true,
-            "description": "Media to attach to blog"
+            "description": "Media to attach to review"
           }
         ],
         "responses": {

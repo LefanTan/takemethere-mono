@@ -77,7 +77,7 @@ async function signup() {
     </q-form>
 
     <router-link to="/login" class="underline mx-auto mt-6">
-      Sign up if you already have an account yet
+      Sign in if you already have an account
     </router-link>
   </q-page>
 </template>

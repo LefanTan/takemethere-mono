@@ -67,11 +67,11 @@ mediaRoutes.post(
 );
 
 mediaRoutes.post(
-  "/addToBlog/:blogId",
+  "/addToReview/:reviewId",
   authenticateJWT,
   upload.single("media"),
   async (req: AuthorizedRequest, res) => {
-    // #swagger.summary = 'Upload a picture to blog'
+    // #swagger.summary = 'Upload a picture to review'
     // #swagger.consumes = ['multipart/form-data']
     // #swagger.tags = ['Medias']
     /* 
@@ -79,7 +79,7 @@ mediaRoutes.post(
         in: 'formData',
         type: 'file',
         required: 'true',
-        description: 'Media to attach to blog',
+        description: 'Media to attach to review',
     }
     */
 
@@ -87,7 +87,7 @@ mediaRoutes.post(
 
     if (!file) return res.status(400).json({ message: "no file lmao!" });
 
-    const filePath = `${req.uid}/${req.params.blogId}/${
+    const filePath = `${req.uid}/${req.params.reviewId}/${
       file.originalname.split(".")[0]
     }.webp`;
     const resultPath = await uploadOptimizedImageToGoogle(
