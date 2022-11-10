@@ -16,8 +16,8 @@ const iframeLoaded = ref(false);
 const userData = $store.app.takeMeUser;
 
 const previewUrl = import.meta.env.PROD
-  ? `https://takeme.blog/${userData?.username}`
-  : `http://localhost:3000/${userData?.username}`;
+  ? `https://takeme.blog/${userData?.username}?preview`
+  : `http://localhost:3000/${userData?.username}?preview`;
 
 const previewHeight = computed(() => {
   if ($q.screen.gt.sm) {

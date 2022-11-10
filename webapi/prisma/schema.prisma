@@ -57,6 +57,8 @@ model PageEntry {
   link   Link?
   review Review?
 
+  hidden Boolean?
+
   // Highest order number starts at the top
   order Int @default(0)
 

@@ -5,7 +5,7 @@ import draggable from "vuedraggable";
 import { watchDebounced } from "@vueuse/core";
 import isEquals from "lodash.isequal";
 
-import { PageWithEntries } from "@common/types/client";
+import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
 import { PagesService } from "@common/webapi";
 import { deepCopy } from "@firebase/util";
 import useStore from "@src/stores";
@@ -146,7 +146,7 @@ function dragEnd() {
       class="flex flex-col gap-4 my-6"
       @end="dragEnd"
     >
-      <template #item="{ element }">
+      <template #item="{ element }: { element: PageEntriesWithData }">
         <q-card>
           <q-card-section horizontal class="px-4">
             <q-icon
@@ -173,19 +173,20 @@ function dragEnd() {
                   <icon-button
                     name="eva-bar-chart-2-outline"
                     tooltip-label="View analytic"
-                    @click="deleteEntry(element.id ?? '')"
                   />
                   <icon-button
-                    name="eva-eye-outline"
+                    :name="
+                      element.hidden ? 'eva-eye-off-outline' : 'eva-eye-outline'
+                    "
                     tooltip-label="Hide this link"
-                    @click="deleteEntry(element.id ?? '')"
-                  />
-                  <icon-button
-                    name="eva-trash-2-outline"
-                    tooltip-label="Delete this link"
-                    @click="deleteEntry(element.id ?? '')"
+                    @click="element.hidden = !element.hidden"
                   />
                 </template>
+                <icon-button
+                  name="eva-trash-2-outline"
+                  tooltip-label="Delete this link"
+                  @click="deleteEntry(element.id ?? '')"
+                />
               </q-card-section>
 
               <!-- Link Entry -->

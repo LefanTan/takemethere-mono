@@ -26,6 +26,8 @@ const { pageEntries } = Astro.props;
 <>
   {
     pageEntries.map((entry) => {
+      if (entry.hidden) return;
+
       // Is a Category entry
       if (entry.title || entry.title === "") {
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
@@ -114,11 +116,7 @@ const { pageEntries } = Astro.props;
               />
             )}
 
-            <p
-              class:list={[
-                "p-4 text-lg text-center flex items-center justify-center flex-1",
-              ]}
-            >
+            <p class="p-4 text-lg text-center flex items-center justify-center flex-1">
               {entry.link.displayText}
             </p>
           </a>

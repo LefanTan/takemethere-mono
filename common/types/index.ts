@@ -36,6 +36,7 @@ export type Page = {
 export type PageEntry = {
     id?: string,
     title?: string | null,
+    hidden?: boolean | null,
     order?: number,
     pageId: string,
     createdAt?: (Date | string),
