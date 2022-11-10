@@ -128,8 +128,8 @@ mediaRoutes.post(
     const resultPath = await uploadOptimizedImageToGoogle(
       file,
       filePath,
-      125,
-      125
+      80,
+      80
     );
 
     return res.json(resultPath);

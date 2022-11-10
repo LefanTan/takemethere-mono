@@ -48,7 +48,11 @@ const firstValidLetter = [...user.displayName]
         {
           user.externalEmail && (
             <a href={`mailto:${user.externalEmail}`}>
-              <iconify-icon icon="eva:email-outline" width="1.5rem" />
+              <iconify-icon
+                icon="eva:email-outline"
+                width="1.7rem"
+                class="-mt-0.5"
+              />
             </a>
           )
         }
