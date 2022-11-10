@@ -16,8 +16,8 @@ const iframeLoaded = ref(false);
 const userData = $store.app.takeMeUser;
 
 const previewUrl = import.meta.env.PROD
-  ? `https://takeme.blog/${userData?.username}?preview`
-  : `http://localhost:3000/${userData?.username}?preview`;
+  ? `https://takeme.blog/${userData?.username}`
+  : `http://localhost:3000/${userData?.username}`;
 
 const previewHeight = computed(() => {
   if ($q.screen.gt.sm) {
@@ -76,7 +76,7 @@ function onCopyClipboard() {
     <div class="relative w-full flex justify-center">
       <iframe
         ref="preview"
-        :src="previewUrl"
+        :src="previewUrl + `?preview=true`"
         :height="`${previewHeight}px`"
         :style="{ 'max-width': `${previewHeight / 1.5}px` }"
         width="100%"

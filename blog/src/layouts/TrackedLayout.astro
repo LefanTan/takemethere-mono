@@ -18,7 +18,7 @@ const prod = import.meta.env.PROD;
 const { user } = Astro.props;
 ---
 
-<BaseLayout title="">
+<BaseLayout>
   <!-- Goes into header -->
   <!-- TODO: Replace with hardcoded url with vanity url -->
   <SEO
@@ -35,13 +35,14 @@ const { user } = Astro.props;
   <slot />
 
   <!-- Goes after main content/slot -->
-  <script slot="append" type="module" define:vars={{ uid: user.id, prod }}>
-    import { AnalyticTracker } from "../../node_modules/analytic-tracker/dist/index";
 
-    window.AnalyticTracker = new AnalyticTracker(
-      "takeme-blog",
-      uid,
-      prod ? "https://api.takeme.blog/" : "http://localhost:5080"
-    );
+  <script slot="append" type="module" define:vars={{ uid: user.id, prod }}>
+    window.uid = uid;
+    window.production = prod;
+
+    const params = new URLSearchParams(window.location.search);
+    const isPreview = !!params.get("preview");
+
+    initializeTracker(window.uid, window.production, isPreview);
   </script>
 </BaseLayout>

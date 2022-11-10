@@ -31,5 +31,8 @@ const { title } = Astro.props;
     <slot />
     <style is:global></style>
     <slot name="append" />
+    <script>
+      import "../scripts/tracker";
+    </script>
   </body>
 </html>

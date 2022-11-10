@@ -22,6 +22,7 @@ export class AnalyticRecord {
   toString() {
     return `
         appId - ${this.appId}
+        propertyId - ${this.propertyId}
         eventId - ${this.eventId}
         eventProperties - ${this.eventProperties}
         sessionId - ${this.sessionId}
@@ -46,6 +47,7 @@ export class AnalyticTracker {
   private readonly ua: string;
   private readonly referrer: string;
   private readonly sessionId: string;
+  private readonly isFirstTime: boolean;
 
   constructor(
     public appId: string,
@@ -74,9 +76,13 @@ export class AnalyticTracker {
         this.sessionId
       }; expires=${expiryDate.toUTCString()}; Secure; SameSite=Strict`;
 
+      this.isFirstTime = true;
+
       // Fire FirstPageVisit event once
       this.logAnalytic("FirstPageVisit");
     } else {
+      this.isFirstTime = false;
+
       this.sessionId = sessionCookieValue;
     }
 
@@ -106,15 +112,15 @@ export class AnalyticTracker {
       this.referrer,
       eventProperties
     );
-    console.log("Sent Analytic: " + record.format());
+    console.log("Sent Analytic: " + record.toString());
     navigator.sendBeacon(this.endpoint, record.format());
   }
 
   /**
-   * Check if the c urrent session is new (First time user visits this origin)
+   * Check if the current session is new (First time user visits this origin)
    * @returns
    */
   isNewSession(): boolean {
-    return false;
+    return this.isFirstTime;
   }
 }

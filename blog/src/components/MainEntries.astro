@@ -11,7 +11,7 @@ const { pageEntries } = Astro.props;
 
 <script>
   const linkClickHandler = (context: any) => {
-    window.AnalyticTracker.logAnalytic("LinkClick", {
+    window.AnalyticTracker?.logAnalytic("LinkClick", {
       linkId: context.dataset.linkId,
     });
   };

@@ -32,6 +32,7 @@ export declare class AnalyticTracker {
     private readonly ua;
     private readonly referrer;
     private readonly sessionId;
+    private readonly isFirstTime;
     constructor(appId: string, propertyId: string, endpoint: string);
     /**
      * Create a post request given the specified data
@@ -40,7 +41,7 @@ export declare class AnalyticTracker {
      */
     logAnalytic(eventId: string, eventProperties?: object): void;
     /**
-     * Check if the c urrent session is new (First time user visits this origin)
+     * Check if the current session is new (First time user visits this origin)
      * @returns
      */
     isNewSession(): boolean;
