@@ -8,8 +8,8 @@ import { request as __request } from '../core/request';
 export class AnalyticService {
 
     /**
-     * Grab the authenticated user
-     * @returns any Returns a user
+     * Submit an analytic entry
+     * @returns any OK
      * @throws ApiError
      */
     public static postAnalyticSubmit(): CancelablePromise<any> {

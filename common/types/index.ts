@@ -79,4 +79,6 @@ export type EntryAnalytics = {
     userAgent?: string | null,
     referrer?: string | null,
     eventProperties?: any | null,
+    createdAt?: (Date | string),
+    updatedAt?: (Date | string),
 }

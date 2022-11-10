@@ -119,6 +119,9 @@ model EntryAnalytics {
   userAgent       String?
   referrer        String?
   eventProperties Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum PLAN {

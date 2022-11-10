@@ -495,12 +495,12 @@
         "tags": [
           "Analytic"
         ],
-        "summary": "Grab the authenticated user",
+        "summary": "Submit an analytic entry",
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Returns a user"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
