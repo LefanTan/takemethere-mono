@@ -54,16 +54,8 @@ pageRoutes.get("/:username", async (req, res) => {
           include: {
             pageEntries: {
               include: {
-                review: {
-                  include: {
-                    entryAnalytics: true,
-                  },
-                },
-                link: {
-                  include: {
-                    entryAnalytics: true,
-                  },
-                },
+                review: true,
+                link: true,
               },
             },
           },
@@ -118,6 +110,7 @@ pageRoutes.put(
           },
         });
 
+      // TODO: This should be moved to its own endpoint
       // Delete entries that aren't being passed in the request body
       await Promise.all(
         oldPageEntries

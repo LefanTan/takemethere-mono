@@ -24,7 +24,7 @@ export class AnalyticRecord {
         appId - ${this.appId}
         propertyId - ${this.propertyId}
         eventId - ${this.eventId}
-        eventProperties - ${this.eventProperties}
+        eventProperties - ${JSON.stringify(this.eventProperties)}
         sessionId - ${this.sessionId}
         userAgent - ${this.userAgent}
         referrer - ${this.referrer}
@@ -50,9 +50,10 @@ export class AnalyticTracker {
   private readonly isFirstTime: boolean;
 
   constructor(
-    public appId: string,
-    public propertyId: string,
-    public readonly endpoint: string
+    public readonly appId: string,
+    public readonly propertyId: string,
+    public readonly endpoint: string,
+    public readonly devMode?: boolean
   ) {
     // Initialize session
     this.ua = navigator.userAgent;
@@ -61,20 +62,20 @@ export class AnalyticTracker {
     // Check if a cookie exists
     let sessionCookieValue = document.cookie
       .split("; ")
-      .find((row) => row.startsWith(`${appId}_session=`))
+      .find((row) => row.startsWith(`${appId}_${propertyId}=`))
       ?.split("=")[1];
 
     if (!sessionCookieValue) {
-      // Set cookie expiry date to be X hour from now
-      // Which means that PageVisit event will only fire once every X hour
+      // Set cookie expiry date to be X minutes from now
+      // Which means that PageVisit event will only fire once every X minutes
       const expiryDate = new Date();
-      expiryDate.setTime(new Date().getTime() + 1 * 60 * 60 * 1000);
+      expiryDate.setTime(new Date().getTime() + 3 * 60 * 1000);
 
       this.sessionId = crypto.randomUUID();
 
-      document.cookie = `${appId}_session=${
+      document.cookie = `${appId}_${propertyId}=${
         this.sessionId
-      }; expires=${expiryDate.toUTCString()}; Secure; SameSite=Strict`;
+      }; expires=${expiryDate.toUTCString()}; Secure; SameSite=Strict;`;
 
       this.isFirstTime = true;
 
@@ -82,7 +83,6 @@ export class AnalyticTracker {
       this.logAnalytic("FirstPageVisit");
     } else {
       this.isFirstTime = false;
-
       this.sessionId = sessionCookieValue;
     }
 
@@ -112,8 +112,9 @@ export class AnalyticTracker {
       this.referrer,
       eventProperties
     );
-    console.log("Sent Analytic: " + record.toString());
     navigator.sendBeacon(this.endpoint, record.format());
+
+    if (this.devMode) console.log("Sent Analytic: " + record.toString());
   }
 
   /**

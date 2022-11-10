@@ -18,7 +18,7 @@
     "@iconify/iconify": "^3.0.0",
     "@nanostores/vue": "^0.6.1",
     "@tailwindcss/line-clamp": "^0.4.2",
-    "analytic-tracker": "^1.0.12",
+    "analytic-tracker": "^1.0.13",
     "astro": "^1.6.0",
     "cross-env": "^7.0.3",
     "nanostores": "^0.7.0",

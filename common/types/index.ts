@@ -72,7 +72,11 @@ export type Review = {
 
 export type EntryAnalytics = {
     id?: string,
-    lifetimeClicks?: number,
-    reviewId: string,
-    linkId: string,
+    appId: string,
+    propertyId: string,
+    eventId: string,
+    sessionId: string,
+    userAgent?: string | null,
+    referrer?: string | null,
+    eventProperties?: any | null,
 }

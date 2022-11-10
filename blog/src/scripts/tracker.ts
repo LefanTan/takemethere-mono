@@ -1,4 +1,5 @@
-import { AnalyticTracker } from "analytic-tracker";
+import { AnalyticTracker } from "@common/analytic-tracker/src/index";
+// import { AnalyticTracker } from "analytic-tracker";
 
 /**
  * @param uid
@@ -17,6 +18,9 @@ window.initializeTracker = function initializeTracker(
   window.AnalyticTracker = new AnalyticTracker(
     "takeme-blog",
     uid,
-    prod ? "https://api.takeme.blog/" : "http://localhost:5080"
+    prod
+      ? "https://api.takeme.blog/analytic/submit"
+      : "http://localhost:5080/analytic/submit",
+    !prod
   );
 };

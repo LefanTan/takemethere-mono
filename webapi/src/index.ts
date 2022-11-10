@@ -2,11 +2,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import userRoutes from "./routes/userRoutes";
+import compression from "compression";
 import swaggerUi from "swagger-ui-express";
 import cors, { CorsOptions } from "cors";
+import morgan from "morgan";
+
+import userRoutes from "./routes/userRoutes";
 import pageRoutes from "./routes/pageRoutes";
 import mediaRoutes from "./routes/mediaRoutes";
+import analyticRoutes from "./routes/analyticRoutes";
 
 const openapiSpec = require("../swagger-output.json");
 
@@ -40,7 +44,11 @@ const corsOptions: CorsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(compression({ threshold: 0 }));
+app.use(morgan("combined"));
+
 app.use(express.json()); // support json encoded bodies
+app.use(express.text()); // support text/plain
 app.use(
   express.urlencoded({
     extended: true,
@@ -54,6 +62,7 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 app.use("/page", pageRoutes);
 app.use("/media", mediaRoutes);
+app.use("/analytic", analyticRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.listen(port, () =>

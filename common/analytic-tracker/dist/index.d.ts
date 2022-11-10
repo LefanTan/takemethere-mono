@@ -26,14 +26,15 @@ export declare class AnalyticRecord {
  * Actual tracker that will be initialized in a browser context.
  */
 export declare class AnalyticTracker {
-    appId: string;
-    propertyId: string;
+    readonly appId: string;
+    readonly propertyId: string;
     readonly endpoint: string;
+    readonly devMode?: boolean | undefined;
     private readonly ua;
     private readonly referrer;
     private readonly sessionId;
     private readonly isFirstTime;
-    constructor(appId: string, propertyId: string, endpoint: string);
+    constructor(appId: string, propertyId: string, endpoint: string, devMode?: boolean | undefined);
     /**
      * Create a post request given the specified data
      * @param eventId

@@ -489,6 +489,24 @@
           }
         }
       }
+    },
+    "/analytic/submit": {
+      "post": {
+        "tags": [
+          "Analytic"
+        ],
+        "summary": "Grab the authenticated user",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns a user"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   }
 }
