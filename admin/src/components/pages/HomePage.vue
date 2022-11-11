@@ -76,7 +76,7 @@ function dragEnd() {
             <q-card-section class="flex-1">
               <q-card-section
                 horizontal
-                class="justify-end mb-4 [&>button]:pl-4"
+                class="justify-end mb-4 [&>button]:ml-4"
               >
                 <h4 class="mr-auto">
                   {{
@@ -88,6 +88,12 @@ function dragEnd() {
                   }}
                 </h4>
                 <template v-if="element.review || element.link">
+                  <div class="flex items-center gap-2">
+                    {{ element.click }} click{{
+                      (element.click ?? 0) > 1 ? "s" : ""
+                    }}
+                    <icon-button name="ads_click" tooltip-label="Clicks" />
+                  </div>
                   <icon-button
                     name="eva-bar-chart-2-outline"
                     tooltip-label="View analytic"

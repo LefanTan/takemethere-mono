@@ -32,6 +32,8 @@ defineEmits<{ (e: "click", event: MouseEvent): void }>();
       transition-show="scale"
       transition-hide="scale"
       transition-duration="150"
+      anchor="bottom middle"
+      self="top middle"
       v-bind="tooltipProps"
       >{{ tooltipLabel }}</QTooltip
     >
