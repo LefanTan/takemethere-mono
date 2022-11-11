@@ -10,23 +10,9 @@ export interface Props {
 const { pageEntries } = Astro.props;
 ---
 
-<script>
-  const linkClickHandler = (context: any) => {
-    window.AnalyticTracker?.logAnalytic("LinkClick", {
-      linkId: context.dataset.linkId,
-    });
-  };
-
-  Array.from(document.getElementsByClassName("takeme-link")).forEach(
-    (element) =>
-      element.addEventListener("click", function () {
-        linkClickHandler(this);
-      })
-  );
-</script>
 <>
   {
-    pageEntries.map((entry, i) => {
+    pageEntries.map((entry) => {
       if (entry.hidden) return;
 
       // Is a Title entry

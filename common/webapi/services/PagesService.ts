@@ -9,8 +9,43 @@ export class PagesService {
 
     /**
      * Grab the authenticated user
+     * @param pageId
      * @param authorization
-     * @returns any Returns a user
+     * @param page How many page entries to skip (page * pageSize)
+     * @param pageSize How many page entries to take
+     * @returns any Returns
+     * @throws ApiError
+     */
+    public static getPageEntries(
+        pageId: string,
+        authorization?: string,
+        page?: string,
+        pageSize?: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/page/{pageId}/entries',
+            path: {
+                'pageId': pageId,
+            },
+            headers: {
+                'authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'pageSize': pageSize,
+            },
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
+     * Get the authenticated user
+     * @param authorization
+     * @returns any Returns the user's page
      * @throws ApiError
      */
     public static getPage(
@@ -35,12 +70,12 @@ export class PagesService {
      * @returns any Returns the user's page
      * @throws ApiError
      */
-    public static getPage1(
+    public static getPagePage(
         username: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/page/{username}',
+            url: '/page/{username}/page',
             path: {
                 'username': username,
             },
@@ -82,7 +117,6 @@ export class PagesService {
      * @param pageId
      * @param entryId
      * @param authorization
-     * @param body
      * @returns any Returns the updated page
      * @throws ApiError
      */
@@ -90,7 +124,6 @@ export class PagesService {
         pageId: string,
         entryId: string,
         authorization?: string,
-        body?: any,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
@@ -102,7 +135,6 @@ export class PagesService {
             headers: {
                 'authorization': authorization,
             },
-            body: body,
             errors: {
                 400: `Bad Request`,
                 403: `Forbidden`,

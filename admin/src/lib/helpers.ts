@@ -3,6 +3,6 @@
  * @param obj
  * @returns
  */
-export function deepCopy(obj: object) {
-  return JSON.parse(JSON.stringify(obj));
+export function deepCopy<T>(obj: T) {
+  return JSON.parse(JSON.stringify(obj)) as T;
 }

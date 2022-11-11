@@ -9,13 +9,13 @@ const $store = useStore();
 const props = defineProps<{ pageEntry: PageEntriesWithData }>();
 
 // Assign newly upload media to pageEntry's Blog object
-const pageEntryIndex = $store.page.page.pageEntries.findIndex(
+const pageEntryIndex = $store.page.pageEntries.findIndex(
   (entry) => entry.id === props.pageEntry.id
 );
 
 const link =
   pageEntryIndex !== -1
-    ? $store.page.page.pageEntries[pageEntryIndex].link
+    ? $store.page.pageEntries[pageEntryIndex].link
     : undefined;
 
 async function onFileAdded(files: FileList) {

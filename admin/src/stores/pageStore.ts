@@ -1,32 +1,41 @@
 import { defineStore } from "pinia";
 import { v4 as uuid } from "uuid";
 import useStore from ".";
-import { PageWithEntries } from "@common/types/client";
+
+import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
 import { PagesService } from "@common/webapi";
 import { deepCopy } from "@src/lib/helpers";
+import { Page } from "@common/types";
 
 export type PageState = {
   /**
-   * Most up to date Page
+   * Page without page entries
    */
-  page: PageWithEntries;
-  oldPage?: PageWithEntries;
+  page: Page;
+  /**
+   * Most up to date Page entries
+   */
+  pageEntries: PageEntriesWithData[];
+  oldPageEntries?: PageEntriesWithData[];
 };
 
 const usePageStore = defineStore("pageStore", {
-  state: (): PageState => ({ page: {} as PageWithEntries }),
+  state: (): PageState => ({ page: {} as PageWithEntries, pageEntries: [] }),
   actions: {
     /**
      * Load Page given the logged in user's JWT
      * Store a copy in oldPage
      */
     async loadPage() {
-      const loadedPage: PageWithEntries = await PagesService.getPage();
+      const page: Page = await PagesService.getPage();
+      this.page = page;
 
-      this.page = loadedPage;
-      this.page.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+      const entries = await PagesService.getPageEntries(page.id!);
 
-      this.oldPage = deepCopy(this.page);
+      this.pageEntries = entries;
+      this.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+
+      this.oldPageEntries = deepCopy(this.pageEntries);
     },
 
     /**
@@ -35,9 +44,9 @@ const usePageStore = defineStore("pageStore", {
     async updatePage() {
       const $store = useStore();
 
-      const orderedEntries = this.page.pageEntries.map((entry, i) => ({
+      const orderedEntries = this.pageEntries.map((entry, i) => ({
         ...entry,
-        order: this.page!.pageEntries.length - i,
+        order: this.pageEntries.length - i,
       }));
 
       const result = await PagesService.putPagePageEntries(undefined, {
@@ -45,7 +54,7 @@ const usePageStore = defineStore("pageStore", {
       });
 
       $store.app.updatePreview();
-      this.oldPage = deepCopy(this.page);
+      this.oldPageEntries = deepCopy(this.pageEntries);
 
       console.log("Saved", result);
     },
@@ -58,10 +67,10 @@ const usePageStore = defineStore("pageStore", {
 
       const newId = uuid();
       const newEntryId = uuid();
-      const newOrder = this.page.pageEntries.length + 1;
+      const newOrder = this.pageEntries.length + 1;
 
       if (type === "Review") {
-        this.page.pageEntries.push({
+        this.pageEntries.push({
           id: newEntryId,
           pageId: this.page.id,
           review: {
@@ -72,7 +81,7 @@ const usePageStore = defineStore("pageStore", {
           order: newOrder,
         });
       } else if (type === "Link") {
-        this.page.pageEntries.push({
+        this.pageEntries.push({
           id: newEntryId,
           pageId: this.page.id,
           link: {
@@ -84,7 +93,7 @@ const usePageStore = defineStore("pageStore", {
           order: newOrder,
         });
       } else {
-        this.page.pageEntries.push({
+        this.pageEntries.push({
           id: newEntryId,
           pageId: this.page.id,
           title: "",
@@ -93,7 +102,7 @@ const usePageStore = defineStore("pageStore", {
       }
 
       // Sort by createdAt, descending order
-      this.page.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
+      this.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
     },
 
     /**
@@ -108,7 +117,7 @@ const usePageStore = defineStore("pageStore", {
       await PagesService.deletePagePageEntry(this.page.id, entryId);
 
       // Remove in cache
-      this.page.pageEntries = this.page.pageEntries.filter(
+      this.pageEntries = this.pageEntries.filter(
         (entry) => entry.id !== entryId
       );
     },

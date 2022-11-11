@@ -240,7 +240,7 @@
         }
       }
     },
-    "/page/": {
+    "/page/{pageId}/entries": {
       "get": {
         "tags": [
           "Pages"
@@ -249,14 +249,32 @@
         "description": "",
         "parameters": [
           {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "How many page entries to skip (page * pageSize)",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "pageSize",
+            "description": "How many page entries to take",
+            "in": "query",
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Returns a user"
+            "description": "Returns "
           },
           "400": {
             "description": "Bad Request"
@@ -267,7 +285,34 @@
         }
       }
     },
-    "/page/{username}": {
+    "/page/": {
+      "get": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Get the authenticated user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user's page"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/page/{username}/page": {
       "get": {
         "tags": [
           "Pages"
@@ -358,14 +403,6 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
           }
         ],
         "responses": {

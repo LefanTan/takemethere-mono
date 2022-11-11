@@ -13,15 +13,15 @@ import ReviewEntryCardSection from "../cardSections/ReviewEntryCardSection.vue";
 const $store = useStore();
 
 await $store.page.loadPage();
-const { page } = storeToRefs($store.page);
+const { pageEntries } = storeToRefs($store.page);
 
 watchDebounced(
-  page,
+  pageEntries,
   async () => {
-    if (!page.value) return;
+    if (!pageEntries.value) return;
 
     // Update pageEntries if pageEntries have changed
-    if (!isEquals(page.value.pageEntries, $store.page.oldPage?.pageEntries)) {
+    if (!isEquals(pageEntries.value, $store.page.oldPageEntries)) {
       await $store.page.updatePage();
     }
   },
@@ -29,11 +29,9 @@ watchDebounced(
 );
 
 function dragEnd() {
-  if (!page.value) return;
-
-  page.value.pageEntries = page.value.pageEntries.map((entry, i) => ({
+  pageEntries.value = pageEntries.value.map((entry, i) => ({
     ...entry,
-    order: page.value!.pageEntries.length - i,
+    order: pageEntries.value.length - i,
   }));
 }
 </script>
@@ -59,8 +57,8 @@ function dragEnd() {
     </div>
 
     <draggable
-      v-if="page && (page.pageEntries?.length ?? 0) > 0"
-      v-model="page.pageEntries"
+      v-if="(pageEntries?.length ?? 0) > 0"
+      v-model="pageEntries"
       item-key="id"
       handle=".handle"
       class="flex flex-col gap-4 my-6"

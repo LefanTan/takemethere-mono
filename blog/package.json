@@ -8,6 +8,7 @@
     "build": "astro check && cross-env PORT=8080 astro build",
     "preview": "astro preview",
     "start": "node dist/server/entry.mjs",
+    "check": "astro check",
     "astro": "astro"
   },
   "dependencies": {

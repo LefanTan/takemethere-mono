@@ -9,13 +9,13 @@ const $store = useStore();
 const props = defineProps<{ pageEntry: PageEntriesWithData }>();
 
 // Assign newly upload media to pageEntry's Blog object
-const pageEntryIndex = $store.page.page.pageEntries.findIndex(
+const pageEntryIndex = $store.page.pageEntries.findIndex(
   (entry) => entry.id === props.pageEntry.id
 );
 
 const review =
   pageEntryIndex !== -1
-    ? $store.page.page.pageEntries[pageEntryIndex].review
+    ? $store.page.pageEntries[pageEntryIndex].review
     : undefined;
 
 async function onFileAdded(files: FileList) {
@@ -48,7 +48,7 @@ function deleteMedia() {
         :uploaded-url="pageEntry.review.mediaUrl"
         @file-added="onFileAdded"
         @delete="deleteMedia"
-        class="mr-4 mb-4 sm:mb-0"
+        class="mr-2 mb-4 sm:mb-0 w-36"
       />
       <div class="flex flex-col flex-1 [&>*]:mb-2">
         <q-input

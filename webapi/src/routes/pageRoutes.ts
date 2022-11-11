@@ -2,7 +2,7 @@
  * Everything that relates to User
  */
 
-import { PageEntry } from "@prisma/client";
+import { Page, PageEntry } from "@prisma/client";
 import express from "express";
 import { body, validationResult } from "express-validator";
 
@@ -14,22 +14,54 @@ import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
 const pageRoutes = express.Router();
 
 /**
- * Grab the user's page, page entries sorted by updatedAt
+ * Grab the Authorized user's page entries sorted by updatedAt
+ */
+pageRoutes.get(
+  "/:pageId/entries",
+  authenticateJWT,
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Grab the authenticated user's page, page entries sorted by updatedAt'
+    // #swagger.parameters['page'] = { description: 'How many page entries to skip (page * pageSize)' }
+    // #swagger.parameters['pageSize'] = { description: 'How many page entries to take' }
+    // #swagger.tags = ['Pages']
+    /* #swagger.responses[200] = {
+      description: 'Returns ',
+    } */
+
+    try {
+      const uid = req.uid;
+
+      const entries = await getPageEntriesByPage(
+        req.params.pageId,
+        uid!,
+        0,
+        50
+      );
+
+      return res.json(entries);
+    } catch (error) {
+      return res.status(400).json({ error });
+    }
+  }
+);
+
+/**
+ * Get the authenticated user's page (without entries)
  */
 pageRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
-  // #swagger.summary = 'Grab the authenticated user's page, page entries sorted by updatedAt'
-  //  #swagger.parameters['page'] = { description: 'How many page entries to skip (page * pageSize)' }
-  //  #swagger.parameters['pageSize'] = { description: 'How many page entries to take }
+  // #swagger.summary = 'Get the authenticated user\'s page (without entries)'
   // #swagger.tags = ['Pages']
   /* #swagger.responses[200] = {
-      description: 'Returns a user',
+      description: 'Returns the user\'s page'
     } */
 
   try {
-    const uid = req.uid;
-    const page = await getPageByUserId(uid!, 0, 50);
-
-    return res.json(page);
+    const result = await prisma.page.findUniqueOrThrow({
+      where: {
+        userId: req.uid,
+      },
+    });
+    return res.json(result);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -38,7 +70,7 @@ pageRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
 /**
  * Grab the user's page given a username
  */
-pageRoutes.get("/:username", async (req, res) => {
+pageRoutes.get("/:username/page", async (req, res) => {
   // #swagger.summary = 'Grab the user's page given a username'
   // #swagger.tags = ['Pages']
   /* #swagger.responses[200] = {
@@ -115,6 +147,7 @@ pageRoutes.put(
         // Delete revoew and link attributes because they don't exist in the db model
         delete entry.review;
         delete entry.link;
+        delete entry.click;
 
         entryTasks.push(
           prisma.pageEntry.upsert({
@@ -205,33 +238,70 @@ pageRoutes.delete(
 );
 
 /**
- * Get page for a given user id
+ * Get paginated Page Entries for a given page
  * @param userId
  * @param page
  * @param pageSize
  * @returns
  */
-async function getPageByUserId(userId: string, page: number, pageSize: number) {
-  const foundPage = await prisma.page.findFirstOrThrow({
+async function getPageEntriesByPage(
+  pageId: string,
+  userId: string,
+  page: number,
+  pageSize: number
+) {
+  const entries = await prisma.pageEntry.findMany({
     where: {
-      userId,
+      pageId: pageId,
     },
     include: {
-      pageEntries: {
-        orderBy: {
-          order: "desc",
-        },
-        include: {
-          review: true,
-          link: true,
-        },
-        skip: page * pageSize,
-        take: pageSize,
-      },
+      review: true,
+      link: true,
     },
+    orderBy: {
+      order: "desc",
+    },
+    skip: page * pageSize,
+    take: pageSize,
   });
 
-  return foundPage;
+  // Result is a 1:1 mapping of
+  const result = await Promise.all(
+    entries.flatMap((entry) => {
+      if (entry.link) {
+        // Find all analytic count regarding link click, that belonged to the user and entry.link
+        return prisma.entryAnalytics.count({
+          where: {
+            propertyId: userId,
+            eventId: "LinkClick",
+          },
+        });
+      }
+
+      if (entry.review) {
+        // Combine both cta click count
+        return prisma.entryAnalytics.count({
+          where: {
+            propertyId: userId,
+            eventId: "ReviewCTAClick",
+          },
+        });
+      }
+
+      // No analytic available for this entry type
+      return [null];
+    })
+  );
+
+  const entriesWithClickCount = entries.map(
+    (entry, i) =>
+      ({
+        ...entry,
+        click: result[i],
+      } as PageEntriesWithData)
+  );
+
+  return entriesWithClickCount;
 }
 
 export default pageRoutes;
