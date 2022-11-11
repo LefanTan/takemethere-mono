@@ -1,0 +1,40 @@
+---
+import { Link } from "@common/types/index";
+
+interface Props {
+  link: Link;
+}
+
+const { link } = Astro.props;
+---
+
+<script>
+  const linkClickHandler = (context: any) => {
+    window.AnalyticTracker?.logAnalytic("LinkClick", {
+      linkId: context.dataset.linkId,
+    });
+  };
+
+  Array.from(document.getElementsByClassName("takeme-link")).forEach(
+    (element) =>
+      element.addEventListener("click", function () {
+        linkClickHandler(this);
+      })
+  );
+</script>
+<a
+  data-link-id={link.id}
+  href={link.link}
+  target="_blank"
+  class="takeme-link flex rounded-lg ring-black-2 overflow-hidden mb-4"
+>
+  {
+    link.mediaUrl && (
+      <img src={link.mediaUrl} alt="" class="w-16 full object-cover" />
+    )
+  }
+
+  <p class="p-4 text-lg text-center flex items-center justify-center flex-1">
+    {link.displayText}
+  </p>
+</a>

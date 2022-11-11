@@ -1,0 +1,106 @@
+---
+import { Review } from "@common/types/index";
+import TruncatedText from "@components/TruncatedText.vue";
+
+interface Props {
+  review: Review;
+}
+
+const { review } = Astro.props;
+
+const hasBody =
+  (review.firstButtonText && review.firstButtonLink) ||
+  (review.secondButtonText && review.secondButtonLink) ||
+  review.shortReview;
+---
+
+<script>
+  // Capture CTA click handler for Reviews
+  const reviewClickHandler = (context: HTMLElement, reviewId: string) => {
+    window.AnalyticTracker?.logAnalytic("ReviewCTAClick", {
+      reviewId: reviewId,
+      type: context.dataset.ctaType,
+      text: context.textContent,
+    });
+  };
+
+  // Attach CTA click handler to review <a> tags
+  Array.from(document.getElementsByClassName("takeme-review")).forEach(
+    (element) => {
+      const ctas = element.querySelectorAll("a");
+
+      ctas.forEach((aEl) =>
+        aEl.addEventListener("click", function () {
+          reviewClickHandler(this, element.id);
+        })
+      );
+    }
+  );
+</script>
+<div
+  id={review.id}
+  class="takeme-review flex flex-col rounded-lg ring-black-2 overflow-hidden mb-4"
+>
+  <div class="flex flex-1">
+    {
+      review.mediaUrl && (
+        <img
+          src={review.mediaUrl}
+          class="w-20 sm:w-36 object-cover"
+          alt={review.name}
+        />
+      )
+    }
+    <div class="p-2 flex flex-col flex-1">
+      <h3 class="font-medium">{review.name}</h3>
+
+      <div class="flex items-start flex-1 mt-2">
+        <p class="font-light text-sm sm:text-base leading-none">
+          {review.location}
+        </p>
+
+        {
+          (review.rating ?? -1) >= 0 && (
+            <h4 class="text-4xl shrink-0 mt-auto ml-auto">
+              {review.rating}
+              <span class="text-base -ml-1">/ 10</span>
+            </h4>
+          )
+        }
+      </div>
+    </div>
+  </div>
+  {
+    hasBody && (
+      <div class="flex flex-col p-2">
+        {review.firstButtonText && (
+          <a
+            href={review.firstButtonLink}
+            target="_blank"
+            data-cta-type="first"
+            class=" bg-black rounded-md mb-2 p-1 text-white text-sm text-center"
+          >
+            {review.firstButtonText}
+          </a>
+        )}
+        {review.secondButtonText && (
+          <a
+            href={review.secondButtonLink}
+            target="_blank"
+            data-cta-type="second"
+            class="bg-secondary-light rounded-md mb-2 p-1 text-sm text-center"
+          >
+            {review.secondButtonText}
+          </a>
+        )}
+        {review.shortReview && (
+          <TruncatedText
+            client:idle
+            text={review.shortReview}
+            className="text-sm sm:text-base leading-tight"
+          />
+        )}
+      </div>
+    )
+  }
+</div>

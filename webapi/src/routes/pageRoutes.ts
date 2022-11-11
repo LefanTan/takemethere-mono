@@ -18,6 +18,8 @@ const pageRoutes = express.Router();
  */
 pageRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
   // #swagger.summary = 'Grab the authenticated user's page, page entries sorted by updatedAt'
+  //  #swagger.parameters['page'] = { description: 'How many page entries to skip (page * pageSize)' }
+  //  #swagger.parameters['pageSize'] = { description: 'How many page entries to take }
   // #swagger.tags = ['Pages']
   /* #swagger.responses[200] = {
       description: 'Returns a user',
@@ -25,7 +27,7 @@ pageRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
 
   try {
     const uid = req.uid;
-    const page = await getPageByUserId(uid!);
+    const page = await getPageByUserId(uid!, 0, 50);
 
     return res.json(page);
   } catch (error) {
@@ -100,30 +102,6 @@ pageRoutes.put(
     }
 
     try {
-      const { pageEntries: oldPageEntries } =
-        await prisma.page.findFirstOrThrow({
-          where: {
-            userId: req.uid,
-          },
-          select: {
-            pageEntries: true,
-          },
-        });
-
-      // TODO: This should be moved to its own endpoint
-      // Delete entries that aren't being passed in the request body
-      await Promise.all(
-        oldPageEntries
-          .filter((old) => !pageEntries.find((cur) => cur.id === old.id))
-          .map((entry) =>
-            prisma.pageEntry.delete({
-              where: {
-                id: entry.id,
-              },
-            })
-          )
-      );
-
       // Prisma upsert task that will create/update all page entries
       const entryTasks: Promise<any>[] = [];
 
@@ -191,12 +169,50 @@ pageRoutes.put(
 );
 
 /**
+ * Delete one of the authenticated user\'s pageEntry
+ */
+pageRoutes.delete(
+  "/page/:pageId/entry/:entryId",
+  authenticateJWT,
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Delete one of the authenticated user\'s pageEntry'
+    // #swagger.tags = ['Pages']
+    /* #swagger.responses[200] = {
+        description: 'Returns the updated page',
+      } */
+
+    try {
+      // Try to find a page that matches the req.uid
+      // If failed, req.params.pageId doesn't belong to the user
+      await prisma.page.findFirstOrThrow({
+        where: {
+          AND: [{ id: req.params.pageId }, { userId: req.uid }],
+        },
+      });
+
+      // Delete the entry if previous statement was successful
+      await prisma.pageEntry.delete({
+        where: {
+          id: req.params.entryId,
+        },
+      });
+
+      return res.json({ message: "Entry deleted" });
+    } catch (err) {
+      return res.status(400).json(err);
+    }
+  }
+);
+
+/**
  * Get page for a given user id
  * @param userId
+ * @param page
+ * @param pageSize
  * @returns
  */
-async function getPageByUserId(userId: string) {
-  const page = await prisma.page.findFirstOrThrow({
+async function getPageByUserId(userId: string, page: number, pageSize: number) {
+  const foundPage = await prisma.page.findFirstOrThrow({
     where: {
       userId,
     },
@@ -209,11 +225,13 @@ async function getPageByUserId(userId: string) {
           review: true,
           link: true,
         },
+        skip: page * pageSize,
+        take: pageSize,
       },
     },
   });
 
-  return page;
+  return foundPage;
 }
 
 export default pageRoutes;

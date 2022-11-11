@@ -1,6 +1,7 @@
 ---
 import { PageEntriesWithData } from "@common/types/client";
-import TruncatedText from "./TruncatedText.vue";
+import LinkEntry from "./Entries/LinkEntry.astro";
+import ReviewEntry from "./Entries/ReviewEntry.astro";
 
 export interface Props {
   pageEntries: PageEntriesWithData[];
@@ -25,103 +26,18 @@ const { pageEntries } = Astro.props;
 </script>
 <>
   {
-    pageEntries.map((entry) => {
+    pageEntries.map((entry, i) => {
       if (entry.hidden) return;
 
-      // Is a Category entry
-      if (entry.title || entry.title === "") {
+      // Is a Title entry
+      if (!!entry.title) {
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
       }
 
-      if (entry.review) {
-        const hasBody =
-          (entry.review.firstButtonText && entry.review.firstButtonLink) ||
-          (entry.review.secondButtonText && entry.review.secondButtonLink) ||
-          entry.review.shortReview;
+      if (entry.review) return <ReviewEntry review={entry.review} />;
 
-        return (
-          // Review Entry
-          <div class="flex flex-col rounded-lg ring-black-2 overflow-hidden mb-4">
-            <div class="flex flex-1">
-              {entry.review.mediaUrl && (
-                <img
-                  src={entry.review.mediaUrl}
-                  class="w-20 sm:w-36 object-cover"
-                  alt={entry.review.name}
-                />
-              )}
-              <div class="p-2 flex flex-col flex-1">
-                <h3 class="font-medium">{entry.review.name}</h3>
-
-                <div class="flex items-start flex-1 mt-2">
-                  <p class="font-light text-sm sm:text-base leading-none">
-                    {entry.review.location}
-                  </p>
-
-                  {(entry.review.rating ?? -1) >= 0 && (
-                    <h4 class="text-4xl shrink-0 mt-auto ml-auto">
-                      {entry.review.rating}
-                      <span class="text-base -ml-1">/ 10</span>
-                    </h4>
-                  )}
-                </div>
-              </div>
-            </div>
-            {hasBody && (
-              <div class="flex flex-col p-2">
-                {entry.review.firstButtonText && (
-                  <a
-                    href={entry.review.firstButtonLink}
-                    target="_blank"
-                    class="bg-black rounded-md mb-2 p-1 text-white text-sm text-center"
-                  >
-                    {entry.review.firstButtonText}
-                  </a>
-                )}
-                {entry.review.secondButtonText && (
-                  <a
-                    href={entry.review.secondButtonLink}
-                    target="_blank"
-                    class="bg-secondary-light rounded-md mb-2 p-1 text-sm text-center"
-                  >
-                    {entry.review.secondButtonText}
-                  </a>
-                )}
-                {entry.review.shortReview && (
-                  <TruncatedText
-                    client:idle
-                    text={entry.review.shortReview}
-                    className="text-sm sm:text-base leading-tight"
-                  />
-                )}
-              </div>
-            )}
-          </div>
-        );
-      }
-
-      if (entry.link?.link && entry.link?.displayText) {
-        return (
-          <a
-            data-link-id={entry.link.id}
-            href={entry.link.link}
-            target="_blank"
-            class="takeme-link flex rounded-lg ring-black-2 overflow-hidden mb-4"
-          >
-            {entry.link.mediaUrl && (
-              <img
-                src={entry.link.mediaUrl}
-                alt=""
-                class="w-16 full object-cover"
-              />
-            )}
-
-            <p class="p-4 text-lg text-center flex items-center justify-center flex-1">
-              {entry.link.displayText}
-            </p>
-          </a>
-        );
-      }
+      if (entry.link?.link && entry.link?.displayText)
+        return <LinkEntry link={entry.link} />;
     })
   }
 </>

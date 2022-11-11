@@ -101,9 +101,13 @@ const usePageStore = defineStore("pageStore", {
      * @param entryId
      * @returns
      */
-    deleteEntry(entryId: string) {
-      if (!this.page) return;
+    async deleteEntry(entryId: string) {
+      if (!this.page.id) return;
 
+      // Remove in db
+      await PagesService.deletePagePageEntry(this.page.id, entryId);
+
+      // Remove in cache
       this.page.pageEntries = this.page.pageEntries.filter(
         (entry) => entry.id !== entryId
       );

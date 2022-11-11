@@ -334,6 +334,53 @@
         }
       }
     },
+    "/page/page/{pageId}/entry/{entryId}": {
+      "delete": {
+        "tags": [
+          "Pages"
+        ],
+        "summary": "Delete one of the authenticated user\\'s pageEntry",
+        "description": "",
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the updated page"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/media/addProfilePicture": {
       "post": {
         "tags": [

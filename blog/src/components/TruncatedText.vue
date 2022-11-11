@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-const props = withDefaults(
+withDefaults(
   defineProps<{ text: string; className?: string; tag?: string }>(),
   {
     tag: "p",
   }
 );
+
+defineEmits(["click"]);
 
 const componentRef = ref<HTMLElement>();
 const showMore = ref(false);
@@ -32,7 +34,12 @@ const showArrowButton = computed(
     <button
       v-if="showArrowButton"
       class="w-full text-right inline-flex items-center justify-end"
-      @click="showMore = !showMore"
+      @click="
+        () => {
+          showMore = !showMore;
+          $emit('click');
+        }
+      "
     >
       <iconify-icon
         :icon="`${

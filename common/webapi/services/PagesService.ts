@@ -77,4 +77,37 @@ export class PagesService {
         });
     }
 
+    /**
+     * Delete one of the authenticated user\'s pageEntry
+     * @param pageId
+     * @param entryId
+     * @param authorization
+     * @param body
+     * @returns any Returns the updated page
+     * @throws ApiError
+     */
+    public static deletePagePageEntry(
+        pageId: string,
+        entryId: string,
+        authorization?: string,
+        body?: any,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/page/page/{pageId}/entry/{entryId}',
+            path: {
+                'pageId': pageId,
+                'entryId': entryId,
+            },
+            headers: {
+                'authorization': authorization,
+            },
+            body: body,
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+            },
+        });
+    }
+
 }
