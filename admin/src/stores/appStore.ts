@@ -16,10 +16,6 @@ type AppState = {
    * Take Me User
    */
   takeMeUser?: TakeMeUser;
-  /**
-   * Most up to date Page
-   */
-  page: PageWithEntries;
   allowedMediaFormat?: string;
 };
 
@@ -29,7 +25,6 @@ type AppState = {
 const useAppStore = defineStore("appStore", {
   state: (): AppState => ({
     allowedMediaFormat: "image/png, image/jpeg, image/jpg, image/webp",
-    page: {} as PageWithEntries,
   }),
   getters: {},
   actions: {

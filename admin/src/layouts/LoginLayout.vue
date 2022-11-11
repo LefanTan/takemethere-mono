@@ -16,7 +16,7 @@ const rightDrawerSize = computed(() => {
     </q-page-container>
     <q-drawer
       :breakpoint="$q.screen.sizes.md"
-      :model-value="true"
+      show-if-above
       side="right"
       :width="rightDrawerSize"
       class="bg-beige flex p-10 pb-0"

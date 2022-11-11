@@ -1,36 +1,19 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { v4 as uuid } from "uuid";
 import draggable from "vuedraggable";
 import { watchDebounced } from "@vueuse/core";
+import { storeToRefs } from "pinia";
 import isEquals from "lodash.isequal";
 
-import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
-import { PagesService } from "@common/webapi";
-import { deepCopy } from "@firebase/util";
+import { PageEntriesWithData } from "@common/types/client";
 import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
 import ReviewEntryCardSection from "../cardSections/ReviewEntryCardSection.vue";
-import { storeToRefs } from "pinia";
 
 const $store = useStore();
 
-let oldPage: PageWithEntries;
-const { page } = storeToRefs($store.app);
-
-async function loadData() {
-  const loadedPage: PageWithEntries = await PagesService.getPage();
-
-  page.value = loadedPage;
-  page.value.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
-
-  oldPage = deepCopy(page.value);
-}
-
-onMounted(() => {
-  loadData();
-});
+await $store.page.loadPage();
+const { page } = storeToRefs($store.page);
 
 watchDebounced(
   page,
@@ -38,75 +21,12 @@ watchDebounced(
     if (!page.value) return;
 
     // Update pageEntries if pageEntries have changed
-    if (!isEquals(page.value.pageEntries, oldPage.pageEntries)) {
-      const orderedEntries = page.value.pageEntries.map((entry, i) => ({
-        ...entry,
-        order: page.value!.pageEntries.length - i,
-      }));
-
-      const result = await PagesService.putPagePageEntries(undefined, {
-        pageEntries: orderedEntries,
-      });
-
-      $store.app.updatePreview();
-      oldPage = deepCopy(page.value);
-
-      console.log("Saved", result);
+    if (!isEquals(page.value.pageEntries, $store.page.oldPage?.pageEntries)) {
+      await $store.page.updatePage();
     }
   },
   { deep: true, debounce: 500 }
 );
-
-async function addEntry(type: "Link" | "Review" | "Category") {
-  if (!page.value?.id) return;
-
-  const newId = uuid();
-  const newEntryId = uuid();
-  const newOrder = page.value.pageEntries.length + 1;
-
-  if (type === "Review") {
-    page.value.pageEntries.push({
-      id: newEntryId,
-      pageId: page.value.id,
-      review: {
-        id: newId,
-        name: "",
-        pageEntryId: newEntryId,
-      },
-      order: newOrder,
-    });
-  } else if (type === "Link") {
-    page.value.pageEntries.push({
-      id: newEntryId,
-      pageId: page.value.id,
-      link: {
-        id: newId,
-        displayText: "",
-        link: "",
-        pageEntryId: newEntryId,
-      },
-      order: newOrder,
-    });
-  } else {
-    page.value.pageEntries.push({
-      id: newEntryId,
-      pageId: page.value.id,
-      title: "",
-      order: newOrder,
-    });
-  }
-
-  // Sort by createdAt, descending order
-  page.value.pageEntries.sort((a, b) => (b.order ?? 0) - (a.order ?? 0));
-}
-
-function deleteEntry(entryId: string) {
-  if (!page.value) return;
-
-  page.value.pageEntries = page.value?.pageEntries.filter(
-    (entry) => entry.id !== entryId
-  );
-}
 
 function dragEnd() {
   if (!page.value) return;
@@ -124,17 +44,17 @@ function dragEnd() {
       <q-btn
         label="Add Link"
         class="takeme-button black"
-        @click="addEntry('Link')"
+        @click="$store.page.addEntry('Link')"
       />
       <q-btn
         label="Add Restaurant Review"
         class="takeme-button black"
-        @click="addEntry('Review')"
+        @click="$store.page.addEntry('Review')"
       />
       <q-btn
         label="Add Title Text"
         class="takeme-button black"
-        @click="addEntry('Category')"
+        @click="$store.page.addEntry('Title')"
       />
     </div>
 
@@ -185,7 +105,7 @@ function dragEnd() {
                 <icon-button
                   name="eva-trash-2-outline"
                   tooltip-label="Delete this link"
-                  @click="deleteEntry(element.id ?? '')"
+                  @click="$store.page.deleteEntry(element.id ?? '')"
                 />
               </q-card-section>
 
