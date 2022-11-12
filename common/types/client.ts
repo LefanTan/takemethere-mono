@@ -1,8 +1,9 @@
-import type { Review, Link, Page, PageEntry, User } from "./index";
+import type { Review, Link, Page, PageEntry, User, Blog } from "./index";
 
 export type PageEntriesWithData = PageEntry & {
   review?: Review | null;
   link?: Link | null;
+  blog?: Blog | null;
   click?: number;
 };
 

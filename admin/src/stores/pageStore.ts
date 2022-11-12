@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { v4 as uuid } from "uuid";
+import { Dialog } from "quasar";
 import useStore from ".";
 
 import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
@@ -62,7 +63,7 @@ const usePageStore = defineStore("pageStore", {
     /**
      * Add a new PageEntry to the current page
      */
-    async addEntry(type: "Link" | "Review" | "Title") {
+    async addEntry(type: "Link" | "Review" | "Title" | "Blog") {
       if (!this.page.id) return;
 
       const newId = uuid();
@@ -92,6 +93,19 @@ const usePageStore = defineStore("pageStore", {
           },
           order: newOrder,
         });
+      } else if (type === "Blog") {
+        this.pageEntries.push({
+          id: newEntryId,
+          pageId: this.page.id,
+          blog: {
+            id: newId,
+            title: "",
+            description: "",
+            content: "",
+            pageEntryId: newEntryId,
+          },
+          order: newOrder,
+        });
       } else {
         this.pageEntries.push({
           id: newEntryId,
@@ -110,16 +124,23 @@ const usePageStore = defineStore("pageStore", {
      * @param entryId
      * @returns
      */
-    async deleteEntry(entryId: string) {
-      if (!this.page.id) return;
+    deleteEntry(entryId: string) {
+      Dialog.create({
+        title: "Are you sure?",
+        message:
+          "This is an irreversible operation, do you want to delete this item?",
+        cancel: true,
+      }).onOk(async () => {
+        if (!this.page.id) return;
 
-      // Remove in db
-      await PagesService.deletePagePageEntry(this.page.id, entryId);
+        // Remove in db
+        await PagesService.deletePagePageEntry(this.page.id, entryId);
 
-      // Remove in cache
-      this.pageEntries = this.pageEntries.filter(
-        (entry) => entry.id !== entryId
-      );
+        // Remove in cache
+        this.pageEntries = this.pageEntries.filter(
+          (entry) => entry.id !== entryId
+        );
+      });
     },
   },
 });

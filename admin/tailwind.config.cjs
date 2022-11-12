@@ -20,6 +20,9 @@ module.exports = {
         md: "0 0px 6px -1px rgb(0 0 0 / 0.1)",
         lg: "0 0px 15px -3px rgb(0 0 0 / 0.1)",
       },
+      minHeight: {
+        "90vh": "90vh",
+      },
     },
   },
   plugins: [],

@@ -43,7 +43,7 @@ export class PagesService {
     }
 
     /**
-     * Get the authenticated user
+     * Get the authenticated user\'s page (without entries)
      * @param authorization
      * @returns any Returns the user's page
      * @throws ApiError

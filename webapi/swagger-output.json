@@ -290,7 +290,7 @@
         "tags": [
           "Pages"
         ],
-        "summary": "Get the authenticated user",
+        "summary": "Get the authenticated user\\'s page (without entries)",
         "description": "",
         "parameters": [
           {

@@ -70,6 +70,14 @@ export type Review = {
     updatedAt?: (Date | string),
 }
 
+export type Blog = {
+    id: string,
+    title: string,
+    description: string,
+    content: string,
+    pageEntryId: string,
+}
+
 export type EntryAnalytics = {
     id?: string,
     appId: string,

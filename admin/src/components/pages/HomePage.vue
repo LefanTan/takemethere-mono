@@ -9,6 +9,7 @@ import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
 import ReviewEntryCardSection from "../cardSections/ReviewEntryCardSection.vue";
+import { PageEntriesWithData } from "@common/types/client";
 
 const $store = useStore();
 
@@ -34,6 +35,13 @@ function dragEnd() {
     order: pageEntries.value.length - i,
   }));
 }
+
+function getTitleText(entry: PageEntriesWithData) {
+  if (entry.link) return "Link";
+  else if (entry.review) return "Review";
+  else if (entry.blog) return "Blog";
+  else return "Title";
+}
 </script>
 
 <template>
@@ -48,6 +56,11 @@ function dragEnd() {
         label="Add Restaurant Review"
         class="takeme-button black"
         @click="$store.page.addEntry('Review')"
+      />
+      <q-btn
+        label="Add Blog"
+        class="takeme-button black"
+        @click="$store.page.addEntry('Blog')"
       />
       <q-btn
         label="Add Title Text"
@@ -87,13 +100,7 @@ function dragEnd() {
                 class="justify-end mb-4 [&>button]:ml-4"
               >
                 <h4 class="mr-auto">
-                  {{
-                    element.link
-                      ? "Link"
-                      : element.review
-                      ? "Restaurant"
-                      : "Category Title"
-                  }}
+                  {{ getTitleText(element) }}
                 </h4>
                 <template v-if="element.review || element.link">
                   <div class="flex items-center gap-2">
@@ -102,7 +109,7 @@ function dragEnd() {
                   </div>
                   <icon-button
                     name="eva-bar-chart-2-outline"
-                    tooltip-label="View analytic"
+                    tooltip-label="View analytic (coming soon?)"
                   />
                   <icon-button
                     :name="
@@ -131,8 +138,19 @@ function dragEnd() {
                 v-else-if="element.review"
               />
 
+              <div v-else-if="element.blog" class="flex flex-col">
+                <h1>{{ element.blog.title }}</h1>
+                <h3>{{ element.blog.description }}</h3>
+                <p>{{ element.blog.content }}</p>
+                <q-btn
+                  :to="`/blog/${element.blog.id}`"
+                  label="Edit Blog"
+                  class="takeme-button black self-start"
+                />
+              </div>
+
               <!-- Category title Entry -->
-              <q-card-section class="flex-1 p-0" v-else>
+              <q-card-section class="flex-1 p-0" v-else-if="element.title">
                 <q-input
                   standout
                   dense

@@ -44,6 +44,9 @@ const navLinks = [
 ];
 
 const currentRoutePath = computed(() => router.currentRoute.value.path);
+
+// Show preview based on the current route's metadata
+const usePreview = computed(() => router.currentRoute.value.meta.showPreview);
 </script>
 
 <template>
@@ -60,6 +63,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
     </q-drawer>
 
     <q-drawer
+      v-if="usePreview"
       v-model="showRightDrawer"
       :breakpoint="$q.screen.sizes.md"
       show-if-above

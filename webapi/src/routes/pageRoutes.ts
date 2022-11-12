@@ -29,14 +29,9 @@ pageRoutes.get(
     } */
 
     try {
-      const uid = req.uid;
+      const uid = req.uid ?? "";
 
-      const entries = await getPageEntriesByPage(
-        req.params.pageId,
-        uid!,
-        0,
-        50
-      );
+      const entries = await getPageEntriesByPage(req.params.pageId, uid, 0, 50);
 
       return res.json(entries);
     } catch (error) {
@@ -135,7 +130,7 @@ pageRoutes.put(
 
     try {
       // Prisma upsert task that will create/update all page entries
-      const entryTasks: Promise<any>[] = [];
+      const entryTasks: Promise<unknown>[] = [];
 
       // Create a copy of the original pageEnries, because we're deleting some attributes
       const copiedPageEntries: PageEntriesWithData[] = JSON.parse(
@@ -147,6 +142,7 @@ pageRoutes.put(
         // Delete revoew and link attributes because they don't exist in the db model
         delete entry.review;
         delete entry.link;
+        delete entry.blog;
         delete entry.click;
 
         entryTasks.push(
@@ -163,13 +159,13 @@ pageRoutes.put(
       await Promise.all(entryTasks);
 
       // Prisma upsert task that will create/update all links
-      const linkWithDataTasks: Promise<any>[] = [];
+      const entryItemTasks: Promise<unknown>[] = [];
 
       // Create/update all entries
       pageEntries.forEach((entry) => {
         // If link object is being passed in
         if (entry.link) {
-          linkWithDataTasks.push(
+          entryItemTasks.push(
             prisma.link.upsert({
               where: {
                 id: entry.link.id,
@@ -181,7 +177,7 @@ pageRoutes.put(
         }
 
         if (entry.review) {
-          linkWithDataTasks.push(
+          entryItemTasks.push(
             prisma.review.upsert({
               where: {
                 id: entry.review.id,
@@ -191,9 +187,21 @@ pageRoutes.put(
             })
           );
         }
+
+        if (entry.blog) {
+          entryItemTasks.push(
+            prisma.blog.upsert({
+              where: {
+                id: entry.blog.id,
+              },
+              update: entry.blog,
+              create: entry.blog,
+            })
+          );
+        }
       });
 
-      await Promise.all(linkWithDataTasks);
+      await Promise.all(entryItemTasks);
       return res.sendStatus(200);
     } catch (error) {
       console.error({ error });
@@ -255,6 +263,7 @@ async function getPageEntriesByPage(
       pageId: pageId,
     },
     include: {
+      blog: true,
       review: true,
       link: true,
     },
@@ -274,6 +283,10 @@ async function getPageEntriesByPage(
           where: {
             propertyId: userId,
             eventId: "LinkClick",
+            eventProperties: {
+              path: ["linkId"],
+              equals: entry.link.id,
+            },
           },
         });
       }
@@ -284,6 +297,10 @@ async function getPageEntriesByPage(
           where: {
             propertyId: userId,
             eventId: "ReviewCTAClick",
+            eventProperties: {
+              path: ["reviewId"],
+              equals: entry.review.id,
+            },
           },
         });
       }

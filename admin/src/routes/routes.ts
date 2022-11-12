@@ -13,6 +13,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: "",
         name: "home",
+        meta: { showPreview: true },
         component: () => import("@components/pages/HomePage.vue"),
       },
       {
@@ -24,17 +25,17 @@ const routes: RouteRecordRaw[] = [
         path: "/settings",
         name: "settings",
         component: () => import("@components/pages/SettingsPage.vue"),
-        children: [
-          {
-            path: "/test",
-            component: () => import("@components/pages/TestPage.vue"),
-          },
-        ],
       },
       {
         path: "/profile",
         name: "profile",
+        meta: { showPreview: true },
         component: () => import("@components/pages/ProfilePage.vue"),
+      },
+      {
+        path: "/blog/:blogId",
+        name: "blog",
+        component: () => import("@components/pages/BlogPage.vue"),
       },
     ],
   },

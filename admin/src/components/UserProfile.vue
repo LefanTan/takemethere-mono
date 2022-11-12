@@ -47,8 +47,16 @@ const firstValidLetter = computed(() =>
                 <q-icon name="eva-arrow-ios-forward" />
               </q-item-section>
             </q-item>
-          </q-list> </q-card-section
-      ></q-card>
+            <q-item
+              class="rounded-lg px-3"
+              clickable
+              @click="$store.app.logout()"
+            >
+              <q-item-section> Logout </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section></q-card
+      >
     </q-popup-proxy>
   </q-img>
 </template>
