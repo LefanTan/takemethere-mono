@@ -2,14 +2,14 @@
  * Everything that relates to User
  */
 
-import { Page, PageEntry } from "@prisma/client";
+import { PageEntry } from "@prisma/client";
 import express from "express";
 import { body, validationResult } from "express-validator";
 
 import { prisma } from "../config";
 import { authenticateJWT } from "../middlewares/auth";
 import { AuthorizedRequest } from "../types/request";
-import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
+import { PageEntriesWithData } from "@common/types/client";
 
 const pageRoutes = express.Router();
 

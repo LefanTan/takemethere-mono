@@ -1,30 +1,17 @@
 <script setup lang="ts">
-import { PageEntriesWithData } from "@common/types/client";
 import { MediasService } from "@common/webapi";
 import useStore from "@src/stores";
 import FileInput from "../FileInput.vue";
 
 const $store = useStore();
 
-const props = defineProps<{ pageEntry: PageEntriesWithData }>();
-
-// Assign newly upload media to pageEntry's Blog object
-const pageEntryIndex = $store.page.pageEntries.findIndex(
-  (entry) => entry.id === props.pageEntry.id
-);
-
-const review =
-  pageEntryIndex !== -1
-    ? $store.page.pageEntries[pageEntryIndex].review
-    : undefined;
+const props = defineProps<{ pageEntryIndex: number }>();
+const review = $store.page.pageEntries[props.pageEntryIndex]?.review;
 
 async function onFileAdded(files: FileList) {
-  if (!props.pageEntry.review?.id) return;
+  if (!review?.id) return;
 
-  const res = await MediasService.postMediaAddToReview(
-    props.pageEntry.review.id,
-    files[0]
-  );
+  const res = await MediasService.postMediaAddToReview(review.id, files[0]);
 
   if (review) review.mediaUrl = res;
 }
@@ -42,10 +29,10 @@ function deleteMedia() {
 </script>
 
 <template>
-  <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="pageEntry.review">
+  <q-card-section class="flex-1 p-0 [&>*]:mb-2" v-if="review">
     <q-card-section horizontal class="flex-col sm:flex-row">
       <file-input
-        :uploaded-url="pageEntry.review.mediaUrl"
+        :uploaded-url="review.mediaUrl"
         @file-added="onFileAdded"
         @delete="deleteMedia"
         class="mr-2 mb-4 sm:mb-0 w-36"
@@ -55,13 +42,13 @@ function deleteMedia() {
           standout
           dense
           placeholder="Restaurant Name"
-          v-model="pageEntry.review.name"
+          v-model="review.name"
         />
         <q-input
           standout
           dense
           placeholder="Location"
-          v-model="pageEntry.review.location"
+          v-model="review.location"
         />
         <div class="flex items-end sm:self-end">
           <q-input
@@ -69,8 +56,8 @@ function deleteMedia() {
             dense
             placeholder="Rating"
             type="number"
-            :model-value="pageEntry.review.rating"
-            @update:model-value="(val: any) => pageEntry.review!.rating = parseFloat(val)"
+            :model-value="review.rating"
+            @update:model-value="(val: any) => review!.rating = parseFloat(val)"
             class="mr-2"
           />
           <strong> / 10 </strong>
@@ -85,14 +72,14 @@ function deleteMedia() {
         placeholder="Button #1 Name"
         type="url"
         class="basis-2/5 mr-2"
-        v-model="pageEntry.review.firstButtonText"
+        v-model="review.firstButtonText"
       />
       <q-input
         standout
         dense
         placeholder="Link attached to Button #1"
         class="flex-1"
-        v-model="pageEntry.review.firstButtonLink"
+        v-model="review.firstButtonLink"
       />
     </q-card-section>
 
@@ -103,14 +90,14 @@ function deleteMedia() {
         placeholder="Button #2 Name"
         type="url"
         class="basis-2/5 mr-2"
-        v-model="pageEntry.review.secondButtonText"
+        v-model="review.secondButtonText"
       />
       <q-input
         standout
         dense
         placeholder="Link attached to Button #2"
         class="flex-1"
-        v-model="pageEntry.review.secondButtonLink"
+        v-model="review.secondButtonLink"
       />
     </q-card-section>
 
@@ -121,11 +108,11 @@ function deleteMedia() {
       type="textarea"
       class="test"
       :maxlength="350"
-      v-model="pageEntry.review.shortReview"
+      v-model="review.shortReview"
     >
       <template #append>
         <p class="absolute bottom-2 right-2 text-black text-sm">
-          {{ 350 - (pageEntry.review.shortReview?.length ?? 0) }}/350
+          {{ 350 - (review.shortReview?.length ?? 0) }}/350
         </p>
       </template>
     </q-input>

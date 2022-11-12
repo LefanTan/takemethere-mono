@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useQuasar } from "quasar";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
-import Preview from "@components/Preview.vue";
+import PreviewScreen from "@src/components/PreviewScreen.vue";
 import router from "@routes/index";
 import UserNavBar from "@src/components/UserNavBar.vue";
 import UserProfile from "@src/components/UserProfile.vue";
@@ -68,7 +68,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       class="shadow-lg flex flex-col flex-nowrap gap-8"
     >
       <Suspense>
-        <preview @close="showRightDrawer = false" />
+        <PreviewScreen @close="showRightDrawer = false" />
 
         <template #fallback> Loading... </template>
       </Suspense>
@@ -92,6 +92,7 @@ const currentRoutePath = computed(() => router.currentRoute.value.path);
       <nav class="px-3 py-2 shadow-md z-10 bg-white">
         <router-link
           v-for="link in navLinks"
+          :key="link.to"
           :to="link.to"
           class="inline-block text-lg font-medium transition-all py-2 px-3 h-full hover:bg-gray-50 rounded-lg"
           :class="{ 'text-gray-400': currentRoutePath !== link.to }"

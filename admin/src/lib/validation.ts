@@ -1,7 +1,7 @@
 import { UsersService } from "@common/webapi";
 
 export async function isFieldRequired(val: string) {
-  if (!!val) return true;
+  if (val) return true;
   return "Field is required";
 }
 
@@ -31,7 +31,7 @@ export async function isPasswordValid(val: string) {
 }
 
 export async function isEmailValid(val: string) {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) {
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(val)) {
     return true;
   }
 

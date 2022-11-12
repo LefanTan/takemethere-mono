@@ -1,22 +1,12 @@
 <script setup lang="ts">
-import { PageEntriesWithData } from "@common/types/client";
 import { MediasService } from "@common/webapi";
 import useStore from "@src/stores";
 import FileInput from "../FileInput.vue";
 
 const $store = useStore();
 
-const props = defineProps<{ pageEntry: PageEntriesWithData }>();
-
-// Assign newly upload media to pageEntry's Blog object
-const pageEntryIndex = $store.page.pageEntries.findIndex(
-  (entry) => entry.id === props.pageEntry.id
-);
-
-const link =
-  pageEntryIndex !== -1
-    ? $store.page.pageEntries[pageEntryIndex].link
-    : undefined;
+const props = defineProps<{ pageEntryIndex: number }>();
+const link = $store.page.pageEntries[props.pageEntryIndex].link;
 
 async function onFileAdded(files: FileList) {
   if (!link?.id) return;
@@ -39,9 +29,9 @@ function deleteMedia() {
 </script>
 
 <template>
-  <q-card-section horizontal v-if="pageEntry.link">
+  <q-card-section horizontal v-if="link">
     <file-input
-      :uploaded-url="pageEntry.link.mediaUrl"
+      :uploaded-url="link.mediaUrl"
       @file-added="onFileAdded"
       @delete="deleteMedia"
       class="h-22"
@@ -53,14 +43,9 @@ function deleteMedia() {
         dense
         placeholder="Display Text"
         class="mb-2"
-        v-model="pageEntry.link!.displayText"
+        v-model="link!.displayText"
       />
-      <q-input
-        standout
-        dense
-        placeholder="Link"
-        v-model="pageEntry.link!.link"
-      />
+      <q-input standout dense placeholder="Link" v-model="link!.link" />
     </q-card-section>
   </q-card-section>
 </template>

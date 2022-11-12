@@ -4,7 +4,7 @@ import { watchDebounced } from "@vueuse/core";
 import { storeToRefs } from "pinia";
 import isEquals from "lodash.isequal";
 
-import { PageEntriesWithData } from "@common/types/client";
+import { plural } from "@lib/helpers";
 import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
@@ -64,7 +64,15 @@ function dragEnd() {
       class="flex flex-col gap-4 my-6"
       @end="dragEnd"
     >
-      <template #item="{ element }: { element: PageEntriesWithData }">
+      <template
+        #item="{
+          element,
+          index,
+        }: {
+          element: PageEntriesWithData,
+          index: number,
+        }"
+      >
         <q-card>
           <q-card-section horizontal class="px-4">
             <q-icon
@@ -89,9 +97,7 @@ function dragEnd() {
                 </h4>
                 <template v-if="element.review || element.link">
                   <div class="flex items-center gap-2">
-                    {{ element.click }} click{{
-                      (element.click ?? 0) > 1 ? "s" : ""
-                    }}
+                    {{ plural(element.click ?? 0, "click") }}
                     <icon-button name="ads_click" tooltip-label="Clicks" />
                   </div>
                   <icon-button
@@ -115,13 +121,13 @@ function dragEnd() {
 
               <!-- Link Entry -->
               <link-entry-card-section
-                :page-entry="element"
+                :page-entry-index="index"
                 v-if="element.link"
               />
 
               <!-- Review Entry -->
               <review-entry-card-section
-                :page-entry="element"
+                :page-entry-index="index"
                 v-else-if="element.review"
               />
 
