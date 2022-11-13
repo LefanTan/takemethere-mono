@@ -4,9 +4,9 @@ import { Dialog } from "quasar";
 import useStore from ".";
 
 import { PageEntriesWithData, PageWithEntries } from "@common/types/client";
-import { PagesService } from "@common/webapi";
+import { BlogService, PagesService } from "@common/webapi";
 import { deepCopy } from "@src/lib/helpers";
-import { Page } from "@common/types";
+import { Blog, Page } from "@common/types";
 
 export type PageState = {
   /**
@@ -18,10 +18,19 @@ export type PageState = {
    */
   pageEntries: PageEntriesWithData[];
   oldPageEntries?: PageEntriesWithData[];
+  /**
+   * Current blog being edited/viewed
+   */
+  blog: Blog;
+  oldBlog?: Blog;
 };
 
 const usePageStore = defineStore("pageStore", {
-  state: (): PageState => ({ page: {} as PageWithEntries, pageEntries: [] }),
+  state: (): PageState => ({
+    page: {} as PageWithEntries,
+    pageEntries: [],
+    blog: {} as Blog,
+  }),
   actions: {
     /**
      * Load Page given the logged in user's JWT
@@ -141,6 +150,34 @@ const usePageStore = defineStore("pageStore", {
           (entry) => entry.id !== entryId
         );
       });
+    },
+
+    /**
+     * Get a Blog from cache given a id, retrieve from network if doesn't exist
+     */
+    async retrieveBlog(blogId: string) {
+      // If current blog is not available, find it in pageEntries or load from network
+      if (!this.blog.id)
+        this.blog =
+          this.pageEntries.find((entry) => entry.blog?.id === blogId)?.blog ??
+          (await BlogService.getBlog(blogId));
+
+      this.oldBlog = deepCopy(this.blog);
+
+      return this.blog;
+    },
+    /**
+     * Update a Blog
+     */
+    async updateBlog(blog: Blog) {
+      await BlogService.putBlogUpdateBlog(
+        blog.pageEntryId,
+        blog.id,
+        undefined,
+        { blog: this.blog }
+      );
+
+      this.oldBlog = deepCopy(this.blog);
     },
   },
 });

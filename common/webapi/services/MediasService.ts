@@ -99,9 +99,41 @@ export class MediasService {
     }
 
     /**
+     * Upload a picture to blog
+     * @param blogId
+     * @param media Media to attach to link
+     * @param authorization
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static postMediaAddToBlog(
+        blogId: string,
+        media: Blob,
+        authorization?: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/media/addToBlog/{blogId}',
+            path: {
+                'blogId': blogId,
+            },
+            headers: {
+                'authorization': authorization,
+            },
+            formData: {
+                'media': media,
+            },
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
      * Delete a file from the user\'s folder
      * @param authorization
-     * @param filePath File path to delete, prefixed with req.uid/
+     * @param filePath File path to delete
      * @returns any OK
      * @throws ApiError
      */

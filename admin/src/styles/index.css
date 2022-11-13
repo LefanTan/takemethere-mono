@@ -34,6 +34,10 @@
 
 /* ProseMirror/Tiptal */
 .ProseMirror {
+  > * + * {
+    margin-top: 0.75em;
+  }
+
   em {
     &,
     & * {
@@ -45,6 +49,21 @@
     padding-left: 1rem;
     border-left: 3px solid var(--secondary-light);
     color: var(--secondary);
+  }
+
+  /* Placeholder (at the top) */
+  p.is-editor-empty {
+    &:first-child::before {
+      content: attr(data-placeholder);
+      float: left;
+      color: #adb5bd;
+      pointer-events: none;
+      height: 0;
+
+      .ProseMirror-focused& {
+        content: "";
+      }
+    }
   }
 
   img {

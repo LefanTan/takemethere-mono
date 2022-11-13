@@ -29,12 +29,28 @@ const ResizableImage = Image.extend({
     return {
       ...this.parent?.(),
       size: {
-        default: "large",
-        rendered: false,
+        default: null,
+        parseHTML: (element) => {
+          return element.getAttribute("data-size") || "large";
+        },
+        renderHTML(attributes) {
+          return {
+            "data-size": attributes.size,
+            class: "resizable-image-" + attributes.size,
+          };
+        },
       },
       alignment: {
-        default: "center",
-        rendered: false,
+        default: null,
+        parseHTML: (element) => {
+          return element.getAttribute("data-alignment") || "center";
+        },
+        renderHTML(attributes) {
+          return {
+            "data-alignment": attributes.alignment,
+            class: "resizable-image-" + attributes.alignment,
+          };
+        },
       },
     };
   },

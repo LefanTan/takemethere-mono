@@ -418,6 +418,82 @@
         }
       }
     },
+    "/blog/{blogId}": {
+      "get": {
+        "tags": [
+          "Blog"
+        ],
+        "summary": "Grab a Blog based on blog id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "blogId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/blog/update/{pageEntryId}/blog/{blogId}": {
+      "put": {
+        "tags": [
+          "Blog"
+        ],
+        "summary": "Update the authenticated user\\'s Blog based on blog id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "pageEntryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blogId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "blog": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/media/addProfilePicture": {
       "post": {
         "tags": [
@@ -541,6 +617,49 @@
         }
       }
     },
+    "/media/addToBlog/{blogId}": {
+      "post": {
+        "tags": [
+          "Medias"
+        ],
+        "summary": "Upload a picture to blog",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "blogId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "media",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Media to attach to link"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/media/": {
       "delete": {
         "tags": [
@@ -557,7 +676,7 @@
           {
             "name": "filePath",
             "in": "query",
-            "description": "File path to delete, prefixed with req.uid/",
+            "description": "File path to delete",
             "type": "string"
           }
         ],

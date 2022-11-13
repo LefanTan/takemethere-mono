@@ -11,6 +11,7 @@ import userRoutes from "./routes/userRoutes";
 import pageRoutes from "./routes/pageRoutes";
 import mediaRoutes from "./routes/mediaRoutes";
 import analyticRoutes from "./routes/analyticRoutes";
+import blogRoutes from "./routes/blogRoutes";
 
 const openapiSpec = require("../swagger-output.json");
 
@@ -61,6 +62,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/page", pageRoutes);
+app.use("/blog", blogRoutes);
 app.use("/media", mediaRoutes);
 app.use("/analytic", analyticRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapiSpec));
