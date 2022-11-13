@@ -215,7 +215,8 @@ async function uploadOptimizedImageToGoogle(
 
   const convertedBuffer = await sharp(file.buffer)
     .resize(width, height)
-    .webp({ quality: 80, lossless: true, force: true })
+    .webp({ quality: 60, nearLossless: true, force: true })
+    .toFormat("webp")
     .toBuffer();
 
   const result = new Promise<string>((resolve, reject) => {
