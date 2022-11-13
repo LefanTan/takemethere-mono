@@ -2,23 +2,10 @@
 import { useEditor, EditorContent } from "@tiptap/vue-3";
 import { onBeforeUnmount } from "vue";
 
-import Document from "@tiptap/extension-document";
-import Text from "@tiptap/extension-text";
-import Paragraph from "@tiptap/extension-paragraph";
-import Blockquote from "@tiptap/extension-blockquote";
-import Heading from "@tiptap/extension-heading";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
-import HardBreak from "@tiptap/extension-hard-break";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import Bold from "@tiptap/extension-bold";
+import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
-import Italic from "@tiptap/extension-italic";
 import Underline from "@tiptap/extension-underline";
-import Strike from "@tiptap/extension-strike";
-import BubbleMenu from "@tiptap/extension-bubble-menu";
-import Dropcursor from "@tiptap/extension-dropcursor";
-import Gapcursor from "@tiptap/extension-gapcursor";
+import FloatingMenu from "@tiptap/extension-floating-menu";
 
 import FloatingBlogMenu from "../tiptap/FloatingBlogMenu.vue";
 import BubbleBlogMenu from "../tiptap/BubbleBlogMenu.vue";
@@ -26,29 +13,13 @@ import BubbleImageMenu from "../tiptap/BubbleImageMenu.vue";
 import ResizableImage from "../tiptap/ResizableTipTapImage";
 
 const editor = useEditor({
+  editorProps: {
+    attributes: {
+      class: "mt-4 flex flex-col",
+    },
+  },
   extensions: [
-    Document,
-    Text,
-    Paragraph,
-    Bold,
-    Italic,
-    Blockquote,
-    Dropcursor,
-    Gapcursor,
-    Heading,
-    Strike,
-    ListItem,
-    OrderedList,
-    HardBreak,
-    HorizontalRule,
-    BubbleMenu.configure({
-      element: document.querySelector(".bubble-blog-menu") as HTMLElement,
-      pluginKey: "blogBubbleMenu",
-      shouldShow: ({ editor }) => {
-        console.log("bro");
-        return false;
-      },
-    }),
+    StarterKit,
     Placeholder.configure({
       placeholder: "Start writing something...",
     }),
@@ -56,6 +27,11 @@ const editor = useEditor({
     ResizableImage.configure({
       HTMLAttributes: {
         class: "resizable-image",
+      },
+    }),
+    FloatingMenu.configure({
+      shouldShow() {
+        return false;
       },
     }),
   ],
@@ -75,7 +51,8 @@ onBeforeUnmount(() => {
 
     <floating-blog-menu :editor="editor" />
     <bubble-blog-menu :editor="editor" />
-    <editor-content :editor="editor" class="mt-4" />
+    <bubble-image-menu :editor="editor" />
+    <editor-content :editor="editor" />
   </div>
 </template>
 

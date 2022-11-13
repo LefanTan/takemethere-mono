@@ -50,17 +50,27 @@
   img {
     max-width: 100%;
     height: auto;
+    display: inline-block;
 
     &.ProseMirror-selectednode {
       outline: 3px solid #68cef8;
     }
 
-    resizable-image {
+    &.resizable-image {
       &-medium {
         width: 50%;
       }
       &-small {
         width: 25%;
+      }
+      &-center {
+        align-self: center;
+      }
+      &-start {
+        align-self: start;
+      }
+      &-end {
+        align-self: end;
       }
     }
   }

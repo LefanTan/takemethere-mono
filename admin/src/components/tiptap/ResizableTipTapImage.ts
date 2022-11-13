@@ -7,13 +7,22 @@ export const ALIGNMENT = ["start", "center", "end"] as const;
 export type SizeType = typeof SIZES[number];
 export type AlignmentType = typeof ALIGNMENT[number];
 
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    resizableImage: {
+      setSize: ({ size }: { size: SizeType }) => ReturnType;
+      setAlignment: ({ alignment }: { alignment: AlignmentType }) => ReturnType;
+    };
+  }
+}
+
 const ResizableImage = Image.extend({
   name: "resizable-image",
   addOptions() {
     return {
       ...this.parent?.(),
       sizes: SIZES,
-      align: ALIGNMENT,
+      alignment: ALIGNMENT,
     };
   },
   addAttributes() {
@@ -23,7 +32,7 @@ const ResizableImage = Image.extend({
         default: "large",
         rendered: false,
       },
-      align: {
+      alignment: {
         default: "center",
         rendered: false,
       },
@@ -36,7 +45,7 @@ const ResizableImage = Image.extend({
         (attributes: { size: SizeType }) =>
         ({ tr, dispatch }: any) => {
           // Check it's a valid size option
-          if (!this.options.sizes.includes(attributes.size)) {
+          if (!(this.options as any).sizes.includes(attributes.size)) {
             return false;
           }
 
@@ -50,12 +59,37 @@ const ResizableImage = Image.extend({
           if (dispatch) {
             tr.replaceRangeWith(selection.from, selection.to, node);
           }
+          return true;
+        },
+      setAlignment:
+        (attributes: { alignment: AlignmentType }) =>
+        ({ tr, dispatch }: any) => {
+          // Check it's a valid size option
+          if (!(this.options as any).alignment.includes(attributes.alignment)) {
+            return false;
+          }
+
+          const { selection } = tr;
+          const options = {
+            ...selection.node.attrs,
+            ...attributes,
+          };
+          const node = this.type.create(options);
+
+          if (dispatch) {
+            tr.replaceRangeWith(selection.from, selection.to, node);
+          }
+
+          return true;
         },
     };
   },
   renderHTML({ node, HTMLAttributes }) {
     const size = node.attrs.size;
     HTMLAttributes.class = "resizable-image-" + size;
+
+    const aligment = node.attrs.alignment;
+    HTMLAttributes.class += " resizable-image-" + aligment;
 
     return [
       "img",

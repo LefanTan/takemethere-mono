@@ -5,11 +5,13 @@ defineProps<{ editor?: Editor }>();
 </script>
 
 <template>
+  <!-- Show bubble menu for when selecting anything that's not image -->
   <bubble-menu
     v-if="editor"
     :editor="editor"
     :tippy-options="{ duration: 125 }"
     class="bubble-blog-menu"
+    :class="{ hidden: editor.isActive('resizable-image') }"
   >
     <button @click="editor?.chain().focus().setHeading({ level: 1 }).run()">
       h1
