@@ -66,6 +66,9 @@ mediaRoutes.post(
   }
 );
 
+/**
+ * Upload a picture to review
+ */
 mediaRoutes.post(
   "/addToReview/:reviewId",
   authenticateJWT,
@@ -101,6 +104,9 @@ mediaRoutes.post(
   }
 );
 
+/**
+ * Upload a picture to link
+ */
 mediaRoutes.post(
   "/addToLink/:linkId",
   authenticateJWT,
@@ -130,6 +136,44 @@ mediaRoutes.post(
       filePath,
       80,
       80
+    );
+
+    return res.json(resultPath);
+  }
+);
+
+/**
+ * Upload a picture to user's blog
+ */
+mediaRoutes.post(
+  "/addToBlog/:blogId",
+  authenticateJWT,
+  upload.single("media"),
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Upload a picture to blog'
+    // #swagger.consumes = ['multipart/form-data']
+    // #swagger.tags = ['Medias']
+    /* 
+    #swagger.parameters['media'] = {
+        in: 'formData',
+        type: 'file',
+        required: 'true',
+        description: 'Media to attach to link',
+    }
+    */
+
+    const file = req.file;
+
+    if (!file) return res.status(400).json({ message: "no file lmao!" });
+
+    const filePath = `${req.uid}/${req.params.blogId}/${
+      file.originalname.split(".")[0]
+    }.webp`;
+    const resultPath = await uploadOptimizedImageToGoogle(
+      file,
+      filePath,
+      500,
+      500
     );
 
     return res.json(resultPath);
@@ -171,7 +215,7 @@ async function uploadOptimizedImageToGoogle(
 
   const convertedBuffer = await sharp(file.buffer)
     .resize(width, height)
-    .toFormat("webp")
+    .webp({ quality: 80, lossless: true, force: true })
     .toBuffer();
 
   const result = new Promise<string>((resolve, reject) => {
