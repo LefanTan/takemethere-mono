@@ -24,11 +24,46 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
+  --secondary: #808080;
   --secondary-light: #ededed;
 }
 
 * {
   font-family: "Kumbh Sans";
+}
+
+/* ProseMirror/Tiptal */
+.ProseMirror {
+  em {
+    &,
+    & * {
+      font-family: sans-serif;
+    }
+  }
+
+  blockquote {
+    padding-left: 1rem;
+    border-left: 3px solid var(--secondary-light);
+    color: var(--secondary);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid #68cef8;
+    }
+
+    resizable-image {
+      &-medium {
+        width: 50%;
+      }
+      &-small {
+        width: 25%;
+      }
+    }
+  }
 }
 
 /* Quasar Override */

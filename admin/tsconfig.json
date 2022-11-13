@@ -27,6 +27,13 @@
     }
   },
   "exclude": ["/dist", ".quasar", "**/*.stories.ts"],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/components/tiptap/ResizableTipTapImage.tspImage.ts",
+    "src/components/tiptap/ResizableTipTapImage.tspImage.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
