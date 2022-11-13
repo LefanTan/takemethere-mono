@@ -11,19 +11,18 @@ const review = $store.page.pageEntries[props.pageEntryIndex]?.review;
 async function onFileAdded(files: FileList) {
   if (!review?.id) return;
 
+  $store.app.deleteMediaGateway(review.mediaUrl ?? undefined);
   const res = await MediasService.postMediaAddToReview(review.id, files[0]);
 
   if (review) review.mediaUrl = res;
 }
 
+/**
+ * Delete the media on storage and set media url to null (reset)
+ */
 function deleteMedia() {
-  if (!review?.mediaUrl) return;
-
-  const splitUrl = review.mediaUrl.split("/") ?? [];
-
-  // Grab the file name and Call api to delete current profile picture
-  MediasService.deleteMedia(splitUrl[splitUrl?.length - 1]);
-
+  if (!review) return;
+  $store.app.deleteMediaGateway(review.mediaUrl ?? undefined);
   review.mediaUrl = null;
 }
 </script>

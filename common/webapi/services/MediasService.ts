@@ -99,24 +99,24 @@ export class MediasService {
     }
 
     /**
-     * Delete a file from the user
-     * @param filename
+     * Delete a file from the user\'s folder
      * @param authorization
+     * @param filePath File path to delete, prefixed with req.uid/
      * @returns any OK
      * @throws ApiError
      */
     public static deleteMedia(
-        filename: string,
         authorization?: string,
+        filePath?: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/media/{filename}',
-            path: {
-                'filename': filename,
-            },
+            url: '/media/',
             headers: {
                 'authorization': authorization,
+            },
+            query: {
+                'filePath': filePath,
             },
             errors: {
                 400: `Bad Request`,

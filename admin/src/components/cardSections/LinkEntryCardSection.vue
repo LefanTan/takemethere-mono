@@ -11,6 +11,8 @@ const link = $store.page.pageEntries[props.pageEntryIndex].link;
 async function onFileAdded(files: FileList) {
   if (!link?.id) return;
 
+  if (link.mediaUrl) $store.app.deleteMediaGateway(link.mediaUrl);
+
   const res = await MediasService.postMediaAddToLink(link?.id, files[0]);
 
   if (link) link.mediaUrl = res;
@@ -19,11 +21,7 @@ async function onFileAdded(files: FileList) {
 function deleteMedia() {
   if (!link?.mediaUrl) return;
 
-  const splitUrl = link.mediaUrl.split("/") ?? [];
-
-  // Grab the file name and Call api to delete current profile picture
-  MediasService.deleteMedia(splitUrl[splitUrl?.length - 1]);
-
+  $store.app.deleteMediaGateway(link.mediaUrl);
   link.mediaUrl = null;
 }
 </script>

@@ -541,23 +541,23 @@
         }
       }
     },
-    "/media/{filename}": {
+    "/media/": {
       "delete": {
         "tags": [
           "Medias"
         ],
-        "summary": "Delete a file from the user",
+        "summary": "Delete a file from the user\\'s folder",
         "description": "",
         "parameters": [
           {
-            "name": "filename",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
-            "name": "authorization",
-            "in": "header",
+            "name": "filePath",
+            "in": "query",
+            "description": "File path to delete, prefixed with req.uid/",
             "type": "string"
           }
         ],

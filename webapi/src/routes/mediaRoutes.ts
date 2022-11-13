@@ -140,17 +140,18 @@ mediaRoutes.post(
  * Delete a file from the user's folder
  */
 mediaRoutes.delete(
-  "/:filename",
+  "/",
   authenticateJWT,
   async (req: AuthorizedRequest, res) => {
-    // #swagger.summary = 'Delete a file from the user's folder'
+    // #swagger.summary = 'Delete a file from the user\'s folder'
+    /*  #swagger.parameters['filePath'] = {
+            in: 'query',
+            description: 'File path to delete',
+    } */
     // #swagger.tags = ['Medias']
 
     try {
-      await storage
-        .bucket(bucketName)
-        .file(`${req.uid}/${req.params.filename}`)
-        .delete();
+      await storage.bucket(bucketName).file(`${req.query.filePath}`).delete();
 
       return res.sendStatus(200);
     } catch (error) {

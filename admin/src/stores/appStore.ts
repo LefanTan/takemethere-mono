@@ -1,6 +1,6 @@
 import { auth } from "@src/lib/firebase";
 import router from "@src/routes";
-import { OpenAPI, UsersService } from "@common/webapi";
+import { MediasService, OpenAPI, UsersService } from "@common/webapi";
 import { User as TakeMeUser } from "@common/types/index";
 import { PageWithEntries } from "@common/types/client";
 
@@ -97,6 +97,20 @@ const useAppStore = defineStore("appStore", {
       const pageChange = new CustomEvent("pageChange", {});
 
       document.documentElement.dispatchEvent(pageChange);
+    },
+
+    /**
+     * Delete media given a TakeMe google storage url
+     * @param url
+     * @returns
+     */
+    async deleteMediaGateway(url?: string) {
+      if (!url) return;
+
+      const splitUrl = url.split("takeme-public-assets/") ?? [];
+
+      // Grab the file name and Call api to delete current profile picture
+      await MediasService.deleteMedia(undefined, splitUrl[1]);
     },
   },
 });
