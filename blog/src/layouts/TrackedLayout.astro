@@ -10,8 +10,12 @@ export interface Props {
 }
 
 import { User } from "@common/types";
-import SEO from "@components/SEO.astro";
 import BaseLayout from "./BaseLayout.astro";
+import { OpenAPI } from "@common/webapi";
+
+OpenAPI.BASE = import.meta.env.PROD
+  ? "https://api.takeme.blog"
+  : "http://localhost:5080";
 
 const prod = import.meta.env.PROD;
 
@@ -19,17 +23,7 @@ const { user } = Astro.props;
 ---
 
 <BaseLayout>
-  <!-- Goes into header -->
-  <!-- TODO: Replace with hardcoded url with vanity url -->
-  <SEO
-    slot="header"
-    title={`${user.username} | TakeMe - Link in Bio tool for Bloggers`}
-    description={user.bio}
-    image={user.profileMediaUrl
-      ? `${user.profileMediaUrl?.split(".webp")[0]}-large.webp`
-      : undefined}
-    url={`https://takeme.blog/${user.username}`}
-  />
+  <div slot="head">bro</div>
 
   <!-- Main content -->
   <slot />

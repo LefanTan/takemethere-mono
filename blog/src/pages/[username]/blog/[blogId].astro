@@ -1,0 +1,158 @@
+---
+import Footer from "@components/Footer.astro";
+import TrackedLayout from "@layouts/TrackedLayout.astro";
+import { UsersService, BlogService } from "@common/webapi";
+import { Blog, User } from "@common/types";
+import BlogProfile from "@components/BlogProfile.astro";
+import SEO from "@components/SEO.astro";
+import { getFeaturedImageFromHtml } from "@lib/helper";
+
+const { username, blogId } = Astro.params;
+
+const [user, blog]: [User, Blog] = await Promise.all([
+  UsersService.getUsersUsername(username as string).catch(() => null),
+  BlogService.getBlog(blogId as string).catch(() => null),
+]);
+
+if (!user) return Astro.redirect("/404");
+
+const featuredImage = getFeaturedImageFromHtml(blog.content);
+---
+
+<script define:vars={{ blog }}>
+  // Log PageVisit on load
+  addEventListener("load", () => {
+    window.AnalyticTracker?.logAnalytic("BlogVisit", { blogId: blog.id });
+  });
+
+  setTimeout(() => {
+    window.AnalyticTracker?.logAnalytic("BlogStayedFor5s", { blogId: blog.id });
+  }, 5000);
+</script>
+
+<TrackedLayout user={user}>
+  <!-- Goes into header -->
+  <!-- TODO: Replace with hardcoded url with vanity url -->
+  <!-- <SEO
+    title={blog.title}
+    description={blog.description}
+    image={featuredImage ?? undefined}
+    url={`https://takeme.blog/${user.username}/blog/${blog.id}`}
+  /> -->
+
+  <main class="flex flex-col flex-1 items-center">
+    <!-- Content with a width cap -->
+    <BlogProfile user={user} date={blog.updatedAt} blog={blog} />
+
+    <div class="max-w-5xl p-5">
+      <h1 class="font-bold text-4xl mt-3">{blog.title}</h1>
+      <p class="mt-2">{blog.description}</p>
+      <div class="blog-content" set:html={blog.content} />
+    </div>
+  </main>
+  <Footer />
+</TrackedLayout>
+
+<style is:global lang="less">
+  @desktop: ~"(min-width: 640px)";
+
+  .blog-content {
+    display: flex;
+    flex-direction: column;
+
+    * {
+      line-height: 1.125rem;
+    }
+
+    > * + * {
+      margin-top: 0.75em;
+    }
+
+    ul {
+      list-style: inside;
+      p {
+        display: inline-block;
+      }
+    }
+
+    ol {
+      list-style: inside;
+      list-style-type: decimal;
+      p {
+        display: inline-block;
+      }
+    }
+
+    em {
+      &,
+      & * {
+        font-family: sans-serif;
+      }
+    }
+
+    blockquote {
+      padding-left: 1rem;
+      border-left: 3px solid var(--secondary-light);
+      color: var(--secondary);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+      object-fit: contain;
+
+      &.resizable-image {
+        width: 100%;
+        &-large {
+          @media @desktop {
+            width: 75%;
+          }
+        }
+        &-medium {
+          @media @desktop {
+            width: 50%;
+          }
+        }
+        &-small {
+          @media @desktop {
+            width: 25%;
+          }
+        }
+
+        &-center {
+          align-self: center;
+        }
+        &-start {
+          align-self: start;
+        }
+        &-end {
+          align-self: end;
+        }
+      }
+    }
+
+    div[data-youtube-video] {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+
+      @media @desktop {
+        width: 75%;
+      }
+
+      > iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+</style>

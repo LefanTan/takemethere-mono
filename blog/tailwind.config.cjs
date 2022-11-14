@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        secondary: "var(--secondary)",
         "secondary-light": "var(--secondary-light)",
       },
     },

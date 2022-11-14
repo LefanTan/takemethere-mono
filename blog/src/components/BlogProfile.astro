@@ -1,0 +1,122 @@
+---
+import { User, Blog } from "@common/types";
+import { isUrl, getDomain } from "@lib/helper";
+import dayjs from "dayjs";
+
+// TODO: Get User Profile props
+export interface Props {
+  user: User;
+  date: Date | string;
+  blog: Blog;
+}
+
+const { user, date, blog } = Astro.props;
+
+// To be used as Profile Picture if user hasn't uploaded any profile picture
+const firstValidLetter = [...user.displayName]
+  .find((char) => char.toUpperCase() != char.toLowerCase())
+  ?.toUpperCase();
+
+const formattedDate = dayjs(date).format("MMM YYYY");
+---
+
+<script is:inline define:vars={{ blog }}>
+  const shareData = {
+    text: blog.title,
+    url: window.location.href,
+  };
+
+  document
+    .getElementById("share-button")
+    .addEventListener("click", async () => {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        await navigator.clipboard.writeText(window.location.href);
+        document.getElementById("link-copy-toast").style.display = "flex";
+      }
+    });
+</script>
+
+<section class="flex self-stretch justify-center shadow-md p-4">
+  <!-- Width wrapper -->
+  <div class="flex-1 max-w-5xl">
+    <div class="flex items-start">
+      <a href={`${getDomain()}/${user.username}`}>
+        {
+          user.profileMediaUrl ? (
+            <img
+              src={user.profileMediaUrl}
+              alt="default profile image"
+              class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-lg ring-black-2 object-cover"
+            />
+          ) : (
+            <div class="w-24 h-24 bg-black sm:w-28 sm:h-28 shrink-0 rounded-lg ring-black-2 flex items-center justify-center">
+              <h1 class="text-4xl text-white">{firstValidLetter}</h1>
+            </div>
+          )
+        }
+      </a>
+
+      <div class="flex flex-col ml-4">
+        <h1>
+          <a href={`${getDomain()}/${user.username}`}>{user.displayName}</a>
+        </h1>
+        <span class="text-sm text-secondary">{formattedDate}</span>
+      </div>
+      <!-- Link Icons -->
+      <address class="flex flex-wrap gap-2 my-auto pl-4 ml-auto">
+        {
+          user.externalEmail && (
+            <a href={`mailto:${user.externalEmail}`}>
+              <iconify-icon
+                icon="eva:email-outline"
+                width="1.7rem"
+                class="-mt-0.5"
+              />
+            </a>
+          )
+        }
+        {
+          isUrl(user.tiktokUrl) && (
+            <a href={user.tiktokUrl} target="_blank">
+              <iconify-icon icon="akar-icons:tiktok-fill" width="1.5rem" />
+            </a>
+          )
+        }
+        {
+          isUrl(user.instagramUrl) && (
+            <a href={user.instagramUrl} target="_blank">
+              <iconify-icon icon="akar-icons:instagram-fill" width="1.5rem" />
+            </a>
+          )
+        }
+        {
+          isUrl(user.youtubeUrl) && (
+            <a href={user.youtubeUrl} target="_blank">
+              <iconify-icon icon="iconoir:youtube" width="1.5rem" />
+            </a>
+          )
+        }
+        {
+          isUrl(user.twitterUrl) && (
+            <a href={user.twitterUrl} target="_blank">
+              <iconify-icon icon="akar-icons:twitter-fill" width="1.5rem" />
+            </a>
+          )
+        }
+      </address>
+      <button class="my-auto ml-5" id="share-button">
+        <iconify-icon icon="el:share-alt" width="1.5rem" />
+      </button>
+    </div>
+  </div>
+  <aside
+    id="link-copy-toast"
+    data-open={false}
+    style="display:none;"
+    class="fixed top-5 left-1/2 -translate-x-1/2 bg-black text-white rounded-md px-2.5 py-1"
+  >
+    Link copied!
+  </aside>
+</section>

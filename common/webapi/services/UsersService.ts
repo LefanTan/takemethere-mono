@@ -120,6 +120,27 @@ export class UsersService {
     }
 
     /**
+     * Get User data (without page) by username
+     * @param username
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static getUsersUsername(
+        username: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/username/{username}',
+            path: {
+                'username': username,
+            },
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
+
+    /**
      * Create a new user. Returns 404 if user already exists
      * @param body
      * @returns any Returns a user

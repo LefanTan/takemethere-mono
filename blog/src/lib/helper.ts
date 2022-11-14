@@ -36,3 +36,19 @@ export function isUrl(url?: string) {
 
   return false;
 }
+
+/**
+ * Get the current domain depending on environment of the server
+ * @returns
+ */
+export function getDomain() {
+  return import.meta.env.PROD ? "https://takeme.blog" : "http://localhost:3000";
+}
+
+/**
+ * Extract the first img src from a HTML string
+ */
+export function getFeaturedImageFromHtml(html: string) {
+  const match = /<img[^>]+src="([^">]+)"/g.exec(html);
+  return match[1];
+}

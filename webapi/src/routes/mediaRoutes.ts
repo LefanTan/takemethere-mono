@@ -169,12 +169,7 @@ mediaRoutes.post(
     const filePath = `${req.uid}/${req.params.blogId}/${
       file.originalname.split(".")[0]
     }.webp`;
-    const resultPath = await uploadOptimizedImageToGoogle(
-      file,
-      filePath,
-      500,
-      500
-    );
+    const resultPath = await uploadOptimizedImageToGoogle(file, filePath);
 
     return res.json(resultPath);
   }
@@ -207,14 +202,19 @@ mediaRoutes.delete(
 async function uploadOptimizedImageToGoogle(
   file: Express.Multer.File,
   filePath: string,
-  width: number,
-  height: number
+  width?: number,
+  height?: number
 ) {
   const blob = bucket.file(filePath);
-  const blobStream = blob.createWriteStream();
+  const blobStream = blob.createWriteStream({
+    metadata: {
+      // Browser cache for 3 hours
+      cacheControl: "public, max-age=180",
+    },
+  });
 
   const convertedBuffer = await sharp(file.buffer)
-    .resize(width, height)
+    .resize(width, height, { fit: sharp.fit.contain })
     .webp({ quality: 60, nearLossless: true, force: true })
     .toFormat("webp")
     .toBuffer();

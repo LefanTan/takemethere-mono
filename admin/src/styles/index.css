@@ -45,6 +45,21 @@
     }
   }
 
+  ul {
+    list-style: inside;
+    p {
+      display: inline-block;
+    }
+  }
+
+  ol {
+    list-style: inside;
+    list-style-type: decimal;
+    p {
+      display: inline-block;
+    }
+  }
+
   blockquote {
     padding-left: 1rem;
     border-left: 3px solid var(--secondary-light);

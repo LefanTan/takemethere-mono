@@ -8,6 +8,10 @@ import Underline from "@tiptap/extension-underline";
 import FloatingMenu from "@tiptap/extension-floating-menu";
 import TextAlign from "@tiptap/extension-text-align";
 import Youtube from "@tiptap/extension-youtube";
+import HardBreak from "@tiptap/extension-hard-break";
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import BulletList from "@tiptap/extension-bullet-list";
 
 import FloatingBlogMenu from "../tiptap/FloatingBlogMenu.vue";
 import BubbleBlogMenu from "../tiptap/BubbleBlogMenu.vue";
@@ -19,7 +23,6 @@ import router from "@src/routes";
 import { storeToRefs } from "pinia";
 import { watchDebounced } from "@vueuse/core";
 import { isEqual } from "lodash";
-import HardBreak from "@tiptap/extension-hard-break";
 
 const $store = useStore();
 const blogId = router.currentRoute.value.params.blogId;
@@ -84,6 +87,9 @@ const editor = useEditor({
         return false;
       },
     }),
+    ListItem,
+    OrderedList,
+    BulletList,
   ],
 });
 

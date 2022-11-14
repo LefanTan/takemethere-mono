@@ -63,10 +63,11 @@ pageRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
 });
 
 /**
- * Grab the user's page given a username
+ * Grab the user\'s page given a username
+ * TODO: Change this get a paginated GetPageEntries instead
  */
 pageRoutes.get("/:username/page", async (req, res) => {
-  // #swagger.summary = 'Grab the user's page given a username'
+  // #swagger.summary = 'Grab the user\'s page given a username'
   // #swagger.tags = ['Pages']
   /* #swagger.responses[200] = {
       description: 'Returns the user\'s page'
@@ -82,9 +83,13 @@ pageRoutes.get("/:username/page", async (req, res) => {
         page: {
           include: {
             pageEntries: {
+              where: {
+                hidden: false,
+              },
               include: {
                 review: true,
                 link: true,
+                blog: true,
               },
             },
           },

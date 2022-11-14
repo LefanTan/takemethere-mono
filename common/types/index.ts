@@ -76,6 +76,8 @@ export type Blog = {
     description: string,
     content: string,
     pageEntryId: string,
+    createdAt?: (Date | string),
+    updatedAt?: (Date | string),
 }
 
 export type EntryAnalytics = {

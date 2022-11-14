@@ -1,0 +1,55 @@
+---
+import { Blog } from "@common/types/index";
+import { getDomain, getFeaturedImageFromHtml } from "@lib/helper";
+
+interface Props {
+  blog: Blog;
+}
+
+const { blog } = Astro.props;
+const { username } = Astro.params;
+
+const featuredImage = getFeaturedImageFromHtml(blog.content);
+const domain = getDomain();
+---
+
+<script>
+  const linkClickHandler = (context: any) => {
+    window.AnalyticTracker?.logAnalytic("BlogClick", {
+      linkId: context.dataset.linkId,
+    });
+  };
+
+  Array.from(document.getElementsByClassName("takeme-link")).forEach(
+    (element) =>
+      element.addEventListener("click", function () {
+        linkClickHandler(this);
+      })
+  );
+</script>
+<a
+  data-blog-id={blog.id}
+  href={`${domain}/${username}/blog/${blog.id}`}
+  class="takeme-blog flex rounded-lg ring-black-2 overflow-hidden mb-4"
+>
+  {
+    featuredImage && (
+      <img src={featuredImage} alt="" class="w-20 full shrink-0 object-cover" />
+    )
+  }
+
+  <div class="flex flex-col flex-1 p-4">
+    <strong class="text-lg leading-none mb-1">
+      {blog.title}
+    </strong>
+    <p>
+      {blog.description}
+    </p>
+  </div>
+
+  <iconify-icon
+    icon="ant-design:read-outlined"
+    width="1.25rem"
+    class="mt-auto m-1"
+  />
+</a>

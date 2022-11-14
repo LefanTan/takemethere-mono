@@ -109,6 +109,7 @@ const usePreview = computed(() => router.currentRoute.value.meta.showPreview);
         </Suspense>
       </q-page>
       <q-btn
+        v-if="usePreview"
         label="Preview page"
         icon="eva-eye-outline"
         class="takeme-button black only-mobile fixed bottom-4 left-1/2 -translate-x-1/2"

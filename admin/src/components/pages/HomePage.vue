@@ -139,12 +139,14 @@ function getTitleText(entry: PageEntriesWithData) {
               />
 
               <div v-else-if="element.blog" class="flex flex-col">
-                <h1>{{ element.blog.title }}</h1>
-                <h3>{{ element.blog.description }}</h3>
+                <div class="rounded-lg shadow-lg p-4">
+                  <strong class="text-lg">{{ element.blog.title }}</strong>
+                  <p>{{ element.blog.description }}</p>
+                </div>
                 <q-btn
                   :to="`/blog/${element.blog.id}`"
                   label="Edit Blog"
-                  class="takeme-button black self-end"
+                  class="takeme-button black self-end mt-4"
                 />
               </div>
 

@@ -50,6 +50,12 @@ defineProps<{ editor?: Editor }>();
     <button @click="editor?.chain().focus().setTextAlign('right').run()">
       <q-icon name="format_align_right" size="1rem" />
     </button>
+    <button @click="editor?.chain().focus().toggleBulletList().run()">
+      <q-icon name="format_list_bulleted" size="1rem" />
+    </button>
+    <button @click="editor?.chain().focus().toggleOrderedList().run()">
+      <q-icon name="format_list_numbered" size="1rem" />
+    </button>
   </bubble-menu>
 </template>
 

@@ -26,7 +26,7 @@ const { link } = Astro.props;
   data-link-id={link.id}
   href={link.link}
   target="_blank"
-  class="takeme-link flex rounded-lg ring-black-2 overflow-hidden mb-4"
+  class="takeme-link flex rounded-lg relative ring-black-2 overflow-hidden mb-4"
 >
   {
     link.mediaUrl && (
@@ -37,4 +37,10 @@ const { link } = Astro.props;
   <p class="p-4 text-lg text-center flex items-center justify-center flex-1">
     {link.displayText}
   </p>
+
+  <iconify-icon
+    icon="charm:link-external"
+    width="1rem"
+    class="absolute bottom-2 right-2"
+  />
 </a>

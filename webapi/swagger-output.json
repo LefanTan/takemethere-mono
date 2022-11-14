@@ -176,6 +176,31 @@
         }
       }
     },
+    "/users/username/{username}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User data (without page) by username",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/users/create": {
       "post": {
         "tags": [
@@ -317,7 +342,7 @@
         "tags": [
           "Pages"
         ],
-        "summary": "Grab the user",
+        "summary": "Grab the user\\'s page given a username",
         "description": "",
         "parameters": [
           {

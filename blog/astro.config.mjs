@@ -7,30 +7,29 @@ import tailwind from "@astrojs/tailwind";
 import vue from "@astrojs/vue";
 
 // https://astro.build/config
+import prefetch from "@astrojs/prefetch";
+
+// https://astro.build/config
 export default defineConfig({
   output: "server",
   adapter: node({
-    mode: "standalone",
+    mode: "standalone"
   }),
-  server: (command) => ({
+  server: command => ({
     port: command === "dev" ? 3000 : parseInt(process.env.PORT ?? 3000),
-    host: "0.0.0.0",
+    host: "0.0.0.0"
   }),
-  integrations: [
-    tailwind({
-      config: {
-        applyBaseStyles: false,
-      },
-    }),
-    image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-    }),
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.startsWith("iconify-"),
-        },
-      },
-    }),
-  ],
+  integrations: [tailwind({
+    config: {
+      applyBaseStyles: false
+    }
+  }), image({
+    serviceEntryPoint: "@astrojs/image/sharp"
+  }), vue({
+    template: {
+      compilerOptions: {
+        isCustomElement: tag => tag.startsWith("iconify-")
+      }
+    }
+  }), prefetch()]
 });

@@ -60,6 +60,7 @@ userRoutes.get("/email/:username", async (req, res) => {
 
 /**
  * Retrieve user object and all page data based on a given username
+ * TODO: Add pagination, split this function into GetPageEntriesByUsername and GetUserByUsername
  */
 userRoutes.get("/:username/page", async (req: AuthorizedRequest, res) => {
   // #swagger.summary = 'Get User data (without page) through JWT'
@@ -78,9 +79,13 @@ userRoutes.get("/:username/page", async (req: AuthorizedRequest, res) => {
               orderBy: {
                 order: "desc",
               },
+              where: {
+                OR: [{ hidden: false }, { hidden: null }],
+              },
               include: {
                 review: true,
                 link: true,
+                blog: true,
               },
             },
           },
@@ -105,6 +110,26 @@ userRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id: req.uid,
+      },
+    });
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
+
+/**
+ * Get User data (without page) by username
+ */
+userRoutes.get("/username/:username", async (req, res) => {
+  // #swagger.summary = 'Get User data (without page) by username'
+  // #swagger.tags = ['Users']
+
+  try {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        username: req.params.username,
       },
     });
 

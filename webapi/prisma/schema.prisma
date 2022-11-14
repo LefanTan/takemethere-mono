@@ -118,6 +118,9 @@ model Blog {
 
   pageEntryId String    @unique
   pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 // Analytics

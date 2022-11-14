@@ -65,7 +65,7 @@ export class PagesService {
     }
 
     /**
-     * Grab the user
+     * Grab the user\'s page given a username
      * @param username
      * @returns any Returns the user's page
      * @throws ApiError
