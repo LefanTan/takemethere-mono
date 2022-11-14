@@ -11,11 +11,6 @@ export interface Props {
 
 import { User } from "@common/types";
 import BaseLayout from "./BaseLayout.astro";
-import { OpenAPI } from "@common/webapi";
-
-OpenAPI.BASE = import.meta.env.PROD
-  ? "https://api.takeme.blog"
-  : "http://localhost:5080";
 
 const prod = import.meta.env.PROD;
 

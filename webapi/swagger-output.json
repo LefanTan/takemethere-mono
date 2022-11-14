@@ -96,7 +96,7 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get User data (without page) through JWT",
+        "summary": "Retrieve user object and all page data based on a given username",
         "description": "",
         "parameters": [
           {

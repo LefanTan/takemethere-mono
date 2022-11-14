@@ -62,8 +62,8 @@ userRoutes.get("/email/:username", async (req, res) => {
  * Retrieve user object and all page data based on a given username
  * TODO: Add pagination, split this function into GetPageEntriesByUsername and GetUserByUsername
  */
-userRoutes.get("/:username/page", async (req: AuthorizedRequest, res) => {
-  // #swagger.summary = 'Get User data (without page) through JWT'
+userRoutes.get("/:username/page", async (req, res) => {
+  // #swagger.summary = 'Retrieve user object and all page data based on a given username'
   // #swagger.tags = ['Users']
 
   try {

@@ -52,7 +52,7 @@ export class UsersService {
     }
 
     /**
-     * Get User data (without page) through JWT
+     * Retrieve user object and all page data based on a given username
      * @param username
      * @returns any OK
      * @throws ApiError

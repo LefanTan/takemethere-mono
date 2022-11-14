@@ -4,14 +4,21 @@ import MainEntries from "@components/MainEntries.astro";
 import Profile from "@components/Profile.astro";
 import TrackedLayout from "@layouts/TrackedLayout.astro";
 
-import { UsersService } from "@common/webapi";
+import { OpenAPI, UsersService } from "@common/webapi";
 import SEO from "@components/SEO.astro";
 
 const { username } = Astro.params;
 
+// Required for every page, can not be defined in Layouts because this page's frontmatter is parsed and ran first
+OpenAPI.BASE = import.meta.env.PROD
+  ? "https://api.takeme.blog"
+  : "http://localhost:5080";
+
 const user = await UsersService.getUsersPage(username as string).catch(
   () => null
 );
+
+console.log(OpenAPI.BASE);
 
 if (!user) return Astro.redirect("/404");
 ---

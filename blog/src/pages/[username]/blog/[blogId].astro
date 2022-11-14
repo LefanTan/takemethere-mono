@@ -1,13 +1,18 @@
 ---
 import Footer from "@components/Footer.astro";
 import TrackedLayout from "@layouts/TrackedLayout.astro";
-import { UsersService, BlogService } from "@common/webapi";
+import { UsersService, BlogService, OpenAPI } from "@common/webapi";
 import { Blog, User } from "@common/types";
 import BlogProfile from "@components/BlogProfile.astro";
 import SEO from "@components/SEO.astro";
 import { getFeaturedImageFromHtml } from "@lib/helper";
 
 const { username, blogId } = Astro.params;
+
+// Required for every page, can not be defined in Layouts because this page's frontmatter is parsed and ran first
+OpenAPI.BASE = import.meta.env.PROD
+  ? "https://api.takeme.blog"
+  : "http://localhost:5080";
 
 const [user, blog]: [User, Blog] = await Promise.all([
   UsersService.getUsersUsername(username as string).catch(() => null),
