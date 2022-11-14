@@ -26,7 +26,7 @@ watchDebounced(
       await $store.page.updatePage();
     }
   },
-  { deep: true, debounce: 500 }
+  { deep: true, debounce: 250 }
 );
 
 function dragEnd() {

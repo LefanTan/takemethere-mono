@@ -27,7 +27,7 @@ const firstValidLetter = computed(() =>
     </h3>
     <q-popup-proxy :offset="[-40, 10]">
       <q-card class="py-3 rounded-lg">
-        <strong class="px-6">Lefan</strong>
+        <strong class="px-6">{{ $store.app.takeMeUser?.username }}</strong>
         <q-card-section class="px-3 py-0">
           <q-list class="mt-2">
             <q-item to="/profile" replace class="rounded-lg px-3" clickable>

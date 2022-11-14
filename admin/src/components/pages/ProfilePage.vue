@@ -30,7 +30,7 @@ watchDebounced(
       oldUser = deepCopy(user.value);
     }
   },
-  { deep: true, debounce: 500 }
+  { deep: true, debounce: 250 }
 );
 
 async function onFileAdded(files: FileList) {

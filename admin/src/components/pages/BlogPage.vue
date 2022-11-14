@@ -37,7 +37,7 @@ watchDebounced(
       $store.page.updateBlog(blog.value);
     }
   },
-  { deep: true, debounce: 500 }
+  { deep: true, debounce: 250 }
 );
 
 const editor = useEditor({
