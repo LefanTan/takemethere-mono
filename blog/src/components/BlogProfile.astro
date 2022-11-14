@@ -50,7 +50,7 @@ const formattedDate = dayjs(date).format("MMM YYYY");
       <address class="flex flex-wrap gap-2 my-auto pl-4 ml-auto">
         {
           user.externalEmail && (
-            <a href={`mailto:${user.externalEmail}`}>
+            <a href={`mailto:${user.externalEmail}`} aria-label="email">
               <iconify-icon
                 icon="eva:email-outline"
                 width="1.7rem"
@@ -61,34 +61,38 @@ const formattedDate = dayjs(date).format("MMM YYYY");
         }
         {
           isUrl(user.tiktokUrl) && (
-            <a href={user.tiktokUrl} target="_blank">
+            <a href={user.tiktokUrl} aria-label="tiktok url" target="_blank">
               <iconify-icon icon="akar-icons:tiktok-fill" width="1.5rem" />
             </a>
           )
         }
         {
           isUrl(user.instagramUrl) && (
-            <a href={user.instagramUrl} target="_blank">
+            <a
+              href={user.instagramUrl}
+              aria-label="instagram url"
+              target="_blank"
+            >
               <iconify-icon icon="akar-icons:instagram-fill" width="1.5rem" />
             </a>
           )
         }
         {
           isUrl(user.youtubeUrl) && (
-            <a href={user.youtubeUrl} target="_blank">
+            <a href={user.youtubeUrl} aria-label="youtube url" target="_blank">
               <iconify-icon icon="iconoir:youtube" width="1.5rem" />
             </a>
           )
         }
         {
           isUrl(user.twitterUrl) && (
-            <a href={user.twitterUrl} target="_blank">
+            <a href={user.twitterUrl} aria-label="twitter url" target="_blank">
               <iconify-icon icon="akar-icons:twitter-fill" width="1.5rem" />
             </a>
           )
         }
       </address>
-      <button class="my-auto ml-5" id="share-button">
+      <button class="my-auto ml-5" id="share-button" aria-label="share link">
         <iconify-icon icon="el:share-alt" width="1.5rem" />
       </button>
     </div>
