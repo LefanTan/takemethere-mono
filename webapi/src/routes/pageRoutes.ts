@@ -310,6 +310,20 @@ async function getPageEntriesByPage(
         });
       }
 
+      if (entry.blog) {
+        // Combine both cta click count
+        return prisma.entryAnalytics.count({
+          where: {
+            propertyId: userId,
+            eventId: "BlogClick",
+            eventProperties: {
+              path: ["blogId"],
+              equals: entry.blog.id,
+            },
+          },
+        });
+      }
+
       // No analytic available for this entry type
       return [null];
     })
