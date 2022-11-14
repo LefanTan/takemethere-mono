@@ -102,7 +102,7 @@ function getTitleText(entry: PageEntriesWithData) {
                 <h4 class="mr-auto">
                   {{ getTitleText(element) }}
                 </h4>
-                <template v-if="element.review || element.link">
+                <template v-if="element.review || element.link || element.blog">
                   <div class="flex items-center gap-2">
                     {{ plural(element.click ?? 0, "click") }}
                     <icon-button name="ads_click" tooltip-label="Clicks" />
@@ -141,11 +141,10 @@ function getTitleText(entry: PageEntriesWithData) {
               <div v-else-if="element.blog" class="flex flex-col">
                 <h1>{{ element.blog.title }}</h1>
                 <h3>{{ element.blog.description }}</h3>
-                <p>{{ element.blog.content }}</p>
                 <q-btn
                   :to="`/blog/${element.blog.id}`"
                   label="Edit Blog"
-                  class="takeme-button black self-start"
+                  class="takeme-button black self-end"
                 />
               </div>
 

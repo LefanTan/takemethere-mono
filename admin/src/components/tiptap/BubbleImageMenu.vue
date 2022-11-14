@@ -65,9 +65,6 @@ defineProps<{ editor?: Editor }>();
   }
 }
 
-div {
-}
-
 .left-border {
   padding-left: 5px;
   border-left: 2px solid var(--secondary-light);

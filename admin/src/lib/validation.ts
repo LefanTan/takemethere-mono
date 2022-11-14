@@ -37,3 +37,9 @@ export async function isEmailValid(val: string) {
 
   return "Invalid email address";
 }
+
+export function isYoutubeUrlValid(val: string) {
+  if (/https:\/\/(www\.)*youtube.com\/.*/g.test(val)) return true;
+
+  return "Not a valid youtube URL";
+}

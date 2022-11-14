@@ -41,6 +41,15 @@ defineProps<{ editor?: Editor }>();
     >
       <q-icon name="mdi-format-quote-close" size="1rem" />
     </button>
+    <button @click="editor?.chain().focus().setTextAlign('left').run()">
+      <q-icon name="format_align_left" size="1rem" />
+    </button>
+    <button @click="editor?.chain().focus().setTextAlign('center').run()">
+      <q-icon name="format_align_center" size="1rem" />
+    </button>
+    <button @click="editor?.chain().focus().setTextAlign('right').run()">
+      <q-icon name="format_align_right" size="1rem" />
+    </button>
   </bubble-menu>
 </template>
 
@@ -53,18 +62,12 @@ defineProps<{ editor?: Editor }>();
   border-radius: 5px;
   box-shadow: 0px 0px 10px 5px rgba(128, 128, 128, 0.297);
 
+  display: flex;
+  align-items: center;
+
   > button:not(:has(i)) + button:not(:has(i)) {
     margin-left: 0.5rem;
   }
-
-  > i + i {
-    margin-left: 0.25rem;
-  }
-}
-
-div {
-  display: flex;
-  align-items: center;
 
   > * + * {
     margin-left: 0.25rem;

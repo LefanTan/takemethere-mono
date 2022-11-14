@@ -6,6 +6,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import FloatingMenu from "@tiptap/extension-floating-menu";
+import TextAlign from "@tiptap/extension-text-align";
+import Youtube from "@tiptap/extension-youtube";
 
 import FloatingBlogMenu from "../tiptap/FloatingBlogMenu.vue";
 import BubbleBlogMenu from "../tiptap/BubbleBlogMenu.vue";
@@ -17,6 +19,7 @@ import router from "@src/routes";
 import { storeToRefs } from "pinia";
 import { watchDebounced } from "@vueuse/core";
 import { isEqual } from "lodash";
+import HardBreak from "@tiptap/extension-hard-break";
 
 const $store = useStore();
 const blogId = router.currentRoute.value.params.blogId;
@@ -49,7 +52,28 @@ const editor = useEditor({
     Placeholder.configure({
       placeholder: "Start writing something...",
     }),
+    TextAlign.configure({
+      types: ["heading", "paragraph"],
+    }),
+    HardBreak.extend({
+      addKeyboardShortcuts() {
+        return {
+          Enter: () => {
+            return this.editor.chain().createParagraphNear().run();
+          },
+          "Shift-Enter": () => {
+            return this.editor.chain().setHardBreak().run();
+          },
+        };
+      },
+    }),
     Underline,
+    Youtube.configure({
+      nocookie: true,
+      modestBranding: true,
+      width: 0,
+      height: 0,
+    }),
     ResizableImage.configure({
       HTMLAttributes: {
         class: "resizable-image",
@@ -73,7 +97,7 @@ onBeforeUnmount(() => {
     class="editor bg-white rounded-md m-2 p-6 h-full min-h-90vh flex flex-col"
   >
     <input
-      class="text-4xl font-bold leading-tight"
+      class="text-5xl font-bold leading-tight w-full"
       placeholder="Title"
       v-model="blog.title"
     />
