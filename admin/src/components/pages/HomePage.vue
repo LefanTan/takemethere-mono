@@ -151,7 +151,7 @@ function getTitleText(entry: PageEntriesWithData) {
               </div>
 
               <!-- Category title Entry -->
-              <q-card-section class="flex-1 p-0" v-else-if="element.title">
+              <q-card-section class="flex-1 p-0" v-else>
                 <q-input
                   standout
                   dense
