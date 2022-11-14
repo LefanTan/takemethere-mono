@@ -19,6 +19,15 @@ if (!user) return Astro.redirect("/404");
 <TrackedLayout user={user}>
   <!-- Goes into header -->
   <!-- TODO: Replace with hardcoded url with vanity url -->
+  <SEO
+    slot="head"
+    title={`${user.username} | TakeMe - Link in Bio tool for Bloggers`}
+    description={user.bio}
+    image={user.profileMediaUrl
+      ? `${user.profileMediaUrl?.split(".webp")[0]}-large.webp`
+      : undefined}
+    url={`https://takeme.blog/${user.username}`}
+  />
 
   <main class="flex flex-1 justify-center">
     <!-- Content with a width cap -->

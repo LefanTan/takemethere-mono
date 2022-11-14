@@ -20,24 +20,6 @@ const firstValidLetter = [...user.displayName]
 const formattedDate = dayjs(date).format("MMM YYYY");
 ---
 
-<script is:inline define:vars={{ blog }}>
-  const shareData = {
-    text: blog.title,
-    url: window.location.href,
-  };
-
-  document
-    .getElementById("share-button")
-    .addEventListener("click", async () => {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        await navigator.clipboard.writeText(window.location.href);
-        document.getElementById("link-copy-toast").style.display = "flex";
-      }
-    });
-</script>
-
 <section class="flex self-stretch justify-center shadow-md p-4">
   <!-- Width wrapper -->
   <div class="flex-1 max-w-5xl">
@@ -114,9 +96,35 @@ const formattedDate = dayjs(date).format("MMM YYYY");
   <aside
     id="link-copy-toast"
     data-open={false}
-    style="display:none;"
-    class="fixed top-5 left-1/2 -translate-x-1/2 bg-black text-white rounded-md px-2.5 py-1"
+    style="opacity:0;"
+    class="fixed top-5 left-1/2 -translate-x-1/2 bg-black text-white rounded-md px-2.5 py-1 duration-200"
   >
     Link copied!
   </aside>
 </section>
+
+<script is:inline define:vars={{ blog }}>
+  const shareData = {
+    text: blog.title,
+    url: window.location.href,
+  };
+
+  document
+    .getElementById("share-button")
+    .addEventListener("click", async () => {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        await navigator.clipboard.writeText(window.location.href);
+        const linkCopyToast = document.getElementById("link-copy-toast");
+
+        linkCopyToast.style.opacity = 1;
+        linkCopyToast.dataset.open = true;
+
+        setTimeout(() => {
+          linkCopyToast.style.opacity = 0;
+          linkCopyToast.dataset.open = false;
+        }, 2000);
+      }
+    });
+</script>

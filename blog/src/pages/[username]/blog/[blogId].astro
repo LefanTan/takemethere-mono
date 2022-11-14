@@ -33,12 +33,13 @@ const featuredImage = getFeaturedImageFromHtml(blog.content);
 <TrackedLayout user={user}>
   <!-- Goes into header -->
   <!-- TODO: Replace with hardcoded url with vanity url -->
-  <!-- <SEO
+  <SEO
+    slot="head"
     title={blog.title}
     description={blog.description}
     image={featuredImage ?? undefined}
     url={`https://takeme.blog/${user.username}/blog/${blog.id}`}
-  /> -->
+  />
 
   <main class="flex flex-col flex-1 items-center">
     <!-- Content with a width cap -->

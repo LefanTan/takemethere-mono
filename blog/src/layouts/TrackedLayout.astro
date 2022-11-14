@@ -23,7 +23,9 @@ const { user } = Astro.props;
 ---
 
 <BaseLayout>
-  <div slot="head">bro</div>
+  <div slot="head">
+    <slot name="head" />
+  </div>
 
   <!-- Main content -->
   <slot />
