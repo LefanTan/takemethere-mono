@@ -50,5 +50,5 @@ export function getDomain() {
  */
 export function getFeaturedImageFromHtml(html: string) {
   const match = /<img[^>]+src="([^">]+)"/g.exec(html);
-  return match[1];
+  return match?.[1];
 }

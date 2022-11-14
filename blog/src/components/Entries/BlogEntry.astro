@@ -38,13 +38,9 @@ const domain = getDomain();
     )
   }
 
-  <div class="flex flex-col flex-1 p-4">
-    <strong class="text-lg leading-none mb-1">
-      {blog.title}
-    </strong>
-    <p>
-      {blog.description}
-    </p>
+  <div class="flex flex-col justify-center flex-1 p-4 [&>*+*]:mt-2">
+    {blog.title && <strong class="text-lg leading-none">{blog.title}</strong>}
+    {blog.description && <p>{blog.description}</p>}
   </div>
 
   <iconify-icon

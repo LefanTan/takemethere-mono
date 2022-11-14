@@ -108,7 +108,7 @@ const usePageStore = defineStore("pageStore", {
           pageId: this.page.id,
           blog: {
             id: newId,
-            title: "",
+            title: "New Blog",
             description: "",
             content: "",
             pageEntryId: newEntryId,
