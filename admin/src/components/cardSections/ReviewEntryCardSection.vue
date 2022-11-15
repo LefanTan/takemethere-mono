@@ -34,7 +34,7 @@ function deleteMedia() {
         :uploaded-url="review.mediaUrl"
         @file-added="onFileAdded"
         @delete="deleteMedia"
-        class="mr-2 mb-4 sm:mb-0 w-36"
+        class="mr-2 mb-4 sm:mb-0 w-36 h-36"
       />
       <div class="flex flex-col flex-1 [&>*]:mb-2">
         <q-input
