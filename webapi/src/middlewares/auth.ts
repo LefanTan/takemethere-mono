@@ -25,7 +25,7 @@ export async function authenticateJWT(
       req.uid = uid;
       return next();
     } catch (err) {
-      return res.sendStatus(403).json(err);
+      return res.status(403).json(err);
     }
   }
   return res.sendStatus(403);
