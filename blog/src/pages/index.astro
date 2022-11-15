@@ -1,10 +1,17 @@
 ---
+import SEO from "@components/SEO.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <script>
   window.location.href = "https://takeme.blog/admin";
 </script>
-<BaseLayout title="Welcome to Astro.">
-  <main></main>
+<BaseLayout>
+  <SEO
+    slot="head"
+    title="TakeMe - Link in Bio tool for Bloggers"
+    description="Sign up now for free and start blogging your food adventures"
+    image="https://storage.googleapis.com/takeme-public-assets/takeme/seo.png"
+    url="https://takeme.blog"
+  />
 </BaseLayout>

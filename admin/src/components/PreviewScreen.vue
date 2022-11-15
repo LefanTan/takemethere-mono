@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useStore from "@src/stores";
-import { useClipboard } from "@vueuse/core";
 import { useQuasar } from "quasar";
 import { onMounted, onBeforeUnmount, ref, computed } from "vue";
 import IconButton from "./buttons/IconButton.vue";
@@ -35,8 +34,6 @@ const previewHeight = computed(() => {
   return 500;
 });
 
-const { copy } = useClipboard({ source: previewUrl });
-
 onMounted(() => {
   document.documentElement?.addEventListener("pageChange", triggerIframeReload);
 });
@@ -54,7 +51,7 @@ function triggerIframeReload() {
 }
 
 function onCopyClipboard() {
-  copy();
+  navigator.clipboard.writeText(previewUrl);
   $q.notify({ message: "Link copied!" });
 }
 </script>

@@ -73,7 +73,7 @@ const hasBody =
   {
     hasBody && (
       <div class="flex flex-col p-2">
-        {review.firstButtonText && (
+        {review.firstButtonText && review.firstButtonLink && (
           <a
             href={review.firstButtonLink}
             target="_blank"
@@ -83,7 +83,7 @@ const hasBody =
             {review.firstButtonText}
           </a>
         )}
-        {review.secondButtonText && (
+        {review.secondButtonText && review.secondButtonLink && (
           <a
             href={review.secondButtonLink}
             target="_blank"

@@ -157,10 +157,12 @@ const usePageStore = defineStore("pageStore", {
      */
     async retrieveBlog(blogId: string) {
       // If current blog is not available, find it in pageEntries or load from network
-      if (!this.blog.id)
+      if (this.blog.id !== blogId)
         this.blog =
           this.pageEntries.find((entry) => entry.blog?.id === blogId)?.blog ??
           (await BlogService.getBlog(blogId));
+
+      console.log(this.blog);
 
       this.oldBlog = deepCopy(this.blog);
 

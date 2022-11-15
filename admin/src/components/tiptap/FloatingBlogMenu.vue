@@ -31,7 +31,12 @@ function onCancel() {
 }
 
 function onConfirm() {
-  props.editor?.chain().focus().setImage({ src: uploadedUrl.value }).run();
+  props.editor
+    ?.chain()
+    .focus()
+    .setImage({ src: uploadedUrl.value })
+    .createParagraphNear()
+    .run();
   onCancel();
 }
 

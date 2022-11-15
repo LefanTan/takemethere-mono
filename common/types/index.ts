@@ -80,6 +80,14 @@ export type Blog = {
     updatedAt?: (Date | string),
 }
 
+export type AudioSnippet = {
+    id: string,
+    text: string,
+    pageEntryId: string,
+    createdAt?: (Date | string),
+    updatedAt?: (Date | string),
+}
+
 export type EntryAnalytics = {
     id?: string,
     appId: string,
