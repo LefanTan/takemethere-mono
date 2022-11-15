@@ -12,7 +12,7 @@ const { audioSnippet } = Astro.props;
 <script>
   const audioClickHandler = (context: any) => {
     window.AnalyticTracker?.logAnalytic("AudioClick", {
-      audioId: context.dataset.audioId,
+      audioSnippetId: context.dataset.audioId,
     });
   };
 

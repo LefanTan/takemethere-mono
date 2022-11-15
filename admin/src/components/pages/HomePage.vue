@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import draggable from "vuedraggable";
 import { watchDebounced } from "@vueuse/core";
-import { storeToRefs } from "pinia";
 import isEquals from "lodash.isequal";
+import { storeToRefs } from "pinia";
+import draggable from "vuedraggable";
 
+import { PageEntriesWithData } from "@common/types/client";
 import { plural } from "@lib/helpers";
 import useStore from "@src/stores";
 import IconButton from "../buttons/IconButton.vue";
+import AudioSnippetCardSection from "../cardSections/AudioSnippetCardSection.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
 import ReviewEntryCardSection from "../cardSections/ReviewEntryCardSection.vue";
-import { PageEntriesWithData } from "@common/types/client";
-import AudioSnippetCardSection from "../cardSections/AudioSnippetCardSection.vue";
 
 const $store = useStore();
 
@@ -111,7 +111,14 @@ function getTitleText(entry: PageEntriesWithData) {
                 <h4 class="mr-auto">
                   {{ getTitleText(element) }}
                 </h4>
-                <template v-if="element.review || element.link || element.blog">
+                <template
+                  v-if="
+                    element.review ||
+                    element.link ||
+                    element.blog ||
+                    element.audioSnippet
+                  "
+                >
                   <div class="flex items-center gap-2">
                     {{ plural(element.click ?? 0, "click") }}
                     <icon-button name="ads_click" tooltip-label="Clicks" />
