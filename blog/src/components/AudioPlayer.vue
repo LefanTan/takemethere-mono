@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-defineProps<{ src: string }>();
+const props = defineProps<{ src: string; id: string }>();
 
 const audioElement = ref<HTMLAudioElement>();
 const playing = ref(false);
@@ -15,8 +15,13 @@ function togglePlay() {
     audioElement.value.volume = 0.5;
   }
 
-  if (playing.value) audioElement.value.play();
-  else audioElement.value.pause();
+  if (playing.value) {
+    audioElement.value.play();
+
+    window.AnalyticTracker?.logAnalytic("AudioClick", {
+      audioSnippetId: props.id,
+    });
+  } else audioElement.value.pause();
 }
 </script>
 

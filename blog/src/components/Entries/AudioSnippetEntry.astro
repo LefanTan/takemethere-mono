@@ -9,27 +9,17 @@ interface Props {
 const { audioSnippet } = Astro.props;
 ---
 
-<script>
-  const audioClickHandler = (context: any) => {
-    window.AnalyticTracker?.logAnalytic("AudioClick", {
-      audioSnippetId: context.dataset.audioId,
-    });
-  };
-
-  Array.from(document.getElementsByClassName("takeme-audio")).forEach(
-    (element) =>
-      element.addEventListener("click", function () {
-        audioClickHandler(this);
-      })
-  );
-</script>
 <div
   data-audio-id={audioSnippet.id}
   class="takeme-audio flex items-center p-1 px-2 rounded-lg relative ring-black-2 overflow-hidden mb-4"
 >
   {
     audioSnippet.mediaUrl ? (
-      <AudioPlayer client:visible src={audioSnippet.mediaUrl} />
+      <AudioPlayer
+        client:visible
+        src={audioSnippet.mediaUrl}
+        id={audioSnippet.id}
+      />
     ) : (
       <div>
         <iconify-icon icon="gg:unavailable" width="2rem" />
