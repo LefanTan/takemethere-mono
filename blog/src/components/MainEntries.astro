@@ -29,7 +29,7 @@ const { pageEntries } = Astro.props;
 
       if (entry.blog) return <BlogEntry blog={entry.blog} />;
 
-      if (entry.audioSnippet)
+      if (entry.audioSnippet.mediaUrl)
         return <AudioSnippetEntry audioSnippet={entry.audioSnippet} />;
     })
   }
