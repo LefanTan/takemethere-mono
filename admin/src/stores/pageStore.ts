@@ -72,7 +72,9 @@ const usePageStore = defineStore("pageStore", {
     /**
      * Add a new PageEntry to the current page
      */
-    async addEntry(type: "Link" | "Review" | "Title" | "Blog") {
+    async addEntry(
+      type: "Link" | "Review" | "Title" | "Blog" | "AudioSnippet"
+    ) {
       if (!this.page.id) return;
 
       const newId = uuid();
@@ -111,6 +113,17 @@ const usePageStore = defineStore("pageStore", {
             title: "New Blog",
             description: "",
             content: "",
+            pageEntryId: newEntryId,
+          },
+          order: newOrder,
+        });
+      } else if (type === "AudioSnippet") {
+        this.pageEntries.push({
+          id: newEntryId,
+          pageId: this.page.id,
+          audioSnippet: {
+            id: newId,
+            text: "",
             pageEntryId: newEntryId,
           },
           order: newOrder,

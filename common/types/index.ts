@@ -83,6 +83,7 @@ export type Blog = {
 export type AudioSnippet = {
     id: string,
     text: string,
+    mediaUrl?: string | null,
     pageEntryId: string,
     createdAt?: (Date | string),
     updatedAt?: (Date | string),

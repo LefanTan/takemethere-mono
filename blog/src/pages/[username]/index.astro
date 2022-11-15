@@ -4,7 +4,7 @@ import MainEntries from "@components/MainEntries.astro";
 import Profile from "@components/Profile.astro";
 import TrackedLayout from "@layouts/TrackedLayout.astro";
 
-import { OpenAPI, UsersService } from "@common/webapi";
+import { OpenAPI, PagesService, UsersService } from "@common/webapi";
 import SEO from "@components/SEO.astro";
 
 const { username } = Astro.params;
@@ -14,7 +14,7 @@ OpenAPI.BASE = import.meta.env.PROD
   ? "https://api.takeme.blog"
   : "http://localhost:5080";
 
-const user = await UsersService.getUsersPage(username as string).catch(
+const user = await PagesService.getPagePage(username as string).catch(
   () => null
 );
 

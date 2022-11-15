@@ -16,7 +16,8 @@ type AppState = {
    * Take Me User
    */
   takeMeUser?: TakeMeUser;
-  allowedMediaFormat?: string;
+  allowedImageFormat?: string;
+  allowedAudioFormat?: string;
 };
 
 /**
@@ -24,7 +25,8 @@ type AppState = {
  */
 const useAppStore = defineStore("appStore", {
   state: (): AppState => ({
-    allowedMediaFormat: "image/png, image/jpeg, image/jpg, image/webp",
+    allowedImageFormat: "image/png, image/jpeg, image/jpg, image/webp",
+    allowedAudioFormat: "audio/*",
   }),
   getters: {},
   actions: {

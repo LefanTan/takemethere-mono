@@ -1,5 +1,6 @@
 ---
 import { PageEntriesWithData } from "@common/types/client";
+import AudioSnippetEntry from "./Entries/AudioSnippetEntry.astro";
 import BlogEntry from "./Entries/BlogEntry.astro";
 import LinkEntry from "./Entries/LinkEntry.astro";
 import ReviewEntry from "./Entries/ReviewEntry.astro";
@@ -27,6 +28,9 @@ const { pageEntries } = Astro.props;
         return <LinkEntry link={entry.link} />;
 
       if (entry.blog) return <BlogEntry blog={entry.blog} />;
+
+      if (entry.audioSnippet)
+        return <AudioSnippetEntry audioSnippet={entry.audioSnippet} />;
     })
   }
 </>

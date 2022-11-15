@@ -1,0 +1,48 @@
+---
+import { AudioSnippet } from "@common/types/index";
+import AudioPlayer from "@components/AudioPlayer.vue";
+
+interface Props {
+  audioSnippet: AudioSnippet;
+}
+
+const { audioSnippet } = Astro.props;
+---
+
+<script>
+  const audioClickHandler = (context: any) => {
+    window.AnalyticTracker?.logAnalytic("AudioClick", {
+      audioId: context.dataset.audioId,
+    });
+  };
+
+  Array.from(document.getElementsByClassName("takeme-audio")).forEach(
+    (element) =>
+      element.addEventListener("click", function () {
+        audioClickHandler(this);
+      })
+  );
+</script>
+<div
+  data-audio-id={audioSnippet.id}
+  class="takeme-audio flex items-center p-1 px-2 rounded-lg relative ring-black-2 overflow-hidden mb-4"
+>
+  {
+    audioSnippet.mediaUrl ? (
+      <AudioPlayer client:visible src={audioSnippet.mediaUrl} />
+    ) : (
+      <div>
+        <iconify-icon icon="gg:unavailable" width="1rem" />
+      </div>
+    )
+  }
+  <p class="p-4 text-lg text-center flex items-center justify-center flex-1">
+    {audioSnippet.text}
+  </p>
+
+  <iconify-icon
+    icon="gridicons:audio"
+    width="1rem"
+    class="absolute bottom-2 right-2"
+  />
+</div>

@@ -13,13 +13,6 @@ const mediaRoutes = express();
 const multerStorage = multer.memoryStorage();
 const upload = multer({
   storage: multerStorage,
-  fileFilter: (req, file, callback) => {
-    if (file.mimetype.split("/")[0] === "image") {
-      callback(null, true);
-    } else {
-      callback(new Error("Only images are allowed!"));
-    }
-  },
 });
 
 const bucketName = "takeme-public-assets";
@@ -172,6 +165,48 @@ mediaRoutes.post(
     const resultPath = await uploadOptimizedImageToGoogle(file, filePath);
 
     return res.json(resultPath);
+  }
+);
+
+/**
+ * Upload a sound clip to user's audio snippet
+ */
+mediaRoutes.post(
+  "/addToAudio/:audioSnippetId",
+  authenticateJWT,
+  upload.single("media"),
+  async (req: AuthorizedRequest, res) => {
+    // #swagger.summary = 'Upload a sound clip to user's audio snippet'
+    // #swagger.consumes = ['multipart/form-data']
+    // #swagger.tags = ['Medias']
+    /* 
+    #swagger.parameters['media'] = {
+        in: 'formData',
+        type: 'file',
+        required: 'true',
+        description: 'Media to attach to link',
+    }
+    */
+
+    const file = req.file;
+
+    if (!file) return res.status(400).json({ message: "no file lmao!" });
+
+    const filePath = `${req.uid}/${req.params.audioSnippetId}/${file.originalname}`;
+
+    const blob = bucket.file(filePath);
+    const blobStream = blob.createWriteStream({
+      metadata: {
+        // Browser cache for 3 hours
+        cacheControl: "public, max-age=180",
+      },
+    });
+
+    blobStream.on("finish", () => {
+      return res.json(`${publicUrl}/${filePath}`);
+    });
+
+    blobStream.end(file.buffer);
   }
 );
 

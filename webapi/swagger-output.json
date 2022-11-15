@@ -91,31 +91,6 @@
         }
       }
     },
-    "/users/{username}/page": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Retrieve user object and all page data based on a given username",
-        "description": "",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
     "/users/": {
       "get": {
         "tags": [
@@ -655,6 +630,49 @@
         "parameters": [
           {
             "name": "blogId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "media",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Media to attach to link"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/media/addToAudio/{audioSnippetId}": {
+      "post": {
+        "tags": [
+          "Medias"
+        ],
+        "summary": "Upload a sound clip to user",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "audioSnippetId",
             "in": "path",
             "required": true,
             "type": "string"

@@ -54,9 +54,10 @@ model PageEntry {
   id    String  @id @default(uuid())
   title String?
 
-  link   Link?
-  review Review?
-  blog   Blog?
+  link         Link?
+  review       Review?
+  blog         Blog?
+  audioSnippet AudioSnippet?
 
   hidden Boolean?
 
@@ -115,6 +116,19 @@ model Blog {
   title       String
   description String
   content     String
+
+  pageEntryId String    @unique
+  pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model AudioSnippet {
+  id String @id
+
+  text     String
+  mediaUrl String?
 
   pageEntryId String    @unique
   pageEntry   PageEntry @relation(fields: [pageEntryId], references: [id], onDelete: Cascade)

@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      minHeight: {
+        20: "5rem",
+      },
       colors: {
         secondary: "var(--secondary)",
         "secondary-light": "var(--secondary-light)",

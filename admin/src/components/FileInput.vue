@@ -6,7 +6,10 @@ import { computed, watch } from "vue";
 const $store = useStore();
 const { files, open, reset } = useFileDialog();
 
-defineProps<{ uploadedUrl?: string | null }>();
+withDefaults(
+  defineProps<{ uploadedUrl?: string | null; type?: "image" | "audio" }>(),
+  { type: "image" }
+);
 const emits = defineEmits<{
   (e: "delete"): void;
   (e: "fileAdded", file: FileList): Promise<void>;
@@ -30,23 +33,41 @@ watch(files, async () => {
   <label
     for="media"
     class="relative w-28 rounded-lg overflow-hidden hover:brightness-75 cursor-pointer transition-all"
-    @click.stop="() => open({ accept: $store.app.allowedMediaFormat })"
+    @click.stop="
+      () =>
+        open({
+          accept:
+            type === 'image'
+              ? $store.app.allowedImageFormat
+              : $store.app.allowedAudioFormat,
+        })
+    "
   >
     <!-- If there's no locally selected url or uploaded url, show default logo -->
     <div
       v-if="!localFileUrl && !uploadedUrl"
       class="w-full h-full bg-secondary-light flex items-center justify-center"
     >
-      <q-icon name="eva-image-outline" size="2rem" />
+      <q-icon
+        :name="type === 'image' ? `eva-image-outline` : `eva-music-outline`"
+        size="2rem"
+      />
     </div>
 
     <q-img
-      v-else
+      v-else-if="type === 'image'"
       :src="localFileUrl || (uploadedUrl ?? '')"
       alt="profile picture"
       class="w-full h-full"
       fit="cover"
     />
+
+    <div
+      v-else
+      class="w-full h-full bg-secondary-light flex items-center justify-center"
+    >
+      <q-icon name="eva-activity" size="2rem" />
+    </div>
 
     <button
       @click.stop="

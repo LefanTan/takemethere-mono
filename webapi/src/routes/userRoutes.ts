@@ -59,47 +59,6 @@ userRoutes.get("/email/:username", async (req, res) => {
 });
 
 /**
- * Retrieve user object and all page data based on a given username
- * TODO: Add pagination, split this function into GetPageEntriesByUsername and GetUserByUsername
- */
-userRoutes.get("/:username/page", async (req, res) => {
-  // #swagger.summary = 'Retrieve user object and all page data based on a given username'
-  // #swagger.tags = ['Users']
-
-  try {
-    const username = req.params.username;
-    const user = await prisma.user.findUniqueOrThrow({
-      where: {
-        username,
-      },
-      include: {
-        page: {
-          include: {
-            pageEntries: {
-              orderBy: {
-                order: "desc",
-              },
-              where: {
-                OR: [{ hidden: false }, { hidden: null }],
-              },
-              include: {
-                review: true,
-                link: true,
-                blog: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    return res.json(user);
-  } catch (error) {
-    return res.status(400).json(error);
-  }
-});
-
-/**
  * Retrieve user object (without page)
  */
 userRoutes.get("/", authenticateJWT, async (req: AuthorizedRequest, res) => {

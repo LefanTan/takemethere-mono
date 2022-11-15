@@ -52,27 +52,6 @@ export class UsersService {
     }
 
     /**
-     * Retrieve user object and all page data based on a given username
-     * @param username
-     * @returns any OK
-     * @throws ApiError
-     */
-    public static getUsersPage(
-        username: string,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/{username}/page',
-            path: {
-                'username': username,
-            },
-            errors: {
-                400: `Bad Request`,
-            },
-        });
-    }
-
-    /**
      * Get User data (without page) through JWT
      * @param authorization
      * @returns any OK

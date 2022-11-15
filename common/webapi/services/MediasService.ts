@@ -131,6 +131,38 @@ export class MediasService {
     }
 
     /**
+     * Upload a sound clip to user
+     * @param audioSnippetId
+     * @param media Media to attach to link
+     * @param authorization
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static postMediaAddToAudio(
+        audioSnippetId: string,
+        media: Blob,
+        authorization?: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/media/addToAudio/{audioSnippetId}',
+            path: {
+                'audioSnippetId': audioSnippetId,
+            },
+            headers: {
+                'authorization': authorization,
+            },
+            formData: {
+                'media': media,
+            },
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
      * Delete a file from the user\'s folder
      * @param authorization
      * @param filePath File path to delete

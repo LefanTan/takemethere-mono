@@ -74,22 +74,26 @@ pageRoutes.get("/:username/page", async (req, res) => {
     } */
 
   try {
-    // Find the user belonged to the name passed in username
+    const username = req.params.username;
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        username: req.params.username,
+        username,
       },
       include: {
         page: {
           include: {
             pageEntries: {
+              orderBy: {
+                order: "desc",
+              },
               where: {
-                hidden: false,
+                OR: [{ hidden: false }, { hidden: null }],
               },
               include: {
                 review: true,
                 link: true,
                 blog: true,
+                audioSnippet: true,
               },
             },
           },
@@ -97,9 +101,9 @@ pageRoutes.get("/:username/page", async (req, res) => {
       },
     });
 
-    return res.json(user.page);
+    return res.json(user);
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(400).json(error);
   }
 });
 
@@ -148,6 +152,7 @@ pageRoutes.put(
         delete entry.review;
         delete entry.link;
         delete entry.blog;
+        delete entry.audioSnippet;
         delete entry.click;
 
         entryTasks.push(
@@ -201,6 +206,18 @@ pageRoutes.put(
               },
               update: entry.blog,
               create: entry.blog,
+            })
+          );
+        }
+
+        if (entry.audioSnippet) {
+          entryItemTasks.push(
+            prisma.audioSnippet.upsert({
+              where: {
+                id: entry.audioSnippet.id,
+              },
+              update: entry.audioSnippet,
+              create: entry.audioSnippet,
             })
           );
         }
@@ -271,6 +288,7 @@ async function getPageEntriesByPage(
       blog: true,
       review: true,
       link: true,
+      audioSnippet: true,
     },
     orderBy: {
       order: "desc",
@@ -319,6 +337,20 @@ async function getPageEntriesByPage(
             eventProperties: {
               path: ["blogId"],
               equals: entry.blog.id,
+            },
+          },
+        });
+      }
+
+      if (entry.audioSnippet) {
+        // Combine both cta click count
+        return prisma.entryAnalytics.count({
+          where: {
+            propertyId: userId,
+            eventId: "AudioClick",
+            eventProperties: {
+              path: ["audioSnippetId"],
+              equals: entry.audioSnippet.id,
             },
           },
         });

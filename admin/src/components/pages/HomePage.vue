@@ -10,6 +10,7 @@ import IconButton from "../buttons/IconButton.vue";
 import LinkEntryCardSection from "../cardSections/LinkEntryCardSection.vue";
 import ReviewEntryCardSection from "../cardSections/ReviewEntryCardSection.vue";
 import { PageEntriesWithData } from "@common/types/client";
+import AudioSnippetCardSection from "../cardSections/AudioSnippetCardSection.vue";
 
 const $store = useStore();
 
@@ -37,9 +38,12 @@ function dragEnd() {
 }
 
 function getTitleText(entry: PageEntriesWithData) {
+  // There should have been an enum in PageEntry
+
   if (entry.link) return "Link";
   else if (entry.review) return "Review";
   else if (entry.blog) return "Blog";
+  else if (entry.audioSnippet) return "Audio Snippet";
   else return "Title";
 }
 </script>
@@ -61,6 +65,11 @@ function getTitleText(entry: PageEntriesWithData) {
         label="Add Blog"
         class="takeme-button black"
         @click="$store.page.addEntry('Blog')"
+      />
+      <q-btn
+        label="Add Audio Snippet"
+        class="takeme-button black"
+        @click="$store.page.addEntry('AudioSnippet')"
       />
       <q-btn
         label="Add Title Text"
@@ -149,6 +158,11 @@ function getTitleText(entry: PageEntriesWithData) {
                   class="takeme-button black self-end mt-4"
                 />
               </div>
+
+              <audio-snippet-card-section
+                :page-entry-index="index"
+                v-else-if="element.audioSnippet"
+              />
 
               <!-- Category title Entry -->
               <q-card-section class="flex-1 p-0" v-else>
