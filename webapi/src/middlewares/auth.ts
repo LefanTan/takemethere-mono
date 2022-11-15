@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from "express";
+import { NextFunction, Response } from "express";
 import { firebaseAdmin } from "../config";
 import { AuthorizedRequest } from "../types/request";
 
@@ -25,7 +25,7 @@ export async function authenticateJWT(
       req.uid = uid;
       return next();
     } catch (err) {
-      return res.sendStatus(403);
+      return res.sendStatus(403).json(err);
     }
   }
   return res.sendStatus(403);
