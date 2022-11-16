@@ -43,7 +43,7 @@ Using firebase hosting configs and changing the base path of this project, I was
 
 ### `Blog (User Facing)`
 
-Stack: Astro, Vue and Tailwind\
+Stack: **Astro, Vue and Tailwind**\
 Path: https://takeme.blog
 
 Deployed to cloud using Google Run because a server runtime is required for Astro SSR.
@@ -69,7 +69,7 @@ Error logging is also weird with the development server, sometimes logging error
 
 ### `WebAPI`
 
-Stack: Express, Typescript, Prisma and Esbuild\
+Stack: **Express, Typescript, Prisma and Esbuild**
 
 Also deployed to cloud using Google Run.
 CI/CD happens through Cloud Build with a trigger setup to deploy automatically to production on merge to `main`. And of course a staging environment is needed in **_real_** production.
