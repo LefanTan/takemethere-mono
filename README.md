@@ -19,7 +19,7 @@ TakeMe is a link-in-bio tool built for Food/Restaurant bloggers. Heavily inspire
 2. Write Blogs - TakeMe has a basic blogging feature that allows you to write your own blog articles and displaying it on your TakeMe link with minimal hassle.
 3. Audio Snippet - You can add audio clips to your website. Totally unrelated to Food Blogging in general, but adds a layer of personalization to your TakeMe Links.
 
-## Development
+## `Development`
 
 The required service needed for everything to work locally is
 
@@ -28,9 +28,9 @@ The required service needed for everything to work locally is
 3. Blog (TakeMe Links) - run `cd blog && npm run dev`
 4. WebAPI - run `cd webapi && npm run dev`
 
-## Services
+## `Services`
 
-### Admin
+### `Admin`
 
 Stack: **Vite, Vue, Quasar, Tailwind**\
 Path: https://takeme.blog/admin
@@ -41,7 +41,7 @@ I'm having fun using Quasar (and pinia) and slowly loving Vue for building SPAs.
 
 Using firebase hosting configs and changing the base path of this project, I was able to route everything `/admin/**` to the Admin project, and everything `/**` to the Blog project
 
-### Blog (User Facing)
+### `Blog (User Facing)`
 
 Stack: Astro, Vue and Tailwind\
 Path: https://takeme.blog
@@ -67,7 +67,7 @@ Astro while having a great ecosystem and community, is still pretty new. As a re
 
 Error logging is also weird with the development server, sometimes logging errors that are completely unrelated to the actual problem. Not all components are perfectly typed as well, which is fair because things are constantly being updated by the Astro dev team.
 
-### WebAPI
+### `WebAPI`
 
 Stack: Express, Typescript, Prisma and Esbuild\
 
@@ -78,7 +78,7 @@ Express is easy to setup, but it can get messy and confusing as your service get
 
 Another important aspect of a backend framework that could be easily dismissed (at least for me), is the ease of generating an OpenAPI schema. When paired with an (OpenAPI typescript codegen)[https://www.npmjs.com/package/openapi-typescript-codegen], it means that your backend service can generate a **TYPE SAFE** client that your frontend can call **DIRECTLY**, you wouldn't know you miss it until you start building full stack apps without this DX feature.
 
-### Google PubSub + Scheduler + Function
+### `Google PubSub + Scheduler + Function`
 
 Pretty straight forward, the function calls a dummy endpoint for the WebAPI and Blog service once every couple minute to keep the services 'warm' and reduce cold start latency.
 
