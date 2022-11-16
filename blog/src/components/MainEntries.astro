@@ -22,14 +22,14 @@ const { pageEntries } = Astro.props;
         return <h2 class="mb-4 mt-6">{entry.title}</h2>;
       }
 
-      if (entry.review) return <ReviewEntry review={entry.review} />;
+      if (entry.review?.name) return <ReviewEntry review={entry.review} />;
 
       if (entry.link?.link && entry.link?.displayText)
         return <LinkEntry link={entry.link} />;
 
       if (entry.blog) return <BlogEntry blog={entry.blog} />;
 
-      if (entry.audioSnippet.mediaUrl)
+      if (entry.audioSnippet?.mediaUrl)
         return <AudioSnippetEntry audioSnippet={entry.audioSnippet} />;
     })
   }

@@ -13,7 +13,7 @@ export default function setupAuthenticationNavguard(router: Router) {
     const $store = useStore();
 
     // Wait for authStateChange to resolve/reject before moving on to check if user is logged in
-    await new Promise((resolve, _) => {
+    await new Promise((resolve) => {
       auth.onAuthStateChanged(async (user) => {
         if (user) {
           // Required so that token is set
