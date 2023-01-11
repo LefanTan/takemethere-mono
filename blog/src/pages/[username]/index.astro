@@ -14,9 +14,10 @@ OpenAPI.BASE = import.meta.env.PROD
   ? "https://api.takeme.blog"
   : "http://localhost:5080";
 
-const user = await PagesService.getPagePage(username as string).catch(
-  () => null
-);
+const user = await PagesService.getPagePage(username as string).catch((e) => {
+  console.log(e);
+  return null;
+});
 
 if (!user) return Astro.redirect("/404");
 ---

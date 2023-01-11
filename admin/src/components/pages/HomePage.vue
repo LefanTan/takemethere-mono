@@ -37,6 +37,32 @@ function dragEnd() {
   }));
 }
 
+function moveDown(index: number) {
+  const element = pageEntries.value[index];
+  const originalLength = pageEntries.value.length;
+
+  pageEntries.value.splice(index, 1);
+  pageEntries.value.splice((index + 1) % originalLength, 0, element);
+
+  dragEnd();
+}
+
+function moveUp(index: number) {
+  const element = pageEntries.value[index];
+  const originalLength = pageEntries.value.length;
+
+  pageEntries.value.splice(index, 1);
+
+  const newIndex = index - 1;
+  pageEntries.value.splice(
+    newIndex < 0 ? originalLength - 1 : newIndex,
+    0,
+    element
+  );
+
+  dragEnd();
+}
+
 function getTitleText(entry: PageEntriesWithData) {
   // There should have been an enum in PageEntry
 
@@ -97,11 +123,21 @@ function getTitleText(entry: PageEntriesWithData) {
       >
         <q-card>
           <q-card-section horizontal class="px-4">
-            <q-icon
-              name="drag_indicator"
-              size="1rem"
-              class="handle self-center"
-            />
+            <div
+              class="flex flex-col justify-center items-center gap-2 cursor-pointer"
+            >
+              <q-icon
+                @click="moveUp(index)"
+                name="eva-arrow-upward-outline"
+                size="1.25rem"
+              />
+              <q-icon name="drag_indicator" size="1rem" class="handle" />
+              <q-icon
+                @click="moveDown(index)"
+                name="eva-arrow-downward-outline"
+                size="1.25rem"
+              />
+            </div>
 
             <q-card-section class="flex-1">
               <q-card-section
